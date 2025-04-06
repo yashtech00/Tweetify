@@ -1,4 +1,5 @@
 import z from "zod"
+import { LoginProp, SignupProp } from "../type/AuthType";
 
  const SignupSchema = z.object({
     username: z.string().optional(),
@@ -13,7 +14,7 @@ import z from "zod"
 
 
 
-const SignupValidation = (req, res, next) => {
+export const SignupValidation = (req: { body: SignupProp }, res:any, next:any) => {
     const SignupValid = SignupSchema.safeParse(req.body);
     if (!SignupValid) {
         return res.status(411).json("Input fields are wrong")
@@ -22,7 +23,7 @@ const SignupValidation = (req, res, next) => {
     next();
 }
 
-const LoginValidation = (req, res, next) => {
+export const LoginValidation = (req:{body:LoginProp}, res:any, next:any) => {
     const LoginValid = LoginSchema.safeParse(req.body);
     if (!LoginValid) {
         return res.status(411).json("Input fields are wrong")
