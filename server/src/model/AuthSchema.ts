@@ -14,8 +14,7 @@ const AuthSchema = new Schema({
     password: {
         type: String,
         required: true
-    }
-
+    },
 });
 
 const AuthModel = mongoose.model("user", AuthSchema);

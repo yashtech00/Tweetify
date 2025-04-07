@@ -42,10 +42,10 @@ export const AllTweets = async (req: any, res:any) => {
 
 export const commentTweet = async (req: any, res:any) => {
     try {
-    const  {tweetId}  = req.params.id;
+    const  tweetId = req.params.id
         const { content } = req.body;
         const userId = req.user._id;
-        console.log("tweet id id ->", tweetId);
+        console.log("tweet id is ->", tweetId);
         console.log("user id is ->", userId);
         
         
@@ -53,7 +53,7 @@ export const commentTweet = async (req: any, res:any) => {
         return res.status(401).json({message:"Tweet not found"})
     }
 
-    const tweet = await TweetModel.findOne( tweetId )
+    const tweet = await TweetModel.findOne({ _id: tweetId });
 
     if (!tweet) {
         return res.status(401).json("tweet not found")
@@ -79,7 +79,7 @@ export const commentTweet = async (req: any, res:any) => {
 
 export const DeleteTweet = async (req: any, res:any )=> {
 
-    const {tweetId} = req.params.id
+    const tweetId = req.params.id
     const post = await TweetModel.findOne({ _id: tweetId })
     if (!post) {
         return res.status(401).json("Tweet post not found")
@@ -102,9 +102,9 @@ export const DeleteTweet = async (req: any, res:any )=> {
 export const LikeUnlikePost = async (req: any, res: any) => {
     try {
         const userId = req.user.id
-        const { id: tweetId } = req.params;
+        const  tweetId  = req.params.id;
 
-    const tweet = await TweetModel.findOne({ tweetId });
+    const tweet = await TweetModel.findOne({ _id:tweetId });
     if (!tweet) {
         return res.status(401).json({ message: "tweet not found" });
         }
@@ -128,4 +128,6 @@ export const LikeUnlikePost = async (req: any, res: any) => {
         return res.status(500).json("Internal server error");
     }
 }
+
+
 

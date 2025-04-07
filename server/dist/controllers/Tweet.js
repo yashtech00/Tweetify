@@ -53,13 +53,15 @@ const AllTweets = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.AllTweets = AllTweets;
 const commentTweet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { tweetId } = req.params.id;
+        const tweetId = req.params.id;
         const { content } = req.body;
         const userId = req.user._id;
+        console.log("tweet id is ->", tweetId);
+        console.log("user id is ->", userId);
         if (!content) {
             return res.status(401).json({ message: "Tweet not found" });
         }
-        const tweet = yield TweetSchema_1.default.findOne({ tweetId });
+        const tweet = yield TweetSchema_1.default.findOne({ _id: tweetId });
         if (!tweet) {
             return res.status(401).json("tweet not found");
         }
@@ -73,9 +75,6 @@ const commentTweet = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             path: "comments.user",
             select: "-password"
         });
-        // if (!updateComment) {
-        //     return res.status(401).json("error")
-        // }
         return res.status(200).json({ message: "commented successfully" }, updateComment === null || updateComment === void 0 ? void 0 : updateComment.comments);
     }
     catch (e) {
@@ -108,8 +107,8 @@ exports.DeleteTweet = DeleteTweet;
 const LikeUnlikePost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = req.user.id;
-        const { id: tweetId } = req.params;
-        const tweet = yield TweetSchema_1.default.findOne({ tweetId });
+        const tweetId = req.params.id;
+        const tweet = yield TweetSchema_1.default.findOne({ _id: tweetId });
         if (!tweet) {
             return res.status(401).json({ message: "tweet not found" });
         }
