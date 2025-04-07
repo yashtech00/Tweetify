@@ -28,6 +28,6 @@ const TweetSchema = new Schema({
     },
 });
 
-const TweetModel = mongoose.model("tweet", TweetSchema);
+    const TweetModel = mongoose.model("tweet", TweetSchema);
 
 export default TweetModel;

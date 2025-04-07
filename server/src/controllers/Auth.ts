@@ -1,60 +1,62 @@
 import jwt from "jsonwebtoken";
 import AuthModel from "../model/AuthSchema";
-import bcrypt from "bcrypt"
+import bcrypt from "bcrypt";
 import { LoginProp, SignupProp } from "../type/AuthType";
+import { generateToken } from "../lib/generateToken";
 
-
-
-export const Signup = async(req: { body: SignupProp }, res: any) => {
-    const { username, email, password } = req.body; 
-
-    const user = await AuthModel.findOne({
-        where: {
-            email: email
-        }
-    })
-    if (user) {
-        return res.status(411).json("Already have an account , go for login");
-    }
-    const hashedPassword = await bcrypt.hash(password, 10);
+export const Signup = async (req: { body: SignupProp }, res: any) => {
+    const { username, email, password } = req.body;
 
     try {
+        const user = await AuthModel.findOne({ email });
+        if (user) {
+            return res.status(409).json({ message: "Already have an account, go for login" });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
         const newUser = await AuthModel.create({
-            data: {
-                username,
-                email,
-               password:hashedPassword
-            }
+            username,
+            email,
+            password: hashedPassword,
         });
-        return res.status(200).json("User register successfully",newUser);
+
+        return res.status(201).json({ message: "User registered successfully", user: newUser });
     } catch (e) {
         console.error(e);
-        return res.status(500).json("Internal server error");
+        return res.status(500).json({ message: "Internal server error while signup" });
     }
-}
+};
 
-export const login = async(req: { body: LoginProp },res:any) => {
+export const login = async (req: { body: LoginProp }, res: any) => {
     const { email, password } = req.body;
 
     try {
-        const user = await AuthModel.findOne({
-            where: {
-                email:email
-            }
-        })
+        const user = await AuthModel.findOne({ email });
         if (!user) {
-            return res.status(404).json("User not found, go for Signup");
+            return res.status(404).json({ message: "User not found, go for Signup" });
         }
 
-        const token = jwt.sign(
-            { email: email },
-            process.env.JWT_SECRET || "",
-            {expiresIn:'24h'}
-        )
-        return res.status(200).json("Login successfully",user,token)
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            return res.status(401).json({ message: "Invalid credentials" });
+        }
+        generateToken(user._id,res);
+
+        return res.status(200).json({ message: "Login successfully", user});
     } catch (e) {
         console.error(e);
-        return res.status(500).json("Internal server error")
-        
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+
+export const logout = async (req: any, res: any) => {
+    try {
+        res.cookies("jwt", "", { maxAge: 0 })
+        res.status(200).json({msg: "Logged out successfully"})
+    } catch (error:any) {
+        console.log("Error in logout controller", error.message);
+        return res.status(500).json({ message: "Internal Server Error" });
     }
 }

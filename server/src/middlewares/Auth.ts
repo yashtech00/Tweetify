@@ -1,35 +1,31 @@
-import z from "zod"
+import z from "zod";
 import { LoginProp, SignupProp } from "../type/AuthType";
 
- const SignupSchema = z.object({
+const SignupSchema = z.object({
     username: z.string().optional(),
     email: z.string().email(),
-    password:z.string()
-})
+    password: z.string(),
+});
 
- const LoginSchema = z.object({
+const LoginSchema = z.object({
     email: z.string().email(),
-    password:z.string()
-})
+    password: z.string(),
+});
 
-
-
-export const SignupValidation = (req: { body: SignupProp }, res:any, next:any) => {
+export const SignupValidation = (req: { body: SignupProp }, res: any, next: any) => {
     const SignupValid = SignupSchema.safeParse(req.body);
-    if (!SignupValid) {
-        return res.status(411).json("Input fields are wrong")
+    if (!SignupValid.success) {
+        return res.status(411).json({ error: "Input fields are wrong", details: SignupValid.error.errors });
     }
 
     next();
-}
+};
 
-export const LoginValidation = (req:{body:LoginProp}, res:any, next:any) => {
+export const LoginValidation = (req: { body: LoginProp }, res: any, next: any) => {
     const LoginValid = LoginSchema.safeParse(req.body);
-    if (!LoginValid) {
-        return res.status(411).json("Input fields are wrong")
+    if (!LoginValid.success) {
+        return res.status(411).json({ error: "Input fields are wrong", details: LoginValid.error.errors });
     }
 
     next();
-}
-
-
+};
