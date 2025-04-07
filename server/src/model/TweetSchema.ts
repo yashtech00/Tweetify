@@ -2,32 +2,46 @@ import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
-const TweetSchema = new Schema({
+const TweetSchema = new Schema(
+  {
     user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "user",
-        required:true      
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
+      required: true,
     },
     content: {
-        type: String,
-        maxlength: 280,
-        trim: true,
-        required: true,
+      type: String,
+      maxlength: 280,
+      trim: true,
+      required: true,
     },
-    likes: [{
+    likes: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref:"user"
-    }],
-    comment: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref:"comment"  
-    }],
+        ref: "user",
+      },
+    ],
+    comments: [
+      {
+        content: {
+          type: String,
+          required: true,
+        },
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "user",
+          required: true,
+        },
+      },
+    ],
     createdAt: {
-        type: Date,
-        default:Date.now,
+      type: Date,
+      default: Date.now,
     },
-});
+  },
+  { timestamps: true }
+);
 
-    const TweetModel = mongoose.model("tweet", TweetSchema);
+const TweetModel = mongoose.model("tweet", TweetSchema);
 
 export default TweetModel;

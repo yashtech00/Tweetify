@@ -12,9 +12,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DeleteTweet = exports.GetCommentOnTweet = exports.commentTweet = exports.AllTweets = exports.PostTweet = void 0;
-const CommentSchema_1 = __importDefault(require("../model/CommentSchema"));
+exports.LikeUnlikePost = exports.DeleteTweet = exports.commentTweet = exports.AllTweets = exports.PostTweet = void 0;
 const TweetSchema_1 = __importDefault(require("../model/TweetSchema"));
+// interface TweetProp {
+//     content: string;
+//     createdAt: Date;
+//     userId: object; // Assuming user is a string (e.g., user ID)
+//     like: Array<string>; // Assuming like is an array of strings (e.g., user IDs)
+// }
+// interface CommentTweetProp {
+//     content: string;
+//     createdAt: Date;
+//     userId: string;
+// }
 const PostTweet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { content, userId } = req.body;
     try {
@@ -42,14 +52,31 @@ const AllTweets = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.AllTweets = AllTweets;
 const commentTweet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { tweetId } = req.params;
     try {
-        const comment = yield CommentSchema_1.default.create({
-            tweet: tweetId,
-            user: req.body.userId,
-            content: req.body.content,
+        const { tweetId } = req.params.id;
+        const { content } = req.body;
+        const userId = req.user._id;
+        if (!content) {
+            return res.status(401).json({ message: "Tweet not found" });
+        }
+        const tweet = yield TweetSchema_1.default.findOne({ tweetId });
+        if (!tweet) {
+            return res.status(401).json("tweet not found");
+        }
+        const comment = {
+            user: userId,
+            content: content
+        };
+        tweet.comments.push(comment);
+        yield tweet.save();
+        const updateComment = yield TweetSchema_1.default.findById(tweetId).populate({
+            path: "comments.user",
+            select: "-password"
         });
-        return res.status(200).json({ message: "Comment successfully added", data: comment });
+        // if (!updateComment) {
+        //     return res.status(401).json("error")
+        // }
+        return res.status(200).json({ message: "commented successfully" }, updateComment === null || updateComment === void 0 ? void 0 : updateComment.comments);
     }
     catch (e) {
         console.error(e);
@@ -57,19 +84,6 @@ const commentTweet = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.commentTweet = commentTweet;
-const GetCommentOnTweet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const comments = yield CommentSchema_1.default.find({
-            tweet: req.params.tweetId,
-        }).populate("user", "username");
-        return res.status(200).json({ message: "Fetched all comments successfully", data: comments });
-    }
-    catch (e) {
-        console.error(e);
-        return res.status(500).json({ message: "Internal server error while fetching comments" });
-    }
-});
-exports.GetCommentOnTweet = GetCommentOnTweet;
 const DeleteTweet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const tweetId = req.params.id;
     const post = yield TweetSchema_1.default.findOne({ _id: tweetId });
@@ -91,3 +105,30 @@ const DeleteTweet = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.DeleteTweet = DeleteTweet;
+const LikeUnlikePost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userId = req.user.id;
+        const { id: tweetId } = req.params;
+        const tweet = yield TweetSchema_1.default.findOne({ tweetId });
+        if (!tweet) {
+            return res.status(401).json({ message: "tweet not found" });
+        }
+        const isLiked = tweet.likes.includes(userId);
+        if (isLiked) {
+            yield TweetSchema_1.default.updateOne({ _id: tweetId }, { $pull: { likes: userId } });
+            const updatedLikes = tweet.likes.filter((id) => id.toString() !== userId.toString());
+            return res.status(200).json(updatedLikes);
+        }
+        else {
+            tweet.likes.push(userId);
+            yield tweet.save();
+            const updatedLikes = tweet.likes;
+            return res.status(200).json(updatedLikes);
+        }
+    }
+    catch (e) {
+        console.error(e);
+        return res.status(500).json("Internal server error");
+    }
+});
+exports.LikeUnlikePost = LikeUnlikePost;

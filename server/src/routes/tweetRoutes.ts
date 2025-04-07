@@ -1,5 +1,5 @@
 import express from "express"
-import { AllTweets, commentTweet, DeleteTweet, GetCommentOnTweet, PostTweet } from "../controllers/Tweet";
+import { AllTweets, commentTweet, DeleteTweet, LikeUnlikePost, PostTweet } from "../controllers/Tweet";
 import AuthenticateRoute from "../middlewares/Authenticated";
 
 const router = express.Router();
@@ -7,9 +7,10 @@ const router = express.Router();
 
 router.get("/Tweets",AuthenticateRoute, AllTweets);
 router.post("/PostTweet",AuthenticateRoute, PostTweet),
-router.post("/comment/:id",AuthenticateRoute, commentTweet),
-router.get("/GetComment",AuthenticateRoute, GetCommentOnTweet);
-router.delete("/DeleteTweet",AuthenticateRoute, DeleteTweet);
+router.put("/comment/:id",AuthenticateRoute, commentTweet),
+
+router.delete("/DeleteTweet", AuthenticateRoute, DeleteTweet);
+router.put("/like/:id", AuthenticateRoute, LikeUnlikePost);
 
 
 export default router

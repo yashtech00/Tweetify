@@ -9,7 +9,7 @@ const TweetSchema = new Schema({
     user: {
         type: mongoose_1.default.Schema.Types.ObjectId,
         ref: "user",
-        required: true
+        required: true,
     },
     content: {
         type: String,
@@ -17,18 +17,29 @@ const TweetSchema = new Schema({
         trim: true,
         required: true,
     },
-    likes: [{
+    likes: [
+        {
             type: mongoose_1.default.Schema.Types.ObjectId,
-            ref: "user"
-        }],
-    comment: [{
-            type: mongoose_1.default.Schema.Types.ObjectId,
-            ref: "comment"
-        }],
+            ref: "user",
+        },
+    ],
+    comments: [
+        {
+            content: {
+                type: String,
+                required: true,
+            },
+            user: {
+                type: mongoose_1.default.Schema.Types.ObjectId,
+                ref: "user",
+                required: true,
+            },
+        },
+    ],
     createdAt: {
         type: Date,
         default: Date.now,
     },
-});
+}, { timestamps: true });
 const TweetModel = mongoose_1.default.model("tweet", TweetSchema);
 exports.default = TweetModel;
