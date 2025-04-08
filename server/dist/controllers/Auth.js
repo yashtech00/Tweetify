@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.logout = exports.login = exports.Signup = void 0;
+exports.getMe = exports.logout = exports.login = exports.Signup = void 0;
 const AuthSchema_1 = __importDefault(require("../model/AuthSchema"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const generateToken_1 = require("../lib/generateToken");
@@ -68,3 +68,14 @@ const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.logout = logout;
+const getMe = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const me = yield AuthSchema_1.default.findById(req.user._id).select("-password");
+        return res.status(200).json(me);
+    }
+    catch (e) {
+        console.error(e.message);
+        return res.status(500).json("Internal server error");
+    }
+});
+exports.getMe = getMe;

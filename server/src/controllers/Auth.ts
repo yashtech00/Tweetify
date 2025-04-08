@@ -60,3 +60,13 @@ export const logout = async (req: any, res: any) => {
         return res.status(500).json({ message: "Internal Server Error" });
     }
 }
+
+export const getMe = async (req:any, res:any) => {
+    try {
+        const me = await AuthModel.findById(req.user._id).select("-password");
+        return res.status(200).json(me)
+    } catch (e:any) {
+        console.error(e.message);
+        return res.status(500).json("Internal server error");
+    }
+}

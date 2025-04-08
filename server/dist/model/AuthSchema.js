@@ -17,7 +17,7 @@ const AuthSchema = new Schema({
     password: {
         type: String,
         required: true
-    }
+    },
 });
 const AuthModel = mongoose_1.default.model("user", AuthSchema);
 exports.default = AuthModel;
