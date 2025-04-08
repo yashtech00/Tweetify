@@ -12,7 +12,7 @@ export const SignupComp = () => {
     const handleSubmit = async(e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const res = await axios.post("http://localhost:8000/user/signup", {
+            const res = await axios.post("http://localhost:5173/user/signup", {
                 username:name,email,password
             })
             console.log(res);
@@ -20,7 +20,7 @@ export const SignupComp = () => {
             setName("")
             setEmail("")
             setPassword("")
-            navigate("/home");
+            navigate("/");
         } catch (e:any) {
             console.error(e.message);
             

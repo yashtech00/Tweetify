@@ -10,15 +10,18 @@ import cookieParser from "cookie-parser";
 
 const app = express();
 
-connectDB();
+
 //middleware -> it is used to parse incoming json request 
 app.use(express.json())
 app.use(cookieParser())
 
 //CORS - cross origin resource sharing , it allow your express server to accept request from different origins
-app.use(cors())
+app.use(cors({
+    origin: "http://localhost:5173", // Replace with your frontend's URL
+    credentials: true // Allow credentials (cookies, authorization headers, etc.)
+}))
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 5173;
 
 app.use("/user", authRoutes);
 app.use("/tweets",tweetRoutes)
@@ -27,5 +30,5 @@ app.use("/tweets",tweetRoutes)
 //server is listening on port 8000
 app.listen(PORT, () => {
     console.log(`server is running on ${PORT}`);
-    
+    connectDB();
 })

@@ -16,7 +16,9 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const AuthSchema_1 = __importDefault(require("../model/AuthSchema"));
 const AuthenticateRoute = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const token = req.cookies.jwt;
+        console.log("Request cookies:", req.cookies); // Should show all cookies  
+        const token = req.cookies.jwt; // Get token from cookies  
+        console.log("Retrieved token:", token); // Focus on this log 
         if (!token) {
             return res.status(401).json({ message: "No token,Authorization denied" });
         }

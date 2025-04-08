@@ -5,7 +5,10 @@ import AuthModel from "../model/AuthSchema";
 
 const AuthenticateRoute = async(req:any,res:any,next:any) => {
     try {
-        const token = req.cookies.jwt;
+        console.log("Request cookies:", req.cookies); // Should show all cookies  
+        const token = req.cookies.jwt; // Get token from cookies  
+        console.log("Retrieved token:", token); // Focus on this log 
+        
         if (!token) {
             return res.status(401).json({ message: "No token,Authorization denied" });
         }

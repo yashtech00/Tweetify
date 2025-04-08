@@ -6,11 +6,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateToken = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const generateToken = (userId, res) => {
-    const token = jsonwebtoken_1.default.sign({ userId }, process.env.JWT_SECRET || "default_secret", { expiresIn: "24h" });
+    const token = jsonwebtoken_1.default.sign({ userId }, process.env.JWT_SECRET || "default_secret", { expiresIn: "24h" } // Consider your application's specific needs here  
+    );
     res.cookie("jwt", token, {
-        maxAge: 15 * 24 * 60 * 60 * 1000, //15days in miliseconds
-        httpOnly: true, // prevent XSS attacks cross site scripting attacks
-        sameSite: "strict", // CSRF attacks cross site request forgery attacks
+        maxAge: 15 * 24 * 60 * 60 * 1000, // 15 days in milliseconds  
+        httpOnly: true, // Prevents XSS  
+        secure: process.env.NODE_ENV === "production", // Send only over HTTPS in production  
+        sameSite: "strict", // Use 'None' only if required for cross-origin requests  
     });
+    console.log("tokens:", token);
+    return token;
 };
 exports.generateToken = generateToken;

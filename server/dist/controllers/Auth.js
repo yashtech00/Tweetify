@@ -29,6 +29,7 @@ const Signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             email,
             password: hashedPassword,
         });
+        (0, generateToken_1.generateToken)(newUser._id, res);
         return res.status(201).json({ message: "User registered successfully", user: newUser });
     }
     catch (e) {
@@ -48,7 +49,8 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!isPasswordValid) {
             return res.status(401).json({ message: "Invalid credentials" });
         }
-        (0, generateToken_1.generateToken)(user._id, res);
+        const token = (0, generateToken_1.generateToken)(user._id, res);
+        console.log("generated token", token);
         return res.status(200).json({ message: "Login successfully", user });
     }
     catch (e) {
@@ -71,7 +73,8 @@ exports.logout = logout;
 const getMe = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const me = yield AuthSchema_1.default.findById(req.user._id).select("-password");
-        return res.status(200).json(me);
+        console.log(me, "yash get me");
+        return res.status(200).json({ me });
     }
     catch (e) {
         console.error(e.message);

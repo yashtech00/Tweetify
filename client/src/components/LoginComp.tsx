@@ -12,15 +12,15 @@ export const LoginComp = () => {
     const handleSubmit = async(e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const res = await axios.post("http://localhost:8000/user/login", {
-                username:name,email,password
+            const res = await axios.post("http://localhost:5173/user/login", {
+                email,password
             })
             console.log(res);
 
            
             setEmail("")
             setPassword("")
-            navigate("/home");
+            navigate("/");
         } catch (e:any) {
             console.error(e.message);
             
@@ -74,7 +74,7 @@ export const LoginComp = () => {
                 </form>
                 <p className="mt-4 text-center text-sm text-gray-600">
                     Don't have an account?{" "}
-                    <Link to="/" className="text-blue-500 hover:underline">
+                    <Link to="/signup" className="text-blue-500 hover:underline">
                         Signup
                     </Link>
                 </p>

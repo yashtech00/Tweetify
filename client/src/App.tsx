@@ -2,29 +2,35 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import Signup from './pages/Signup'
 import Home from './pages/Home'
-import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { SideBar } from './components/SideBar'
 import { RightSideBar } from './components/RightSideBar'
 import Login from './pages/Login'
+import { useEffect, useState } from 'react';
 
 function App() {
 
-  const { data: authUser, isLoading } = useQuery({
-    queryKey: ['authUser'],
-    queryFn: async () => {
+  const [authUser, setAuthUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAuthUser = async () => {
       try {
-        const res = await axios.get("http://localhost:8000/user/me");
-        console.log(res,"app res");
+        const res = await axios.get("http://localhost:5173/user/me");
+        console.log(res.data);
         
-        return res.data.user;
-      } catch (e) {
-        console.error(e);
-        return null;
+        setAuthUser(res.data); // Use the response to set the authenticated user
+        
+      } catch (error: any) {
+        console.error(error.message);
+        setAuthUser(null);
+      } finally {
+        setIsLoading(false);
       }
-    },
-    retry:false
-  })
+    };
+
+    fetchAuthUser();
+  }, []);
 
   if (isLoading) {
     return (
@@ -39,14 +45,13 @@ function App() {
       
       <BrowserRouter>
         <div className='flex max-w-6xl mx-auto'>
-        {!authUser && <SideBar/>}
+        {authUser && <SideBar/>}
         <Routes>
-          <Route path='/' element={<Signup />} />
-          <Route path='/login' element={<Login />} />
-          
-          <Route path='/home' element={!authUser ? <Home /> : <Navigate to={"/Signup"}/>}/>
+        <Route path="/" element={authUser ? <Home /> : <Navigate to={'/login'} />} />
+       <Route path="/signup" element={!authUser ? <Signup /> : <Navigate to={'/'} />}/>
+       <Route path="/login" element={!authUser ? <Login /> : <Navigate to={'/'} />}/>
         </Routes>
-          {!authUser && <RightSideBar />}
+          {authUser && <RightSideBar />}
           </div>
       </BrowserRouter>
     </div>
