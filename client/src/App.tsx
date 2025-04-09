@@ -6,47 +6,34 @@ import { SideBar } from './components/SideBar'
 import { RightSideBar } from './components/RightSideBar'
 import Login from './pages/Login'
 import { useEffect, useState } from 'react'
+import { userHook } from './hooks'
 
 function App() {
-  const [authUser, setAuthUser] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    const fetchAuthUser = async () => {
-      try {
-        const res = await axios.get('http://localhost:8001/user/me', { withCredentials: true })
-        console.log(res.data.data);
-        
-        setAuthUser(res.data.data)
-      } catch (err) {
-        setAuthUser(null)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    fetchAuthUser()
-  }, [])
+  const { authUser, isLoading } = userHook();
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return (
+      <div>
+        loading
+      </div>
+    )
   }
 
   return (
     <BrowserRouter>
       <div className="flex justify-center w-full bg-gray-100 min-h-screen">
-  <div className="flex w-full max-w-6xl">
-    {authUser && <SideBar />}
-    <div className="flex-1 border-x border-gray-300 bg-white">
-      <Routes>
-        <Route path="/" element={authUser ? <Home /> : <Navigate to="/login" />} />
-        <Route path="/signup" element={!authUser ? <Signup /> : <Navigate to="/" />} />
-        <Route path="/login" element={!authUser ? <Login /> : <Navigate to="/" />} />
-      </Routes>
-    </div>
-    {authUser && <RightSideBar />}
-  </div>
-</div>
+        <div className="flex w-full max-w-6xl">
+          {authUser && <SideBar />}
+          <div className="flex-1 border-x border-gray-300 bg-white">
+            <Routes>
+              <Route path="/" element={authUser ? <Home /> : <Navigate to="/login" />} />
+              <Route path="/signup" element={!authUser ? <Signup /> : <Navigate to="/" />} />
+              <Route path="/login" element={!authUser ? <Login /> : <Navigate to="/" />} />
+            </Routes>
+          </div>
+          {authUser && <RightSideBar />}
+        </div>
+      </div>
 
     </BrowserRouter>
   )
