@@ -8,22 +8,20 @@ export const HomeComp = () => {
     const [tweetType, setTweetType] = useState<string>("ForYou");
 
     return (
-        <div className="flex-[4_4_0] mr-auto border-r border-gray-300 min-h-screen">
-            
-            <div className="w-full flex border-b border-gray-300">
-             
-                <div className="flex justify-center flex-1 p-3 cursor-pointer relative hover:bg-secondary transition duration-300 " onClick={()=>setTweetType("ForYou")}>
-                    For you
-                </div>
-                <div className="flex justify-center flex-1 p-3 cursor-pointer relative hover:bg-secondary transition duration-300" onClick={()=>setTweetType("Following")}>
-                    Following
-                    </div>
-                 
-            </div>
+        <>
+        <div className="border-b border-gray-300 bg-white sticky top-0 z-10">
+  <div className="flex">
+    <div onClick={() => setTweetType("ForYou")} className={`flex-1 text-center py-3 cursor-pointer font-semibold ${tweetType === "ForYou" ? "border-b-4 border-blue-500 text-blue-600" : "hover:bg-gray-100"}`}>
+      For You
+    </div>
+    <div onClick={() => setTweetType("Following")} className={`flex-1 text-center py-3 cursor-pointer font-semibold ${tweetType === "Following" ? "border-b-4 border-blue-500 text-blue-600" : "hover:bg-gray-100"}`}>
+      Following
+    </div>
+  </div>
+</div>
 
-            <CreateTweet/>
-
-            <Tweets tweetType={tweetType} />
-       </div>
+<CreateTweet />
+<Tweets tweetType={tweetType} />
+</>
     )
 }

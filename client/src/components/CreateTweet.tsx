@@ -8,7 +8,7 @@ export const CreateTweet = () => {
     const handleSubmitTweet = async (e: React.FormEvent) => {
         e.preventDefault(); // Prevent form from refreshing the page
         try {
-            const res = await axios.post("http://localhost:5173/tweets/PostTweet",
+            const res = await axios.post("http://localhost:8001/tweets/PostTweet",
                 { content: tweet },
                 { withCredentials: true }
             );
@@ -20,27 +20,24 @@ export const CreateTweet = () => {
     };
 
     return (
-        <div className="max-w-md mx-auto mt-8 p-4 bg-white shadow-md rounded-lg">
-            <form onSubmit={handleSubmitTweet}>
-                <div className="mb-4">
-                    <p className="text-lg font-semibold text-gray-700 mb-2">What's Happening</p>
-                    <input
-                        className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="What's happening?"
-                        value={tweet}
-                        onChange={(e) => setTweet(e.target.value)}
-                        type="text"
-                    />
-                </div>
-                <div className="flex justify-end">
-                    <button
-                        type="submit"
-                        className="px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    >
-                        Post
-                    </button>
-                </div>
-            </form>
-        </div>
+        <div className="p-4 border-b border-gray-200">
+  <form onSubmit={handleSubmitTweet} className="flex space-x-4">
+    <div className="w-12 h-12 bg-gray-300 rounded-full"></div>
+    <div className="flex-1">
+      <input
+        value={tweet}
+        onChange={(e) => setTweet(e.target.value)}
+        placeholder="What's happening?"
+        className="w-full text-lg border-none focus:ring-0 outline-none resize-none"
+      />
+      <div className="flex justify-end mt-2">
+        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-full font-semibold hover:bg-blue-600">
+          Tweet
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
     );
 };

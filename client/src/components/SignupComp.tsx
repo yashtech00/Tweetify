@@ -12,9 +12,9 @@ export const SignupComp = () => {
     const handleSubmit = async(e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const res = await axios.post("http://localhost:5173/user/signup", {
+            const res = await axios.post("http://localhost:8001/user/signup", {
                 username:name,email,password
-            })
+            },{withCredentials:true})
             console.log(res);
 
             setName("")

@@ -13,15 +13,15 @@ interface tweetProp {
 export const Tweets = ({ tweetType }: { tweetType: string }) => {
 
     const [allTweets, setAllTweets] = useState<tweetProp[]>([]);
-    const PORT = import.meta.env.REACT_APP_PORT_NO;
+
     if (tweetType === "ForYou") {
         useEffect(() => {
             const fetchTweet = async () => {
                 try {
-                    const res = await axios.get(`http://localhost:${PORT}/tweets/Tweets`)
+                    const res = await axios.get(`http://localhost:8001/tweets/Tweets`,{withCredentials:true})
                     console.log(res);
                     
-                    setAllTweets(Array.isArray(res.data) ? res.data : []);
+                    setAllTweets(res.data.data);
                 } catch (e) {
                     console.error(e);
                 }

@@ -12,9 +12,9 @@ export const LoginComp = () => {
     const handleSubmit = async(e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const res = await axios.post("http://localhost:5173/user/login", {
+            const res = await axios.post("http://localhost:8001/user/login", {
                 email,password
-            })
+            },{withCredentials:true})
             console.log(res);
 
            

@@ -8,13 +8,13 @@ export const generateToken = (userId: any, res: Response) => {
         { expiresIn: "24h" } // Consider your application's specific needs here  
     );  
 
-    res.cookie("jwt", token,{
-        maxAge: 15*24*60*60*1000, //15days in miliseconds
-        httpOnly: true,           // prevent XSS attacks cross site scripting attacks
-        sameSite: "strict",        // CSRF attacks cross site request forgery attacks
-        secure: (process?.env?.NODE_ENV?.trim() || "development") !== "development",
-        
-    })
+    res.cookie("jwt", token, {
+        httpOnly: true,
+        secure: false, // Set to true only in production with HTTPS
+        sameSite: "lax", // Or "none" with secure: true if using different domains
+        maxAge: 24 * 60 * 60 * 1000 // 1 day
+      });
+      
     console.log("tokens:", token);
     
     return token
