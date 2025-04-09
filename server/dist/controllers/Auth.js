@@ -61,7 +61,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.login = login;
 const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        res.cookies("jwt", "", { maxAge: 0 });
+        res.cookie("jwt", "", { maxAge: 0 });
         res.status(200).json({ msg: "Logged out successfully" });
     }
     catch (error) {

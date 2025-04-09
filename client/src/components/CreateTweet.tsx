@@ -3,13 +3,15 @@ import { useState } from "react";
 
 export const CreateTweet = () => {
     const [tweet, setTweet] = useState("");
+    const PORT = import.meta.env.REACT_APP_PORT_NO;
 
     const handleSubmitTweet = async (e: React.FormEvent) => {
         e.preventDefault(); // Prevent form from refreshing the page
         try {
-            const res = await axios.post("http://localhost:5173/tweets/PostTweet", {
-                content: tweet,
-            });
+            const res = await axios.post(`http://localhost:${PORT}/tweets/PostTweet`,
+                { content: tweet },
+                { withCredentials: true }
+            );
             console.log(res);
             setTweet(""); // Clear the input after submission
         } catch (e) {

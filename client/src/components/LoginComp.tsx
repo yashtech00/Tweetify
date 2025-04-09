@@ -8,11 +8,13 @@ export const LoginComp = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
-
+    const PORT = import.meta.env.REACT_APP_PORT_NO;
     const handleSubmit = async(e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const res = await axios.post("http://localhost:5173/user/login", {
+            console.log("port herre=>",PORT);
+            
+            const res = await axios.post(`http://localhost:${PORT}/user/login`, {
                 email,password
             })
             console.log(res);

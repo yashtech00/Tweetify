@@ -1,4 +1,5 @@
 
+import AuthModel from "../model/AuthSchema";
 import TweetModel from "../model/TweetSchema";
 
 // interface TweetProp {
@@ -15,10 +16,18 @@ import TweetModel from "../model/TweetSchema";
 // }
 
 export const PostTweet = async (req: any, res: any) => {
-
-    const {content, userId} = req.body
-    
     try {
+        console.log("before post tweet");
+        
+    const { content } = req.body
+        const userId = req.user._id.toString();
+        console.log(content,userId,"hello post tweet");
+        
+    
+        const user = await AuthModel.findById(userId);
+    if (!user) {
+        return res.status(401).json("user not found");
+    }
         const tweets = await TweetModel.create({
             content,
             user: userId
@@ -45,8 +54,7 @@ export const commentTweet = async (req: any, res:any) => {
     const  tweetId = req.params.id
         const { content } = req.body;
         const userId = req.user._id;
-        console.log("tweet id is ->", tweetId);
-        console.log("user id is ->", userId);
+      
         
         
     if (!content) {

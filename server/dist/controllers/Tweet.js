@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LikeUnlikePost = exports.DeleteTweet = exports.commentTweet = exports.AllTweets = exports.PostTweet = void 0;
+const AuthSchema_1 = __importDefault(require("../model/AuthSchema"));
 const TweetSchema_1 = __importDefault(require("../model/TweetSchema"));
 // interface TweetProp {
 //     content: string;
@@ -26,8 +27,15 @@ const TweetSchema_1 = __importDefault(require("../model/TweetSchema"));
 //     userId: string;
 // }
 const PostTweet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { content, userId } = req.body;
     try {
+        console.log("before post tweet");
+        const { content } = req.body;
+        const userId = req.user._id.toString();
+        console.log(content, userId, "hello post tweet");
+        const user = yield AuthSchema_1.default.findById(userId);
+        if (!user) {
+            return res.status(401).json("user not found");
+        }
         const tweets = yield TweetSchema_1.default.create({
             content,
             user: userId
@@ -56,8 +64,6 @@ const commentTweet = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const tweetId = req.params.id;
         const { content } = req.body;
         const userId = req.user._id;
-        console.log("tweet id is ->", tweetId);
-        console.log("user id is ->", userId);
         if (!content) {
             return res.status(401).json({ message: "Tweet not found" });
         }

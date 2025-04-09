@@ -12,12 +12,13 @@ function App() {
 
   const [authUser, setAuthUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const PORT = import.meta.env.REACT_APP_PORT_NO;
 
   useEffect(() => {
     const fetchAuthUser = async () => {
       try {
-        const res = await axios.get("http://localhost:5173/user/me");
-        console.log(res.data);
+        const res = await axios.get(`http://localhost:${PORT}/user/me`);
+        
         
         setAuthUser(res.data); // Use the response to set the authenticated user
         

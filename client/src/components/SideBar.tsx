@@ -1,6 +1,21 @@
-import { Home, User } from "lucide-react";
+import axios from "axios";
+import { Home, LogOut, User } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export const SideBar = () => {
+
+    const navigate = useNavigate();
+    const PORT = import.meta.env.REACT_APP_PORT_NO;
+    const handleLogout = async() => {
+        try {
+            const res = await axios.post(`http://localhost:${PORT}/user/logout`)
+            console.log(res);
+            navigate("/login")
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
     return (
         <div className="sticky w-[25%] p-6 border-r h-screen bg-gray-50 ">
             <div className="flex justify-end">
@@ -16,6 +31,26 @@ export const SideBar = () => {
                         Profile
                     </li>
                     </ul>
+                    {/* <Link
+						to={`/profile/${username}`}
+						className='mt-auto mb-10 flex gap-2 items-start transition-all duration-300 hover:bg-[#181818] py-2 px-4 rounded-full'
+					> */}
+						<div className='avatar hidden md:inline-flex'>
+							<div className='w-8 rounded-full'>
+								{/* <img src={profileImg || "/avatar-placeholder.png"} /> */}
+							</div>
+						</div>
+						<div className='flex justify-between flex-1'>
+							<div className='hidden md:block'>
+								<p className='text-white font-bold text-sm w-20 truncate'>fullname</p>
+								<p className='text-slate-500 text-sm'>@username</p>
+							</div>
+							<LogOut className='w-5 h-5 cursor-pointer' 
+							onClick={handleLogout}
+							/>
+
+						</div>
+					{/* </Link> */}
                     </div>
             </div>
         </div>

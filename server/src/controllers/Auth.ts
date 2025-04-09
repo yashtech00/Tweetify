@@ -56,7 +56,7 @@ export const login = async (req: { body: LoginProp }, res: any) => {
 
 export const logout = async (req: any, res: any) => {
     try {
-        res.cookies("jwt", "", { maxAge: 0 })
+        res.cookie("jwt", "", { maxAge: 0 })
         res.status(200).json({msg: "Logged out successfully"})
     } catch (error:any) {
         console.log("Error in logout controller", error.message);
