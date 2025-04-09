@@ -72,9 +72,13 @@ const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.logout = logout;
 const getMe = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const me = yield AuthSchema_1.default.findById(req.user._id).select("-password");
-        console.log(me, "yash get me");
-        return res.status(200).json({ me });
+        console.log("before me");
+        const user = yield AuthSchema_1.default.findById(req.user._id).select("-password");
+        console.log({ user }, "yash get me");
+        return res.status(200).json({
+            message: "me got this =>",
+            data: user
+        });
     }
     catch (e) {
         console.error(e.message);

@@ -5,10 +5,9 @@ import { useNavigate } from "react-router-dom";
 export const SideBar = () => {
 
     const navigate = useNavigate();
-    const PORT = import.meta.env.REACT_APP_PORT_NO;
     const handleLogout = async() => {
         try {
-            const res = await axios.post(`http://localhost:${PORT}/user/logout`)
+            const res = await axios.post("http://localhost:5173/user/logout")
             console.log(res);
             navigate("/login")
         } catch (e) {

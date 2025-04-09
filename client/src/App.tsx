@@ -12,15 +12,24 @@ function App() {
 
   const [authUser, setAuthUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const PORT = import.meta.env.REACT_APP_PORT_NO;
+
 
   useEffect(() => {
     const fetchAuthUser = async () => {
       try {
-        const res = await axios.get(`http://localhost:${PORT}/user/me`);
+        console.log("before me");
         
+        const res = await fetch("http://localhost:8001/user/me", {
+          method: "GET",
+          headers: {
+            "content-type": "application/json"
+          },
+          credentials: "include" // Use credentials option to include cookies
+        })
+        const jsonData = await res.json();
+        console.log(jsonData);
         
-        setAuthUser(res.data); // Use the response to set the authenticated user
+        setAuthUser(jsonData.data); // Use the response to set the authenticated user
         
       } catch (error: any) {
         console.error(error.message);

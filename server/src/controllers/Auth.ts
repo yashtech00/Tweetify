@@ -66,10 +66,16 @@ export const logout = async (req: any, res: any) => {
 
 export const getMe = async (req:any, res:any) => {
     try {
-        const me = await AuthModel.findById(req.user._id).select("-password");
-        console.log(me,"yash get me");
+        console.log("before me");
         
-        return res.status(200).json({me})
+        const user = await AuthModel.findById(req.user._id).select("-password");
+        console.log({user},"yash get me");
+        
+        return res.status(200).json({
+            message: "me got this =>",
+            data: user
+          });
+          
     } catch (e:any) {
         console.error(e.message);
         return res.status(500).json("Internal server error");
