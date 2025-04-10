@@ -2,12 +2,14 @@
 import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks";
 
 export const LoginComp = () => {
     
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const { setAuthUser } = useAuth();
 
     const handleSubmit = async(e: React.FormEvent) => {
         e.preventDefault();
@@ -17,7 +19,7 @@ export const LoginComp = () => {
             },{withCredentials:true})
             console.log(res);
 
-           
+           setAuthUser(res.data.user)
             setEmail("")
             setPassword("")
             navigate("/");

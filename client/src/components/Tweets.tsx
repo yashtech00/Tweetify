@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { userHook } from "../hooks"
+import { useAuth } from "../hooks"
 import { User } from "lucide-react"
 
 interface TweetProp {
@@ -12,7 +12,7 @@ interface TweetProp {
 
 export const Tweets = ({ tweetType }: { tweetType: string }) => {
   const [allTweets, setAllTweets] = useState<TweetProp[]>([])
-  const { authUser, isLoading } = userHook()
+  const { authUser, isLoading } = useAuth()
 
   useEffect(() => {
     const fetchTweets = async () => {

@@ -7,7 +7,7 @@ export const RightSideBar = () => {
 
 
     return (
-        <div className="hidden lg:block sticky top-4 w-72 p-4 bg-white rounded-xl shadow-sm h-fit">
+        <div className="hidden lg:block sticky top-4 w-72 p-4 ml-4 bg-white rounded-xl shadow-sm h-fit">
   <p className="text-lg font-semibold mb-4">Who to follow</p>
   <div className="space-y-4">
     {/* Suggested user card placeholder */}

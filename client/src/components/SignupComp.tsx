@@ -52,14 +52,14 @@ export const SignupComp = () => {
                     </div>
                     <div>
                         <label
-                            htmlFor="username"
+                            htmlFor="Fullname"
                             className="block text-sm font-medium text-gray-700"
                         >
-                            Username
+                            Full Name
                         </label>
                         <input
                             id="fullname"
-                            placeholder="Enter your username"
+                            placeholder="Enter your Fullname"
                             onChange={(e) => setFullname(e.target.value)}
                             className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                             type="text"
