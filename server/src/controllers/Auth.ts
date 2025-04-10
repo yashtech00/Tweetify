@@ -5,7 +5,7 @@ import { LoginProp, SignupProp } from "../type/AuthType";
 import { generateToken } from "../lib/generateToken";
 
 export const Signup = async (req: { body: SignupProp }, res: any) => {
-    const { username, email, password } = req.body;
+    const { username, fullname, email, password } = req.body;
 
     try {
         const user = await AuthModel.findOne({ email });
@@ -16,6 +16,7 @@ export const Signup = async (req: { body: SignupProp }, res: any) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const newUser = await AuthModel.create({
+            fullname,
             username,
             email,
             password: hashedPassword,

@@ -54,9 +54,6 @@ export const commentTweet = async (req: any, res:any) => {
     const  tweetId = req.params.id
         const { content } = req.body;
         const userId = req.user._id;
-      
-        
-        
     if (!content) {
         return res.status(401).json({message:"Tweet not found"})
     }
