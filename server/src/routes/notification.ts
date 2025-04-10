@@ -4,4 +4,6 @@ import AuthenticateRoute from "../middlewares/Authenticated";
 
 const router = express.Router();
 
-router.get("/notification",AuthenticateRoute, Notification);
+router.get("/notification", AuthenticateRoute, Notification);
+
+export default router

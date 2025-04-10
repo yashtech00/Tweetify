@@ -4,22 +4,24 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export const SignupComp = () => {
-    const [name, setName] = useState("");
+    const [fullname, setFullname] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [username, setUsername] = useState("");
     const navigate = useNavigate();
 
     const handleSubmit = async(e: React.FormEvent) => {
         e.preventDefault();
         try {
             const res = await axios.post("http://localhost:8001/user/signup", {
-                username:name,email,password
+                username,email,password,fullname
             },{withCredentials:true})
             console.log(res);
 
-            setName("")
+            setFullname("")
             setEmail("")
             setPassword("")
+            setUsername("")
             navigate("/");
         } catch (e:any) {
             console.error(e.message);
@@ -43,7 +45,22 @@ export const SignupComp = () => {
                         <input
                             id="username"
                             placeholder="Enter your username"
-                            onChange={(e) => setName(e.target.value)}
+                            onChange={(e) => setUsername(e.target.value)}
+                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                            type="text"
+                        />
+                    </div>
+                    <div>
+                        <label
+                            htmlFor="username"
+                            className="block text-sm font-medium text-gray-700"
+                        >
+                            Username
+                        </label>
+                        <input
+                            id="fullname"
+                            placeholder="Enter your username"
+                            onChange={(e) => setFullname(e.target.value)}
                             className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                             type="text"
                         />

@@ -8,6 +8,12 @@ const Schema = mongoose_1.default.Schema;
 const AuthSchema = new Schema({
     username: {
         type: String,
+        unique: true,
+        required: true
+    },
+    fullname: {
+        type: String,
+        required: true
     },
     email: {
         type: String,
@@ -18,6 +24,35 @@ const AuthSchema = new Schema({
         type: String,
         required: true
     },
-});
+    followers: [
+        {
+            type: mongoose_1.default.Schema.Types.ObjectId,
+            ref: "user",
+            default: []
+        }
+    ],
+    following: [
+        {
+            type: mongoose_1.default.Schema.Types.ObjectId,
+            ref: "user",
+            default: []
+        }
+    ],
+    bio: {
+        type: String,
+        default: ""
+    },
+    link: {
+        type: String,
+        default: ""
+    },
+    likedTweets: [
+        {
+            type: mongoose_1.default.Schema.Types.ObjectId,
+            ref: "tweet",
+            default: []
+        }
+    ]
+}, { timestamps: true });
 const AuthModel = mongoose_1.default.model("user", AuthSchema);
 exports.default = AuthModel;

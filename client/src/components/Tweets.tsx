@@ -31,7 +31,7 @@ export const Tweets = ({ tweetType }: { tweetType: string }) => {
     }
 
     fetchTweets()
-  }, [allTweets])
+  }, [])
 
   if (isLoading) {
     return <div className="p-4">Loading...</div>

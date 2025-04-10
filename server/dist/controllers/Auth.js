@@ -17,7 +17,7 @@ const AuthSchema_1 = __importDefault(require("../model/AuthSchema"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const generateToken_1 = require("../lib/generateToken");
 const Signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { username, email, password } = req.body;
+    const { username, fullname, email, password } = req.body;
     try {
         const user = yield AuthSchema_1.default.findOne({ email });
         if (user) {
@@ -25,6 +25,7 @@ const Signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
         const hashedPassword = yield bcrypt_1.default.hash(password, 10);
         const newUser = yield AuthSchema_1.default.create({
+            fullname,
             username,
             email,
             password: hashedPassword,

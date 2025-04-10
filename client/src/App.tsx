@@ -7,6 +7,8 @@ import { RightSideBar } from './components/RightSideBar'
 import Login from './pages/Login'
 import { useEffect, useState } from 'react'
 import { userHook } from './hooks'
+import Profile from './pages/Profile'
+import Notification from './pages/Notification'
 
 function App() {
   const { authUser, isLoading } = userHook();
@@ -29,6 +31,8 @@ function App() {
               <Route path="/" element={authUser ? <Home /> : <Navigate to="/login" />} />
               <Route path="/signup" element={!authUser ? <Signup /> : <Navigate to="/" />} />
               <Route path="/login" element={!authUser ? <Login /> : <Navigate to="/" />} />
+              <Route path="/notification" element={!authUser ? <Notification /> : <Navigate to="/" />} />
+              <Route path="/profile/:username" element={!authUser ? <Profile /> : <Navigate to="/" />} />
             </Routes>
           </div>
           {authUser && <RightSideBar />}

@@ -1,6 +1,6 @@
 import axios from "axios";
-import { Home, LogOut, User } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Bell, Home, LogOut, User } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import { userHook } from "../hooks";
 
 export const SideBar = () => {
@@ -21,16 +21,36 @@ export const SideBar = () => {
         <div className="sticky top-0 w-64 h-screen p-6 border-r bg-white flex flex-col justify-between">
   <div>
     <h1 className="text-3xl font-bold text-blue-500 mb-8">Tweetify</h1>
-    <ul className="space-y-4">
-      <li className="flex items-center space-x-4 text-lg font-medium text-gray-800 hover:text-blue-500 cursor-pointer transition">
-        <Home />
-        <span>Home</span>
-      </li>
-      <li className="flex items-center space-x-4 text-lg font-medium text-gray-800 hover:text-blue-500 cursor-pointer transition">
-        <User />
-        <span>Profile</span>
-      </li>
-    </ul>
+    <ul className='flex flex-col gap-3 mt-4'>
+					<li className='flex justify-center md:justify-start'>
+						<Link
+							to='/'
+							className='flex gap-3 items-center hover:bg-stone-900 transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer'
+						>
+							<Home className='w-6 h-6' />
+							<span className='text-lg hidden md:block'>Home</span>
+						</Link>
+					</li>
+					<li className='flex justify-center md:justify-start'>
+						<Link
+							to='/notifications'
+							className='flex gap-3 items-center hover:bg-stone-900 transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer'
+						>
+							<Bell className='w-6 h-6' />
+							<span className='text-lg hidden md:block'>Notifications</span>
+						</Link>
+					</li>
+
+					<li className='flex justify-center md:justify-start'>
+						<Link
+							to={`/profile/${authUser?.username}`}
+							className='flex gap-3 items-center hover:bg-stone-900 transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer'
+						>
+							<User className='w-6 h-6' />
+							<span className='text-lg hidden md:block'>Profile</span>
+						</Link>
+					</li>
+				</ul>
   </div>
   <div className="flex items-center space-x-3">
     <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
