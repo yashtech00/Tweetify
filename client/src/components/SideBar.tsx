@@ -1,10 +1,12 @@
 import axios from "axios";
 import { Home, LogOut, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { userHook } from "../hooks";
 
 export const SideBar = () => {
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const { authUser } = userHook();
     const handleLogout = async() => {
         try {
             const res = await axios.post("http://localhost:8001/user/logout")
@@ -33,7 +35,7 @@ export const SideBar = () => {
   <div className="flex items-center space-x-3">
     <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
     <div className="flex-1">
-      <p className="font-semibold text-sm text-gray-800 truncate">Full Name</p>
+            <p className="font-semibold text-sm text-gray-800 truncate">{authUser?.username}</p>
       <p className="text-sm text-gray-500">@username</p>
     </div>
     <LogOut className="w-5 h-5 text-gray-600 hover:text-red-500 cursor-pointer" onClick={handleLogout} />

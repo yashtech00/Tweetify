@@ -23,7 +23,6 @@ export const Tweets = ({ tweetType }: { tweetType: string }) => {
           })
           setAllTweets(res.data.data)
         } else if (tweetType === "Following") {
-          // TODO: Add fetch logic for "Following"
           console.log("Following tweets would be fetched here.")
         }
       } catch (e) {
