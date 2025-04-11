@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LikeUnlikePost = exports.DeleteTweet = exports.commentTweet = exports.AllTweets = exports.PostTweet = void 0;
+exports.getAnyUserTweets = exports.getFollowingTweets = exports.LikeUnlikePost = exports.DeleteTweet = exports.commentTweet = exports.AllTweets = exports.PostTweet = void 0;
 const AuthSchema_1 = __importDefault(require("../model/AuthSchema"));
 const TweetSchema_1 = __importDefault(require("../model/TweetSchema"));
 // interface TweetProp {
@@ -137,3 +137,50 @@ const LikeUnlikePost = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.LikeUnlikePost = LikeUnlikePost;
+const getFollowingTweets = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userId = req.user._id;
+        const user = yield AuthSchema_1.default.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        const following = user.following;
+        const findPosts = yield TweetSchema_1.default.find({ user: { $in: following } }).sort({ createdAt: -1 })
+            .populate({
+            path: "user",
+            select: "-password"
+        })
+            .populate({
+            path: "comments.user",
+            select: "-password"
+        });
+        res.status(200).json(findPosts);
+    }
+    catch (error) {
+        console.log("Error while getting all following posts: ", error.message);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+});
+exports.getFollowingTweets = getFollowingTweets;
+const getAnyUserTweets = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { username } = req.params;
+        const user = yield AuthSchema_1.default.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        const posts = yield TweetSchema_1.default.find({ user: user._id }).sort({ createdAt: -1 }).populate({
+            path: "user",
+            select: "-password"
+        }).populate({
+            path: "comments.user",
+            select: "-password"
+        });
+        res.status(200).json(posts);
+    }
+    catch (error) {
+        console.log("Error while getting user posts: ", error.message);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+});
+exports.getAnyUserTweets = getAnyUserTweets;

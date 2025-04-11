@@ -134,5 +134,52 @@ export const LikeUnlikePost = async (req: any, res: any) => {
     }
 }
 
+export const getFollowingTweets = async (req:any, res:any) => {
+    try {
+        const userId = req.user._id;
+
+        const user = await AuthModel.findById(userId);
+        if(!user){ return res.status(404).json({message: "User not found"}) }
+
+        const following = user.following;
+        const findPosts = await TweetModel.find({user: {$in: following}}).sort({createdAt: -1})
+        .populate({
+            path: "user",
+            select: "-password"
+        })
+        .populate({
+            path: "comments.user",
+            select: "-password"
+        })
+
+        res.status(200).json(findPosts);
+
+    } catch (error:any) {
+        console.log("Error while getting all following posts: ",error.message);
+        return res.status(500).json({message: "Internal Server Error"});
+    }
+}
+
+export const getAnyUserTweets = async (req:any,res:any)=>{
+    try {
+        const {username} = req.params;
+        const user = await AuthModel.findOne({username});
+        if(!user){return res.status(404).json({message: "User not found"});}
+
+        const posts = await TweetModel.find({user: user._id}).sort({createdAt: -1}).populate({
+            path: "user",
+            select: "-password"
+        }).populate({
+            path: "comments.user",
+            select: "-password"
+        });
+
+        res.status(200).json(posts);
+    } catch (error:any) {
+        console.log("Error while getting user posts: ",error.message);
+        return res.status(500).json({message: "Internal Server Error"});
+    }
+}
+
 
 

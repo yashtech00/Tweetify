@@ -12,4 +12,6 @@ router.post("/PostTweet", Authenticated_1.default, Tweet_1.PostTweet),
     router.put("/comment/:id", Authenticated_1.default, Tweet_1.commentTweet),
     router.delete("/DeleteTweet/:id", Authenticated_1.default, Tweet_1.DeleteTweet);
 router.put("/like/:id", Authenticated_1.default, Tweet_1.LikeUnlikePost);
+router.get("/following", Authenticated_1.default, Tweet_1.getFollowingTweets);
+router.get("/user/:username", Authenticated_1.default, Tweet_1.getAnyUserTweets);
 exports.default = router;

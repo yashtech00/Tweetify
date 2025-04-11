@@ -13,28 +13,35 @@ interface TweetProp {
   }
 }
 
-export const Tweets = ({ tweetType }: { tweetType: string }) => {
+export const Tweets = ({ tweetType, username, userId }: { tweetType: string; username: string; userId: string }) => {
   const [allTweets, setAllTweets] = useState<TweetProp[]>([])
   const { authUser, isLoading } = useAuth()
+
+  const getPostEndPoint = () => {
+    switch (tweetType) {
+      case "forYou": return '/tweet/Tweets';
+      case "following": return '/api/posts/following';
+      case "posts": return `/api/posts/user/${username}`;
+      case "likes": return `/api/posts/likes/${userId}`;
+      default: return '/api/posts/all';
+    }
+  }
 
   useEffect(() => {
     const fetchTweets = async () => {
       try {
-        if (tweetType === "ForYou") {
-          const res = await axios.get("http://localhost:8001/tweets/Tweets", {
-            withCredentials: true,
-          })
-          setAllTweets(res.data.data)
-        } else if (tweetType === "Following") {
-          console.log("Following tweets would be fetched here.")
-        }
+        const endpoint = getPostEndPoint();
+        const res = await axios.get(`http://localhost:8001${endpoint}`, {
+          withCredentials: true,
+        });
+        setAllTweets(res.data.data);
       } catch (e) {
-        console.error(e)
+        console.error(e);
       }
-    }
+    };
 
-    fetchTweets()
-  }, [])
+    fetchTweets();
+  }, [tweetType, username, userId]);
 
   if (isLoading) {
     return <div className="p-4">Loading...</div>

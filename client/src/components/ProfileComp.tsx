@@ -2,6 +2,7 @@ import axios from "axios";
 import { Image, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Tweets } from "./Tweets";
 
 interface ProfilePro {
     fullname: string;
@@ -11,12 +12,17 @@ interface ProfilePro {
     following: []
     followers: []
     likedTweets: [],
-    tweets:[]
+    tweets: {
+        content: string,
+        likes: [],
+        comment:[]
+    }
 }
 
 export const UserProfile = () => {
     const [profile, setProfile] = useState<ProfilePro | null>(null);
     console.log(profile, "user profile");
+    const [tweetType,setTweetType] = useState<string>("tweets")
 
     const { username } = useParams();
     useEffect(() => {
@@ -98,26 +104,27 @@ export const UserProfile = () => {
                     </div>
 
                     {/* Tabs */}
-                    <div className="mt-8 border-b border-gray-300">
-                        <div className="flex space-x-6 justify-between">
-                            <button className="py-2 text-blue-500 border-b-2 border-blue-500">
-                                Tweets
-                            </button>
-                            <button className="py-2 text-gray-500 hover:text-blue-500">
-                                Likes
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* Example Tweets */}
-                    <div className="mt-6">
-                        <div className="border-b border-gray-300 py-4">
-                            <div className="text-gray-700">This is an example tweet!</div>
-                        </div>
-                        <div className="border-b border-gray-300 py-4">
-                            <div className="text-gray-700">Another example tweet!</div>
-                        </div>
-                    </div>
+                    <div className='flex w-full border-b border-gray-700 mt-4'>
+								<div
+									className='flex justify-center flex-1 p-3 hover:bg-secondary transition duration-300 relative cursor-pointer'
+									onClick={() => setTweetType("tweets")}
+								>
+									Tweet
+									{tweetType === "posts" && (
+										<div className='absolute bottom-0 w-10 h-1 rounded-full bg-primary' />
+									)}
+								</div>
+								<div
+									className='flex justify-center flex-1 p-3 text-slate-500 hover:bg-secondary transition duration-300 relative cursor-pointer'
+									onClick={() => setTweetType("likes")}
+								>
+									Likes
+									{tweetType === "likes" && (
+										<div className='absolute bottom-0 w-10  h-1 rounded-full bg-primary' />
+									)}
+								</div>
+                </div>
+             <Tweets tweetType={tweetType } username={profile?.username} userId={profile?._id}/>
                 </div>
             </div>
     );
