@@ -7,7 +7,10 @@ interface TweetProp {
   id: string
   content: string
   likes: string[]
-  comments: string[]
+  comments: string[],
+  user: {
+    username:string
+  }
 }
 
 export const Tweets = ({ tweetType }: { tweetType: string }) => {
@@ -46,7 +49,7 @@ export const Tweets = ({ tweetType }: { tweetType: string }) => {
               <User className="w-5 h-5 text-gray-600" />
             </div>
             <div className="flex-1">
-              <p className="font-bold text-sm text-gray-700">@{authUser?.username}</p>
+              <p className="font-bold text-sm text-gray-700">@{tweet.user.username}</p>
               <p className="text-gray-800 mt-1">{tweet.content}</p>
               <div className="flex space-x-6 mt-2 text-sm text-gray-500">
                 <div>❤️ {tweet.likes.length}</div>

@@ -4,12 +4,16 @@ import bcrypt from "bcrypt"
 export const getUserProfile = async (req:any,res:any) => {
     
     try {
-        const {username} = req.params;
-        const user = await AuthModel.findOne({ username }).select("-password");
+        const { username } = req.params;
+        console.log({username});
+        
+        const user = await AuthModel.findOne( {username} ).select("-password");
         if (!user) {
             return res.status(401).json({ message: "User not found" });
         }
-        return res.status(200).json(user);
+        console.log({user},"profile user");
+        
+        return res.status(200).json({user});
     } catch (e) {
         console.error(e);
         return res.status(500).json({message:"Internal server error while fetching user details"})

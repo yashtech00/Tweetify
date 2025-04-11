@@ -9,6 +9,7 @@ const SignupSchema = zod_1.default.object({
     username: zod_1.default.string().optional(),
     email: zod_1.default.string().email(),
     password: zod_1.default.string(),
+    fullname: zod_1.default.string()
 });
 const LoginSchema = zod_1.default.object({
     email: zod_1.default.string().email(),

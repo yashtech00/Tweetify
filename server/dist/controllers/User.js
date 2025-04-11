@@ -18,11 +18,13 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const getUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { username } = req.params;
+        console.log({ username });
         const user = yield AuthSchema_1.default.findOne({ username }).select("-password");
         if (!user) {
             return res.status(401).json({ message: "User not found" });
         }
-        return res.status(200).json(user);
+        console.log({ user }, "profile user");
+        return res.status(200).json({ user });
     }
     catch (e) {
         console.error(e);

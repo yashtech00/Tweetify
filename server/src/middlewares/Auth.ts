@@ -5,6 +5,7 @@ const SignupSchema = z.object({
     username: z.string().optional(),
     email: z.string().email(),
     password: z.string(),
+    fullname:z.string()
 });
 
 const LoginSchema = z.object({
