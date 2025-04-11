@@ -1,37 +1,124 @@
-import axios from "axios"
-import { useEffect, useState } from "react"
-import { UserProp } from "../hooks";
+import axios from "axios";
+import { Image, User } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
+interface ProfilePro {
+    fullname: string;
+    username: string;
+    bio: string;
+    link: string;
+    following: []
+    followers: []
+    likedTweets: [],
+    tweets:[]
+}
+
 export const UserProfile = () => {
-  const [profile, setProfile] = useState<UserProp[]>([]);
+    const [profile, setProfile] = useState<ProfilePro | null>(null);
+    console.log(profile, "user profile");
+
     const { username } = useParams();
-  useEffect(() => {
-    const fetch = async () => {
-      try {
-        const res = await axios.get(`http://localhost:8001/profile/userProfile/${username}`, {
-          withCredentials: true,
-        });
-          console.log(res.data.user,"profile");
-        setProfile(res.data.user);
-      } catch (e) {
-        console.error(e);
-      }
-    };
+    useEffect(() => {
+        const fetch = async () => {
+            try {
+                const res = await axios.get(
+                    `http://localhost:8001/profile/userProfile/${username}`,
+                    {
+                        withCredentials: true,
+                    }
+                );
+                console.log(res.data.user, "profile");
+                setProfile(res.data.user);
+            } catch (e) {
+                console.error(e);
+            }
+        };
 
-    fetch();
-  }, [username]);
+        fetch();
+    }, [username]);
 
-  return (
-    <div>
-      <div className="border-b mt-20"></div>
-      <div className="z-20 flex justify-center">
-        <span className="rounded-full bg-gray-300 "></span>
-      </div>
-      {Array.isArray(profile) &&
-        profile.map((data) => (
-            <div key={data._id}>{data.fullname} { data.username}</div>
-        ))}
-    </div>
-  );
+    return (
+        
+        <div>
+            <div className="max-w-4xl mx-auto mt-10">
+                <div className="relative">
+                    {/* Cover Photo */}
+
+
+                    <div className="h-48 bg-gray-300 flex items-center justify-center w-full "><Image className="w-20 h-20 "/></div>
+
+                    {/* Profile Picture */}
+                    <div className="absolute -bottom-16 left-6"></div>
+                    <div className="flex justify-between">
+                        
+                        <User className="w-20 h-20 rounded-full bg-gray-400 border-4 border-white"/>
+                        <div>
+                            <button className="px-4 py-2 m-2 bg-black text-white rounded-2xl">Edit Profile</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className=" px-6">
+                    {/* Profile Info */}
+                    {profile && (
+                        <div>
+                            <div className="text-2xl font-bold">{profile.fullname}</div>
+                            <div className="text-gray-500">@{profile.username}</div>
+                            <div className="mt-4">{profile.bio}</div>
+                            {profile.link && (
+                                <div className="mt-2 text-blue-500">
+                                    <a href={profile.link} target="_blank" rel="noopener noreferrer">
+                                        {profile.link}
+                                    </a>
+                                </div>
+                        )}
+                       
+                        <div>
+                            <span className="mx-2">Followers
+                                <span className="mx-1">{profile.followers.length}</span>
+                            </span>
+                            <span className="mx-2">Following
+                                <span className="mx-1">{profile.following.length}</span>
+
+                                </span>
+                        </div>
+                        </div>
+                    )}
+
+                    {/* Action Buttons */}
+                    <div className="mt-6 flex space-x-4">
+                        <button className="px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600">
+                            Follow
+                        </button>
+                        <button className="px-4 py-2 border border-gray-300 rounded-full hover:bg-gray-100">
+                            Message
+                        </button>
+                    </div>
+
+                    {/* Tabs */}
+                    <div className="mt-8 border-b border-gray-300">
+                        <div className="flex space-x-6 justify-between">
+                            <button className="py-2 text-blue-500 border-b-2 border-blue-500">
+                                Tweets
+                            </button>
+                            <button className="py-2 text-gray-500 hover:text-blue-500">
+                                Likes
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Example Tweets */}
+                    <div className="mt-6">
+                        <div className="border-b border-gray-300 py-4">
+                            <div className="text-gray-700">This is an example tweet!</div>
+                        </div>
+                        <div className="border-b border-gray-300 py-4">
+                            <div className="text-gray-700">Another example tweet!</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    );
 };

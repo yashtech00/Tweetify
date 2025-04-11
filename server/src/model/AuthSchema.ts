@@ -49,6 +49,13 @@ const AuthSchema = new Schema({
             ref: "tweet",
             default:[]
         }
+    ],
+    tweets: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "tweet",
+            default:[]
+        }
     ]
 },{timestamps:true});
 
