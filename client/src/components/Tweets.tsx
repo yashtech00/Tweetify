@@ -17,20 +17,20 @@ export const Tweets = ({ tweetType, username, userId }: { tweetType: string; use
   const [allTweets, setAllTweets] = useState<TweetProp[]>([])
   const { authUser, isLoading } = useAuth()
 
-  const getPostEndPoint = () => {
+  const tweetEndPoint = () => {
     switch (tweetType) {
       case "forYou": return '/tweet/Tweets';
-      case "following": return '/api/posts/following';
-      case "posts": return `/api/posts/user/${username}`;
-      case "likes": return `/api/posts/likes/${userId}`;
-      default: return '/api/posts/all';
+      case "following": return '/tweet/following';
+      case "posts": return `/tweet/user/${username}`;
+      case "likes": return `/tweet/like/${userId}`;
+      default: return '/tweet/Tweets';
     }
   }
 
   useEffect(() => {
     const fetchTweets = async () => {
       try {
-        const endpoint = getPostEndPoint();
+        const endpoint = tweetEndPoint();
         const res = await axios.get(`http://localhost:8001${endpoint}`, {
           withCredentials: true,
         });
