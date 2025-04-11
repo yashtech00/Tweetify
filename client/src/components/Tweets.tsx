@@ -13,17 +13,17 @@ interface TweetProp {
   }
 }
 
-export const Tweets = ({ tweetType, username, userId }: { tweetType: string; username: string; userId: string }) => {
+export const Tweets = ({ tweetType, username, userId }: { tweetType: string; username?: string; userId?: string }) => {
   const [allTweets, setAllTweets] = useState<TweetProp[]>([])
   const { authUser, isLoading } = useAuth()
 
   const tweetEndPoint = () => {
     switch (tweetType) {
-      case "forYou": return '/tweet/Tweets';
-      case "following": return '/tweet/following';
-      case "posts": return `/tweet/user/${username}`;
-      case "likes": return `/tweet/like/${userId}`;
-      default: return '/tweet/Tweets';
+      case "forYou": return '/tweets/Tweets';
+      case "following": return '/tweets/following';
+      case "posts": return `/tweets/user/${username}`;
+      case "likes": return `/tweets/like/${userId}`;
+      default: return '/tweets/Tweets';
     }
   }
 
@@ -34,6 +34,8 @@ export const Tweets = ({ tweetType, username, userId }: { tweetType: string; use
         const res = await axios.get(`http://localhost:8001${endpoint}`, {
           withCredentials: true,
         });
+        
+        
         setAllTweets(res.data.data);
       } catch (e) {
         console.error(e);
