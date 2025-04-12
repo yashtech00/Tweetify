@@ -127,8 +127,8 @@ exports.DeleteTweet = DeleteTweet;
 const LikeUnlikeTweet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = req.user.id;
-        const tweetId = req.params;
-        console.log(tweetId, "yash tweetId");
+        const { id: tweetId } = req.params;
+        console.log(tweetId, "tweetId");
         const tweet = yield TweetSchema_1.default.findOne({ _id: tweetId });
         if (!tweet) {
             return res.status(401).json({ message: "tweet not found" });

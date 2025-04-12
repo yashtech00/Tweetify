@@ -117,8 +117,8 @@ export const DeleteTweet = async (req: any, res: any) => {
 export const LikeUnlikeTweet = async (req: any, res: any) => {
   try {
     const userId = req.user.id;
-    const tweetId = req.params;
-    console.log(tweetId, "yash tweetId");
+      const { id:tweetId } = req.params;
+    console.log(tweetId, "tweetId");
 
     const tweet = await TweetModel.findOne({ _id: tweetId });
     if (!tweet) {

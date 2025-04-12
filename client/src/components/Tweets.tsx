@@ -1,24 +1,14 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { useAuth } from "../hooks"
-import { User } from "lucide-react"
-import { Tweet } from "./Tweet"
+import Tweet, { tweetProp } from "./Tweet";
 
-export interface TweetProp {
-  
-  _id: string
-  content: string
-  likes: []
-  comments: string[],
-  user: {
-    username:string
-  }
 
-}
+
 
 export const Tweets = ({ tweetType, username, userId }: { tweetType: string; username?: string; userId?: string }) => {
-  const [allTweets, setAllTweets] = useState<TweetProp[]>([])
-  const { authUser, isLoading } = useAuth()
+  const [allTweets, setAllTweets] = useState<tweetProp[]>([])
+  const { isLoading } = useAuth()
 
   const tweetEndPoint = () => {
     switch (tweetType) {
