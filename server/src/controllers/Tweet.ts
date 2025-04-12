@@ -71,7 +71,7 @@ export const commentTweet = async (req: any, res: any) => {
     }
     const comment = {
       user: userId,
-      content: content,
+      content,
     };
     tweet.comments.push(comment);
     await tweet.save();
