@@ -94,7 +94,7 @@ export const UserProfile = () => {
                     </div>
                 )}
 
-                {/* Action Buttons */}
+                {/* Action Buttons
                 <div className="mt-6 flex space-x-4">
                     <button className="px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600">
                         Follow
@@ -102,7 +102,7 @@ export const UserProfile = () => {
                     <button className="px-4 py-2 border border-gray-300 rounded-full hover:bg-gray-100">
                         Message
                     </button>
-                </div>
+                </div> */} 
 
                 {/* Tabs */}
                 <div className='flex w-full border-b border-gray-700 mt-4'>

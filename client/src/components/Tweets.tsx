@@ -6,11 +6,14 @@ import { User } from "lucide-react"
 interface TweetProp {
   id: string
   content: string
-  likes: string[]
+  likes: {
+    tweets:string
+  }
   comments: string[],
   user: {
     username:string
   }
+
 }
 
 export const Tweets = ({ tweetType, username, userId }: { tweetType: string; username?: string; userId?: string }) => {
@@ -35,6 +38,7 @@ export const Tweets = ({ tweetType, username, userId }: { tweetType: string; use
           withCredentials: true,
         });
         
+        console.log(res,"tweets");
         
         setAllTweets(res.data.data);
       } catch (e) {

@@ -1,10 +1,10 @@
 import express from "express"
-import { AllTweets, commentTweet, DeleteTweet, getAnyUserTweets, getFollowingTweets, LikeUnlikePost, PostTweet } from "../controllers/Tweet";
+import { AllTweets, commentTweet, DeleteTweet, getAnyUserTweets, getFollowingTweets, getLikeTweets, LikeUnlikeTweet, PostTweet } from "../controllers/Tweet";
 import AuthenticateRoute from "../middlewares/Authenticated";
 
 const router = express.Router();
 
-router.get("/like/:id", AuthenticateRoute, getLikeTweet);
+router.get("/like/:id", AuthenticateRoute, getLikeTweets);
 router.get("/following", AuthenticateRoute, getFollowingTweets);
 router.get("/user/:username", AuthenticateRoute, getAnyUserTweets);
 router.get("/Tweets",AuthenticateRoute, AllTweets);
