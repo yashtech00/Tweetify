@@ -4,12 +4,11 @@ import { useAuth } from "../hooks"
 import { User } from "lucide-react"
 import { Tweet } from "./Tweet"
 
-interface TweetProp {
-  id: string
+export interface TweetProp {
+  
+  _id: string
   content: string
-  likes: {
-    tweets:string
-  }
+  likes: []
   comments: string[],
   user: {
     username:string
@@ -57,8 +56,8 @@ export const Tweets = ({ tweetType, username, userId }: { tweetType: string; use
   return (
     <div>
       {allTweets.map((tweet) => (
-        <div key={tweet.id} >
-          <Tweet tweet={tweet} />
+        <div key={tweet._id} >
+          <Tweet tweet={tweet}/>
         </div>
       ))}
     </div>
