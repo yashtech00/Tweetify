@@ -1,4 +1,5 @@
 import { Bookmark, Heart, MessageCircle, Repeat, User } from "lucide-react";
+import { useState } from "react";
 
 
 interface Comment {
@@ -24,7 +25,14 @@ export interface tweetProp {
 
 export const Tweet = ({ tweet }: { tweet: tweetProp }) => {
     console.log(tweet);
+    const [isModelOpen, setIsModelOpen] = useState(false);
+    const [like, setLike] = useState(tweet.likes);
+    const [comments, setComments] = useState(tweet.comments);
+    const [imputComment, setInputComments] = useState("");
 
+    const handleComments = () => {
+        
+    }
 
     return (
         <div>
@@ -38,18 +46,39 @@ export const Tweet = ({ tweet }: { tweet: tweetProp }) => {
 
                     </div>
                 </div>
-                <div className="ml-4">
-                    <div className="">
+                <div className="ml-12  ">
+                    <div className=" py-4">
                         {tweet.content}
                     </div>
-                    <div className="flex justify-around">
-                        <div> <MessageCircle />{tweet.comments.length}</div>
+                    
+                    <div className="flex justify-between py-4">
+                        <div className="flex" onClick={CommentModel(handleComments)}>
+                            <MessageCircle className="" />
+                                <span className="ml-2">{tweet.comments.length}</span>
+                            </div>
                         <div><Repeat /></div>
-                        <div><Heart />{tweet.likes.length}</div>
+                            <div className="flex"><Heart />
+                                <span className="ml-2">{tweet.likes.length}</span>
+                            </div>
                         <div><Bookmark /></div>
-                    </div>
+                        </div>
+                        
                 </div>
             </div>
+        </div>
+    )
+}
+
+function CommentModel(){
+    return (
+        <div>
+            <dialog>
+                <div>Comments</div>
+                <div>
+                    <User />
+                    <span>{Comment}</span>
+                </div>
+            </dialog>
         </div>
     )
 }
