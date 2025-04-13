@@ -59,9 +59,11 @@ export const commentTweet = async (req: any, res: any) => {
   try {
     const tweetId = req.params.id;
     const { content } = req.body;
-    const userId = req.user._id;
+      const userId = req.user._id;
+      console.log(tweetId,"comment tweet Id");
+      
     if (!content) {
-      return res.status(401).json({ message: "Tweet not found" });
+      return res.status(401).json({ message: "Tweet content not found" });
     }
 
     const tweet = await TweetModel.findOne({ _id: tweetId });
@@ -80,9 +82,11 @@ export const commentTweet = async (req: any, res: any) => {
       path: "comments.user",
       select: "-password",
     });
+      console.log(updateComment, "tweet updated comment");
+      
     return res
       .status(200)
-      .json({ message: "commented successfully" }, updateComment?.comments);
+        .json({ message: "commented successfully", data: updateComment?.comments });
   } catch (e) {
     console.error(e);
     return res

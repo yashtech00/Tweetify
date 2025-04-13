@@ -50,10 +50,10 @@ export const UserProfile = () => {
         <div>
             <div className="max-w-4xl mx-auto mt-10">
                 <div className="relative">
-                    {/* Cover Photo */}
 
-
-                    <div className="h-48 bg-gray-300 flex items-center justify-center w-full "><Image className="w-20 h-20 " /></div>
+                    <div className="h-48 bg-gray-300 flex items-center justify-center w-full ">
+                        <Image className="w-20 h-20 " />
+                    </div>
 
                     {/* Profile Picture */}
                     <div className="absolute -bottom-16 left-6"></div>
@@ -94,16 +94,7 @@ export const UserProfile = () => {
                     </div>
                 )}
 
-                {/* Action Buttons
-                <div className="mt-6 flex space-x-4">
-                    <button className="px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600">
-                        Follow
-                    </button>
-                    <button className="px-4 py-2 border border-gray-300 rounded-full hover:bg-gray-100">
-                        Message
-                    </button>
-                </div> */} 
-
+                
                 {/* Tabs */}
                 <div className='flex w-full border-b border-gray-700 mt-4'>
                     <div

@@ -26,28 +26,46 @@ export interface tweetProp {
 
 export const Tweet = ({ tweet }: { tweet: tweetProp }) => {
     const { authUser } = useAuth();
-    console.log(tweet);
+    
     const [isModelOpen, setIsModelOpen] = useState(false);
     const [like, setLike] = useState(tweet.likes);
-    const [comments, setComments] = useState(tweet.comments);
+    const [comments, setComments] = useState<Comment[]>(Array.isArray(tweet.comments) ? tweet.comments : []);
+
     const [inputComment, setInputComments] = useState("");
 
-    const handleComments = async () => {
+    const handleComments = async (e: React.FormEvent) => {
+        e.preventDefault();
         try {
             const res = await axios.put(
-                `http://localhost:3000/tweets/comment/${tweet._id}`,
-                {},
+                `http://localhost:8001/tweets/comment/${tweet._id}`, {content:inputComment},
                 {
                     withCredentials: true,
                 }
             );
-            console.log(res);
-            setComments(res.data);
+            console.log(res,"comment handle");
+            setComments([...res.data.data].reverse());
             setInputComments("");
         } catch (e) {
             console.error(e);
         }
     };
+
+    const handleLike = async()=>{
+        try{
+            const res = await axios.put(
+                `http://localhost:8001/tweets/like/${tweet._id}`,
+                {},
+                {
+                    withCredentials: true,
+                }
+            );
+            console.log(res,"tweet like");  
+            setLike(res.data)
+        }catch(e:any){
+            console.error(e.message);
+            
+        }
+    }
 
     const toggleModel = () => {
         setIsModelOpen(!isModelOpen);
@@ -66,14 +84,14 @@ export const Tweet = ({ tweet }: { tweet: tweetProp }) => {
                     <div className="py-4">{tweet.content}</div>
 
                     <div className="flex justify-between py-4">
-                        <div className="flex">
-                            <MessageCircle className="cursor-pointer" onClick={toggleModel} />
+                        <div className="flex cursor-pointer hover:text-blue-600 " onClick={toggleModel}>
+                            <MessageCircle   />
                             <span className="ml-2">{comments.length}</span>
                         </div>
                         <div>
                             <Repeat />
                         </div>
-                        <div className="flex">
+                        <div className="flex cursor-pointer hover:text-blue-600" onClick={handleLike} >
                             <Heart />
                             <span className="ml-2">{like.length}</span>
                         </div>
@@ -100,7 +118,7 @@ export const Tweet = ({ tweet }: { tweet: tweetProp }) => {
 interface CommentModelProps {
     onClose: () => void;
     comments: Comment[];
-    onCommentSubmit: () => void;
+    onCommentSubmit: (e: React.FormEvent) => void;
     inputComment: string;
     setInputComments: (value: string) => void;
 }

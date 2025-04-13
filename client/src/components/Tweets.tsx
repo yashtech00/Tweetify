@@ -31,7 +31,7 @@ export const Tweets = ({ tweetType, username, userId }: { tweetType: string; use
         
         console.log(res,"tweets");
         
-        setAllTweets(res.data.data);
+        setAllTweets([...res.data.data].reverse());
       } catch (e) {
         console.error(e);
       }

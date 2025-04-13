@@ -72,8 +72,9 @@ const commentTweet = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const tweetId = req.params.id;
         const { content } = req.body;
         const userId = req.user._id;
+        console.log(tweetId, "comment tweet Id");
         if (!content) {
-            return res.status(401).json({ message: "Tweet not found" });
+            return res.status(401).json({ message: "Tweet content not found" });
         }
         const tweet = yield TweetSchema_1.default.findOne({ _id: tweetId });
         if (!tweet) {
@@ -81,7 +82,7 @@ const commentTweet = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         }
         const comment = {
             user: userId,
-            content: content,
+            content,
         };
         tweet.comments.push(comment);
         yield tweet.save();
@@ -89,9 +90,10 @@ const commentTweet = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             path: "comments.user",
             select: "-password",
         });
+        console.log(updateComment, "tweet updated comment");
         return res
             .status(200)
-            .json({ message: "commented successfully" }, updateComment === null || updateComment === void 0 ? void 0 : updateComment.comments);
+            .json({ message: "commented successfully", data: updateComment === null || updateComment === void 0 ? void 0 : updateComment.comments });
     }
     catch (e) {
         console.error(e);
