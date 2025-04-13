@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Bookmark, Heart, MessageCircle, Repeat, User } from "lucide-react";
+import { Bookmark, Heart, MessageCircle, Repeat, Trash, User } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "../hooks";
 
@@ -15,6 +15,7 @@ export interface tweetProp {
     _id: string;
     content: string;
     user: {
+        _id: string;
         username: string;
         fullname: string;
     };
@@ -24,9 +25,10 @@ export interface tweetProp {
     updatedAt: Date;
 }
 
-export const Tweet = ({ tweet }: { tweet: tweetProp }) => {
+export const Tweet = ({ tweet  ,onDelete }: { tweet: tweetProp;
+    onDelete: (tweetId: string) => void; }) => {
     const { authUser } = useAuth();
-    
+    const isMyPost = authUser?._id === tweet.user._id;
     const [isModelOpen, setIsModelOpen] = useState(false);
     const [like, setLike] = useState(tweet.likes);
     const [comments, setComments] = useState<Comment[]>(Array.isArray(tweet.comments) ? tweet.comments : []);
@@ -67,6 +69,20 @@ export const Tweet = ({ tweet }: { tweet: tweetProp }) => {
         }
     }
 
+    const handleDelete = async () => {
+        try {
+          await axios.delete(`http://localhost:8001/tweets/DeleteTweet/${tweet._id}`, {
+            withCredentials: true
+          });
+      
+          // 💥 Trigger parent update
+          onDelete(tweet._id);
+        } catch (e) {
+          console.error(e);
+        }
+      };
+      
+
     const toggleModel = () => {
         setIsModelOpen(!isModelOpen);
     };
@@ -74,12 +90,20 @@ export const Tweet = ({ tweet }: { tweet: tweetProp }) => {
     return (
         <div>
             <div className="border-2 p-4">
+                <div className="flex justify-between">
                 <div className="flex ">
                     <div className="rounded-full w-8 h-8 bg-gray-300 flex justify-center items-center">
                         <User />
                     </div>
                     <div className="mx-4">{tweet.user.username}</div>
-                </div>
+                    </div>
+                    {isMyPost &&
+                        <div className="" onClick={handleDelete}>
+                        <Trash/>
+                    </div>
+                    }
+                    
+                    </div>
                 <div className="ml-12">
                     <div className="py-4">{tweet.content}</div>
 

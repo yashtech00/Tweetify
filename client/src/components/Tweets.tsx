@@ -2,6 +2,7 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { useAuth } from "../hooks"
 import { Tweet, tweetProp } from "./Tweet";
+import { useParams } from "react-router-dom";
 
 
 
@@ -10,12 +11,13 @@ import { Tweet, tweetProp } from "./Tweet";
 export const Tweets = ({ tweetType, username, userId }: { tweetType: string; username?: string; userId?: string }) => {
   const [allTweets, setAllTweets] = useState<tweetProp[]>([])
   const { isLoading } = useAuth()
+  
 
   const tweetEndPoint = () => {
     switch (tweetType) {
       case "forYou": return '/tweets/Tweets';
       case "following": return '/tweets/following';
-      case "posts": return `/tweets/user/${username}`;
+      case "tweets": return `/tweets/user/${username}`;
       case "likes": return `/tweets/like/${userId}`;
       default: return '/tweets/Tweets';
     }
@@ -40,6 +42,10 @@ export const Tweets = ({ tweetType, username, userId }: { tweetType: string; use
     fetchTweets();
   }, [tweetType, username, userId]);
 
+  const handleDeleteTweet = (tweetId: string) => {
+    setAllTweets((prev) => prev.filter((tweet) => tweet._id !== tweetId));
+  };
+
   if (isLoading) {
     return <div className="p-4">Loading...</div>
   }
@@ -48,7 +54,7 @@ export const Tweets = ({ tweetType, username, userId }: { tweetType: string; use
     <div>
       {allTweets.map((tweet) => (
         <div key={tweet._id} >
-          <Tweet tweet={tweet}/>
+          <Tweet tweet={tweet} onDelete={handleDeleteTweet}/>
         </div>
       ))}
     </div>

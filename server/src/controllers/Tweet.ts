@@ -200,7 +200,7 @@ export const getAnyUserTweets = async (req: any, res: any) => {
         select: "-password",
       });
 
-    res.status(200).json(posts);
+      res.status(200).json({ data: posts });
   } catch (error: any) {
     console.log("Error while getting user posts: ", error.message);
     return res.status(500).json({ message: "Internal Server Error" });

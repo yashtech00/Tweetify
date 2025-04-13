@@ -197,7 +197,7 @@ const getAnyUserTweets = (req, res) => __awaiter(void 0, void 0, void 0, functio
             path: "comments.user",
             select: "-password",
         });
-        res.status(200).json(posts);
+        res.status(200).json({ data: posts });
     }
     catch (error) {
         console.log("Error while getting user posts: ", error.message);
