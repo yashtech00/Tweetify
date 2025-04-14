@@ -1,8 +1,9 @@
 import express from "express";
 import { connectDB } from "./model/db";
 import dotenv from "dotenv";
-import cors from "cors";
+
 dotenv.config();
+import cors from "cors";
 import authRoutes from "./routes/authRoutes";
 import tweetRoutes from "./routes/tweetRoutes";
 import cookieParser from "cookie-parser";

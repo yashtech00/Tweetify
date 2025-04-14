@@ -6,19 +6,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const db_1 = require("./model/db");
 const dotenv_1 = __importDefault(require("dotenv"));
-const cors_1 = __importDefault(require("cors"));
 dotenv_1.default.config();
+const cors_1 = __importDefault(require("cors"));
 const authRoutes_1 = __importDefault(require("./routes/authRoutes"));
 const tweetRoutes_1 = __importDefault(require("./routes/tweetRoutes"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
 const notification_1 = __importDefault(require("./routes/notification"));
 const app = (0, express_1.default)();
-const corsConfig = {
-    origin: "http://localhost:5173", // specific origin, not "*"
-    credentials: true, // allows cookies to be sent
+const corsOptions = {
+    origin: ['https://tweetify-tau.vercel.app', 'http://localhost:5173'],
+    credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allow common HTTP methods
+    allowedHeaders: 'Content-Type,Authorization', // Allow common headers (add any custom headers you use)
 };
-app.use((0, cors_1.default)(corsConfig));
+app.use((0, cors_1.default)(corsOptions));
 //middleware -> it is used to parse incoming json request
 app.use(express_1.default.json({ limit: "5mb" }));
 app.use(express_1.default.urlencoded({ extended: true }));
