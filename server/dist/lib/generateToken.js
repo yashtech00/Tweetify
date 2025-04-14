@@ -10,9 +10,9 @@ const generateToken = (userId, res) => {
     );
     res.cookie("jwt", token, {
         httpOnly: true,
-        secure: false, // Set to true only in production with HTTPS
-        sameSite: "lax", // Or "none" with secure: true if using different domains
-        maxAge: 24 * 60 * 60 * 1000 // 1 day
+        secure: true, // must be true on HTTPS
+        sameSite: "none", // required for cross-site cookie
+        maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
     console.log("tokens:", token);
     return token;
