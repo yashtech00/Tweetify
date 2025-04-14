@@ -15,8 +15,6 @@ const app = express();
 const corsOptions = {
     origin: ['https://tweetify-tau.vercel.app', 'http://localhost:5173'],
     credentials: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allow common HTTP methods
-    allowedHeaders: 'Content-Type,Authorization', // Allow common headers (add any custom headers you use)
   };
 app.use(cors(corsOptions));
 
