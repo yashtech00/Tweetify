@@ -97,7 +97,6 @@ export const Tweet = ({ tweet, onDelete }: {
                             <User />
                         </div>
                         <div className="mx-4">
-                            <div>{ tweet.user.fullname}</div>
                             <div className=" ">{tweet.user.username}</div>
 
                             <div className="text-stone-500">{new Date(tweet.createdAt).toLocaleString('en-US', {

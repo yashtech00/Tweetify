@@ -1,14 +1,14 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import Signup from './pages/Signup'
 import Home from './pages/Home'
-import axios from 'axios'
 import { SideBar } from './components/SideBar'
 import { RightSideBar } from './components/RightSideBar'
 import Login from './pages/Login'
-import { useEffect, useState } from 'react'
+
 import { useAuth } from './hooks'
 import Profile from './pages/Profile'
 import Notification from './pages/Notification'
+
 
 function App() {
   const { authUser, isLoading } = useAuth();
@@ -18,7 +18,7 @@ function App() {
   if (isLoading) {
     return (
       <div>
-        loading
+        Loading.... 
       </div>
     )
   }

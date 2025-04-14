@@ -29,16 +29,16 @@ export const SignupComp = () => {
         }
     };
     return (
-        <div className="h-screen flex justify-center items-center bg-gray-100">
-            <div className="bg-white shadow-lg rounded-lg w-full max-w-md p-8">
-                <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
+        <div className="h-screen flex justify-center items-center ">
+            <div className="border-2 border-stone-800 rounded-xl w-full max-w-md p-8 text-white">
+                <h2 className="text-2xl font-bold text-center mb-6 ">
                     Signup to Tweetify
                 </h2>
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
                         <label
                             htmlFor="username"
-                            className="block text-sm font-medium text-gray-700"
+                            className="block text-sm font-medium"
                         >
                             Username
                         </label>
@@ -46,14 +46,14 @@ export const SignupComp = () => {
                             id="username"
                             placeholder="Enter your username"
                             onChange={(e) => setUsername(e.target.value)}
-                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                            className="mt-1 block w-full px-4 py-2 border border-stone-800 rounded-md bg-black text-white"
                             type="text"
                         />
                     </div>
                     <div>
                         <label
                             htmlFor="Fullname"
-                            className="block text-sm font-medium text-gray-700"
+                            className="block text-sm font-medium "
                         >
                             Full Name
                         </label>
@@ -61,14 +61,14 @@ export const SignupComp = () => {
                             id="fullname"
                             placeholder="Enter your Fullname"
                             onChange={(e) => setFullname(e.target.value)}
-                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                            className="mt-1 block w-full px-4 py-2 border border-stone-800 rounded-md bg-black text-white"
                             type="text"
                         />
                     </div>
                     <div>
                         <label
                             htmlFor="email"
-                            className="block text-sm font-medium text-gray-700"
+                            className="block text-sm font-medium"
                         >
                             Email
                         </label>
@@ -76,7 +76,7 @@ export const SignupComp = () => {
                             id="email"
                             placeholder="Enter your email"
                             onChange={(e) => setEmail(e.target.value)}
-                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                            className="mt-1 block w-full px-4 py-2 border border-stone-800 rounded-md bg-black text-white"
                             type="email"
                             required
                         />
@@ -84,7 +84,7 @@ export const SignupComp = () => {
                     <div>
                         <label
                             htmlFor="password"
-                            className="block text-sm font-medium text-gray-700"
+                            className="block text-sm font-medium "
                         >
                             Password
                         </label>
@@ -92,7 +92,7 @@ export const SignupComp = () => {
                             id="password"
                             placeholder="Enter your password"
                             onChange={(e) => setPassword(e.target.value)}
-                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                            className="mt-1 block w-full px-4 py-2 border border-stone-800 rounded-md bg-black text-white"
                             type="password"
                             required
                         />

@@ -29,16 +29,16 @@ export const LoginComp = () => {
         }
     };
     return (
-        <div className="h-screen flex justify-center items-center bg-gray-100">
-            <div className="bg-white shadow-lg rounded-lg w-full max-w-md p-8">
-                <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
-                    Signup to Tweetify
+        <div className="h-screen flex justify-center items-center">
+            <div className="text-white border-2 rounded-xl border-stone-900 w-full max-w-md p-8">
+                <h2 className="text-2xl font-bold text-center mb-6 ">
+                    Login to Tweetify
                 </h2>
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
                         <label
                             htmlFor="email"
-                            className="block text-sm font-medium text-gray-700"
+                            className="block text-sm font-medium "
                         >
                             Email
                         </label>
@@ -46,7 +46,7 @@ export const LoginComp = () => {
                             id="email"
                             placeholder="Enter your email"
                             onChange={(e) => setEmail(e.target.value)}
-                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                            className="mt-1 block w-full px-4 py-2 border border-stone-800 rounded-md bg-black text-white"
                             type="email"
                             required
                         />
@@ -54,7 +54,7 @@ export const LoginComp = () => {
                     <div>
                         <label
                             htmlFor="password"
-                            className="block text-sm font-medium text-gray-700"
+                            className="block text-sm font-medium"
                         >
                             Password
                         </label>
@@ -62,7 +62,7 @@ export const LoginComp = () => {
                             id="password"
                             placeholder="Enter your password"
                             onChange={(e) => setPassword(e.target.value)}
-                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                            className="mt-1 block w-full px-4 py-2 border border-stone-800 rounded-md bg-black text-white"
                             type="password"
                             required
                         />
@@ -74,7 +74,7 @@ export const LoginComp = () => {
                         Login in
                     </button>
                 </form>
-                <p className="mt-4 text-center text-sm text-gray-600">
+                <p className="mt-4 text-center text-sm text-gray-500">
                     Don't have an account?{" "}
                     <Link to="/signup" className="text-blue-500 hover:underline">
                         Signup
