@@ -36,7 +36,7 @@ export const Tweet = ({ tweet, onDelete }: {
     const [comments, setComments] = useState<Comment[]>(Array.isArray(tweet.comments) ? tweet.comments : []);
 
     const [inputComment, setInputComments] = useState("");
-    const BACKEND_URL = process.env.BACKEND_URL;
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
     const handleComments = async (e: React.FormEvent) => {
         e.preventDefault();
         try {

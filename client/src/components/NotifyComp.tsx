@@ -22,7 +22,7 @@ interface Notification {
 export const Notify = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-    const BACKEND_URL = process.env.BACKEND_URL;
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   const fetchNotifications = async () => {
     setIsLoading(true);
     try {

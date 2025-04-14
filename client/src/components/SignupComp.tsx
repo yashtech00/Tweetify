@@ -9,7 +9,8 @@ export const SignupComp = () => {
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
     const navigate = useNavigate();
-    const BACKEND_URL = process.env.BACKEND_URL
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 
     const handleSubmit = async(e: React.FormEvent) => {
         e.preventDefault();

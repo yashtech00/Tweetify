@@ -22,7 +22,7 @@ export const Tweets = ({ tweetType, username, userId }: { tweetType: string; use
       default: return '/tweets/Tweets';
     }
   }
-  const BACKEND_URL = process.env.BACKEND_URL;
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   useEffect(() => {
     const fetchTweets = async () => {
       try {

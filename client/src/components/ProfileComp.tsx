@@ -37,7 +37,7 @@ export const UserProfile = () => {
     const [bio, setBio] = useState("");
     const [link, setLink] = useState("");
 
-    const BACKEND_URL = process.env.BACKEND_URL;
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
     const handleEdit = async () => {
         const formData = {

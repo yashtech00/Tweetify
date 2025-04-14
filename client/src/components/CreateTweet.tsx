@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export const CreateTweet = () => {
   const [tweet, setTweet] = useState("");
-  const BACKEND_URL = process.env.BACKEND_URL;
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
   const handleSubmitTweet = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevent form from refreshing the page
