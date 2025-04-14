@@ -2,7 +2,7 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { useAuth } from "../hooks"
 import { Tweet, tweetProp } from "./Tweet";
-import { useParams } from "react-router-dom";
+
 
 
 
