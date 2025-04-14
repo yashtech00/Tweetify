@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getMe = exports.logout = exports.login = exports.Signup = void 0;
 const AuthSchema_1 = __importDefault(require("../model/AuthSchema"));
-const bcrypt_1 = __importDefault(require("bcrypt"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const generateToken_1 = require("../lib/generateToken");
 const Signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { username, fullname, email, password } = req.body;
@@ -23,7 +23,7 @@ const Signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (user) {
             return res.status(409).json({ message: "Already have an account, go for login" });
         }
-        const hashedPassword = yield bcrypt_1.default.hash(password, 10);
+        const hashedPassword = yield bcryptjs_1.default.hash(password, 10);
         const newUser = yield AuthSchema_1.default.create({
             fullname,
             username,
@@ -46,7 +46,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!user) {
             return res.status(404).json({ message: "User not found, go for Signup" });
         }
-        const isPasswordValid = yield bcrypt_1.default.compare(password, user.password);
+        const isPasswordValid = yield bcryptjs_1.default.compare(password, user.password);
         if (!isPasswordValid) {
             return res.status(401).json({ message: "Invalid credentials" });
         }
