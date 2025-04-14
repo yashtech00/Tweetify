@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import AuthModel from "../model/AuthSchema";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { LoginProp, SignupProp } from "../type/AuthType";
 import { generateToken } from "../lib/generateToken";
 
