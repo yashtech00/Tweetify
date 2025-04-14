@@ -1,6 +1,7 @@
 
 import axios from "axios";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 
 export const SignupComp = () => {
@@ -25,9 +26,10 @@ export const SignupComp = () => {
             setPassword("")
             setUsername("")
             navigate("/");
+            toast.success("Signup successfully, Welcome to Tweetify")
         } catch (e:any) {
             console.error(e.message);
-            
+            toast.error("Error while creating account, or account already exist")
         }
     };
     return (

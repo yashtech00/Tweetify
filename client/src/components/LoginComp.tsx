@@ -3,6 +3,8 @@ import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks";
+import toast from "react-hot-toast";
+import { totalmem } from "os";
 
 export const LoginComp = () => {
     
@@ -24,8 +26,10 @@ export const LoginComp = () => {
             setEmail("")
             setPassword("")
             navigate("/");
+            toast.success("Welcome Back to Tweetify")
         } catch (e:any) {
             console.error(e.message);
+            toast.error("Error while Login, or account does'nt exist")
             
         }
     };

@@ -2,6 +2,7 @@ import axios from "axios";
 import { Bell, Home, LogOut, User } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks";
+import toast from "react-hot-toast";
 
 
 export const SideBar = () => {
@@ -13,8 +14,10 @@ export const SideBar = () => {
       await axios.post(`${BACKEND_URL}/user/logout`, {}, { withCredentials: true });
       setAuthUser(null)
       navigate("/login");
+      toast.success("Logout successfully,Please visit again ")
     } catch (e) {
       console.error("Logout failed:", e);
+      toast.error("Error while Logout")
     }
   };
 

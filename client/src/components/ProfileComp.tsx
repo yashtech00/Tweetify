@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Tweets } from "./Tweets";
 import { useAuth } from "../hooks";
 import { useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 interface ProfileProp {
     _id: string
@@ -70,9 +71,10 @@ export const UserProfile = () => {
 
             // Close the modal after successful update
             setIsModelOpen(false);
-
+            toast.success("Profile edit successfully")
         } catch (e) {
             console.error("Failed to update profile:", e);
+            toast.error("Error while editing, Please fill all the details")
         }
     };
 

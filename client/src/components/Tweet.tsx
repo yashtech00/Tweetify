@@ -2,6 +2,7 @@ import axios from "axios";
 import { Bookmark, Heart, MessageCircle, Repeat, Trash, User } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "../hooks";
+import toast from "react-hot-toast";
 
 interface Comment {
     _id: string;
@@ -78,8 +79,10 @@ export const Tweet = ({ tweet, onDelete }: {
             });
 
             onDelete(tweet._id);
+            toast.success("Post deleted")
         } catch (e) {
             console.error(e);
+            toast.error("Error deleting Post")
         }
     };
 
