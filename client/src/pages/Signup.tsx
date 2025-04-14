@@ -1,11 +1,11 @@
-import { SignupComp } from "../components/SignupComp";
+    import { SignupComp } from "../components/SignupComp";
 
-export default function Signup() {
+    export default function Signup() {
 
 
-    return (
-        <>
-            <SignupComp />
-        </>
-    );
-}
+        return (
+            <>
+                <SignupComp />
+            </>
+        );
+    }

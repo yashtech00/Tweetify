@@ -45,7 +45,7 @@ function App() {
             style: {
               backgroundColor: 'black',
               color: 'white',
-              border: '2px solid #1c1917' // Tailwind's stone-900 equivalent in hex
+              border: '2px solid stone-900'
             }
           }}/>
         </div>

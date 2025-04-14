@@ -1,9 +1,9 @@
-import { LoginComp } from "../components/LoginComp";
+    import { LoginComp } from "../components/LoginComp";
 
-export default function Login() {
-    return (
-        <div>
-            <LoginComp/>
-        </div>
-    )
-}
+    export default function Login() {
+        return (
+            <div>
+                <LoginComp/>
+            </div>
+        )
+    }
