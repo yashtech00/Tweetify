@@ -1,5 +1,5 @@
 import AuthModel from "../model/AuthSchema"
-import bcrypt from "bcrypt"
+import bcrypt from "bcryptjs"
 
 export const getUserProfile = async (req:any,res:any) => {
     

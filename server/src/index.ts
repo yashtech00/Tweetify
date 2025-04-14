@@ -12,7 +12,7 @@ import notification from "./routes/notification";
 const app = express();
 
 const corsConfig = {
-  origin: "http://localhost:5173", // specific origin, not "*"
+  origin: "https://tweetify-tau.vercel.app", // specific origin, not "*"
   credentials: true, // allows cookies to be sent
 };
 app.use(cors(corsConfig));
