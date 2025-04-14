@@ -11,8 +11,11 @@ import notification from "./routes/notification";
 
 const app = express();
 
-
-app.use(cors());
+const corsOptions = {
+    origin: ['https://tweetify-tau.vercel.app', 'http://localhost:5173'],
+    credentials: true,
+  };
+app.use(cors(corsOptions));
 
 //middleware -> it is used to parse incoming json request
 app.use(express.json({ limit: "5mb" }));
