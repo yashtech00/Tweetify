@@ -22,11 +22,11 @@ interface Notification {
 export const Notify = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
+    const BACKEND_URL = process.env.BACKEND_URL;
   const fetchNotifications = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.get("http://localhost:8001/notify/notification", {
+      const res = await axios.get(`${BACKEND_URL}/notify/notification`, {
         withCredentials: true,
       });
         console.log(res.data.data,"notify");

@@ -4,12 +4,13 @@ import { useState } from "react";
 
 export const CreateTweet = () => {
   const [tweet, setTweet] = useState("");
+  const BACKEND_URL = process.env.BACKEND_URL;
 
   const handleSubmitTweet = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevent form from refreshing the page
     try {
       const res = await axios.post(
-        "http://localhost:8001/tweets/PostTweet",
+        `${BACKEND_URL}/tweets/PostTweet`,
         { content: tweet },
         { withCredentials: true }
       );

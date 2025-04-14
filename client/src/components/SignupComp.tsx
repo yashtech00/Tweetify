@@ -9,11 +9,12 @@ export const SignupComp = () => {
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
     const navigate = useNavigate();
+    const BACKEND_URL = process.env.BACKEND_URL
 
     const handleSubmit = async(e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const res = await axios.post("http://localhost:8001/user/signup", {
+            const res = await axios.post(`${BACKEND_URL}/user/signup`, {
                 username,email,password,fullname
             },{withCredentials:true})
             console.log(res);

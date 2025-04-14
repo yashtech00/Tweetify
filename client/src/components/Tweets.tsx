@@ -22,12 +22,12 @@ export const Tweets = ({ tweetType, username, userId }: { tweetType: string; use
       default: return '/tweets/Tweets';
     }
   }
-
+  const BACKEND_URL = process.env.BACKEND_URL;
   useEffect(() => {
     const fetchTweets = async () => {
       try {
         const endpoint = tweetEndPoint();
-        const res = await axios.get(`http://localhost:8001${endpoint}`, {
+        const res = await axios.get(`${BACKEND_URL}${endpoint}`, {
           withCredentials: true,
         });
         

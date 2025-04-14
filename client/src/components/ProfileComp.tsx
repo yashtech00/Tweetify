@@ -36,6 +36,9 @@ export const UserProfile = () => {
     const [email, setEmail] = useState("");
     const [bio, setBio] = useState("");
     const [link, setLink] = useState("");
+
+    const BACKEND_URL = process.env.BACKEND_URL;
+
     const handleEdit = async () => {
         const formData = {
             fullname,
@@ -47,7 +50,7 @@ export const UserProfile = () => {
 
         try {
             const res = await axios.put(
-                "http://localhost:8001/profile/editUserProfile",
+                `${BACKEND_URL}/profile/editUserProfile`,
                 formData,
                 { withCredentials: true }
             );
@@ -84,7 +87,7 @@ export const UserProfile = () => {
         const fetch = async () => {
             try {
                 const res = await axios.get(
-                    `http://localhost:8001/profile/userProfile/${authUser?.username}`,
+                    `${BACKEND_URL}/profile/userProfile/${authUser?.username}`,
                     {
                         withCredentials: true,
                     }

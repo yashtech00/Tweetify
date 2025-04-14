@@ -10,11 +10,12 @@ export const LoginComp = () => {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
     const { setAuthUser } = useAuth();
+    const BACKEND_URL =process.env.BACKEND_URL
 
     const handleSubmit = async(e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const res = await axios.post("http://localhost:8001/user/login", {
+            const res = await axios.post(`${BACKEND_URL}/user/login`, {
                 email,password
             },{withCredentials:true})
             console.log(res);

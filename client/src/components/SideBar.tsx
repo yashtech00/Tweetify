@@ -7,10 +7,10 @@ import { useAuth } from "../hooks";
 export const SideBar = () => {
   const navigate = useNavigate();
   const { authUser, setAuthUser } = useAuth(); // ← access auth from context
-
+  const BACKEND_URL = process.env.BACKEND_URL
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:8001/user/logout", {}, { withCredentials: true });
+      await axios.post(`${BACKEND_URL}/user/logout`, {}, { withCredentials: true });
       setAuthUser(null)
       navigate("/login");
     } catch (e) {

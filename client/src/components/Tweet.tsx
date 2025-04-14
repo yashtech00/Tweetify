@@ -36,12 +36,12 @@ export const Tweet = ({ tweet, onDelete }: {
     const [comments, setComments] = useState<Comment[]>(Array.isArray(tweet.comments) ? tweet.comments : []);
 
     const [inputComment, setInputComments] = useState("");
-
+    const BACKEND_URL = process.env.BACKEND_URL;
     const handleComments = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
             const res = await axios.put(
-                `http://localhost:8001/tweets/comment/${tweet._id}`, { content: inputComment },
+                `${BACKEND_URL}/tweets/comment/${tweet._id}`, { content: inputComment },
                 {
                     withCredentials: true,
                 }
@@ -57,7 +57,7 @@ export const Tweet = ({ tweet, onDelete }: {
     const handleLike = async () => {
         try {
             const res = await axios.put(
-                `http://localhost:8001/tweets/like/${tweet._id}`,
+                `${BACKEND_URL}/tweets/like/${tweet._id}`,
                 {},
                 {
                     withCredentials: true,
@@ -73,7 +73,7 @@ export const Tweet = ({ tweet, onDelete }: {
 
     const handleDelete = async () => {
         try {
-            await axios.delete(`http://localhost:8001/tweets/DeleteTweet/${tweet._id}`, {
+            await axios.delete(`${BACKEND_URL}/tweets/DeleteTweet/${tweet._id}`, {
                 withCredentials: true
             });
 
