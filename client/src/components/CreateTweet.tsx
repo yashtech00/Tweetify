@@ -1,6 +1,7 @@
 import axios from "axios";
 import { User } from "lucide-react";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export const CreateTweet = () => {
   const [tweet, setTweet] = useState("");
@@ -16,6 +17,7 @@ export const CreateTweet = () => {
       );
       console.log(res);
       setTweet(""); // Clear the input after submission
+      toast.success("your post was sent")
     } catch (e) {
       console.error(e);
     }

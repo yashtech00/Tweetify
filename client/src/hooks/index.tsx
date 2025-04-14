@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react"
 import axios from "axios"
+import toast from "react-hot-toast"
 
 export interface UserProp {
   username: string,
@@ -22,14 +23,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [authUser, setAuthUser] = useState<UserProp | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+ 
+  
 
   useEffect(() => {
     const fetchAuthUser = async () => {
       try {
         const res = await axios.get(`${BACKEND_URL}/user/me`, { withCredentials: true })
         setAuthUser(res.data.data)
+        toast.success("Welcome back")
       } catch (err) {
         setAuthUser(null)
+        toast.error("Unauthorized")
       } finally {
         setIsLoading(false)
       }

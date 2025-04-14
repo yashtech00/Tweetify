@@ -8,6 +8,8 @@ import Login from './pages/Login'
 import { useAuth } from './hooks'
 import Profile from './pages/Profile'
 import Notification from './pages/Notification'
+import { Toaster } from 'react-hot-toast'
+import LoadingSpinner from './components/LoadingSpinner'
 
 
 function App() {
@@ -15,13 +17,13 @@ function App() {
 
   
 
-  if (isLoading) {
+  if (isLoading){
     return (
-      <div>
-        Loading.... 
+      <div className="h-screen flex justify-center items-center">
+        <LoadingSpinner size="lg" />
       </div>
     )
-  }
+  } 
 
   return (
     <BrowserRouter>
@@ -38,6 +40,14 @@ function App() {
             </Routes>
           </div>
           {authUser && <RightSideBar />}
+          <Toaster position="bottom-right" toastOptions={{
+            className: "bg-black",
+            style: {
+              backgroundColor: 'black',
+              color: 'white',
+              border: '2px solid #1c1917' // Tailwind's stone-900 equivalent in hex
+            }
+          }}/>
         </div>
       </div>
 

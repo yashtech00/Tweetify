@@ -2,6 +2,7 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { useAuth } from "../hooks"
 import { Tweet, tweetProp } from "./Tweet";
+import LoadingSpinner from "./LoadingSpinner";
 
 
 
@@ -46,9 +47,13 @@ export const Tweets = ({ tweetType, username, userId }: { tweetType: string; use
     setAllTweets((prev) => prev.filter((tweet) => tweet._id !== tweetId));
   };
 
-  if (isLoading) {
-    return <div className="p-4">Loading...</div>
-  }
+  if (isLoading){
+    return (
+      <div className="h-screen flex justify-center items-center">
+        <LoadingSpinner size="lg" />
+      </div>
+    )
+  } 
 
   return (
     <div>
