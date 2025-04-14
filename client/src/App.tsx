@@ -25,15 +25,15 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="flex justify-center w-full bg-gray-100 min-h-screen">
+      <div className="flex justify-center w-full bg-black min-h-screen">
         <div className="flex w-full max-w-6xl">
           {authUser && <SideBar />}
-          <div className="flex-1 border-x border-gray-300 bg-white">
+          <div className="flex-1 border-x border-stone-800 bg-black ">
             <Routes>
               <Route path="/" element={authUser ? <Home /> : <Navigate to="/login" />} />
               <Route path="/signup" element={!authUser ? <Signup /> : <Navigate to="/" />} />
               <Route path="/login" element={!authUser ? <Login /> : <Navigate to="/" />} />
-              <Route path="/notification" element={authUser ? <Notification /> : <Navigate to="/" />} />
+              <Route path="/notifications" element={authUser ? <Notification /> : <Navigate to="/" />} />
               <Route path="/profile/:username" element={authUser ? <Profile /> : <Navigate to="/" />} />
             </Routes>
           </div>

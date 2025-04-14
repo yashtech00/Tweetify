@@ -1,4 +1,5 @@
 import AuthModel from "../model/AuthSchema";
+import NotificationModel from "../model/notification";
 import TweetModel from "../model/TweetSchema";
 
 // interface TweetProp {
@@ -141,8 +142,16 @@ export const LikeUnlikeTweet = async (req: any, res: any) => {
       );
       return res.status(200).json(updatedLikes);
     } else {
-      tweet.likes.push(userId);
-      await tweet.save();
+        tweet.likes.push(userId);
+        await AuthModel.updateOne({_id: userId}, {$push: {likedPosts: tweetId}})
+        await tweet.save();
+
+        const notification = new NotificationModel({
+            from: userId,
+            to: tweet.user,
+            type: "like"
+        })
+        await notification.save();
 
       const updatedLikes = tweet.likes;
       return res.status(200).json(updatedLikes);

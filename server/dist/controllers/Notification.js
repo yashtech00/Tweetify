@@ -17,12 +17,14 @@ const notification_1 = __importDefault(require("../model/notification"));
 const Notification = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = req.user._id;
+        console.log(userId, "notifi userId");
         const notification = yield notification_1.default.find({ to: userId }).populate({
             path: "from",
             select: "username"
         });
+        console.log(notification, "notifi");
         yield notification_1.default.updateMany({ to: userId }, { read: true });
-        return res.status(200).json(notification);
+        return res.status(200).json({ message: "fetch notification", data: notification });
     }
     catch (e) {
         console.error(e);

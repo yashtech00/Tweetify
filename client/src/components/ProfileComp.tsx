@@ -39,40 +39,40 @@ export const UserProfile = () => {
     const handleEdit = async () => {
         const formData = {
             fullname,
-            username:userName,
+            username: userName,
             email,
             bio,
             link
         };
-    
+
         try {
             const res = await axios.put(
                 "http://localhost:8001/profile/editUserProfile",
                 formData,
                 { withCredentials: true }
             );
-    
+
             const updatedData = res.data.data;
-    
+
             setFullname(updatedData.fullname);
             setUsername(updatedData.username);
             setEmail(updatedData.email);
             setBio(updatedData.bio);
             setLink(updatedData.link);
-    
+
             // Optionally, update profile to reflect changes immediately
             setProfile((prev) =>
                 prev ? { ...prev, ...updatedData } : updatedData
             );
-    
+
             // Close the modal after successful update
             setIsModelOpen(false);
-    
+
         } catch (e) {
             console.error("Failed to update profile:", e);
         }
     };
-    
+
 
     const handleToggle = () => {
         setIsModelOpen(!isModelOpen);
@@ -91,7 +91,7 @@ export const UserProfile = () => {
                 );
                 console.log(res, "profile");
 
-                setProfile(res.data.user);
+                setProfile(res.data.data);
             } catch (e) {
                 console.error(e);
             }
@@ -102,34 +102,31 @@ export const UserProfile = () => {
 
     return (
 
-        <div>
+        <div className="text-white">
             <div className="max-w-4xl mx-auto mt-10">
                 <div className="relative">
-
                     <div className=" ">
                         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2oAhGJEYzkPuUse-b-qBVKq01KmW1pdCcaw&s" alt="cover photo" width={600} />
-
                     </div>
-
                     {/* Profile Picture */}
-                    <div className="absolute -bottom-16 left-6"></div>
-                    <div className="flex justify-between">
+                  
+                    <div className="flex justify-between mx-2 space-y-2">
 
-                        <User className="w-20 h-20 rounded-full bg-gray-400 border-4 border-white" />
+                        <User className="w-20 h-20 rounded-full bg-gray-400 text-black" />
                         <div>
-                            <button className="px-4 py-2 m-2 bg-black text-white rounded-2xl" onClick={handleToggle}>Edit Profile</button>
+                            <button className="px-4 py-2 m-2 bg-black text-white border-2 border-stone-800 hover:bg-stone-900 rounded-2xl" onClick={handleToggle}>Edit Profile</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div className=" px-6">
+            <div className="text-white ">
                 {/* Profile Info */}
                 {profile && (
-                    <div>
+                    <div className="px-4 space-y-2">
                         <div className="text-2xl font-bold">{profile.fullname}</div>
-                        <div className="text-gray-500">@{profile.username}</div>
-                        <div className="mt-4">{profile.bio}</div>
+                        <div className="">@{profile.username}</div>
+                        <div className="">{profile.bio}</div>
                         {profile.link && (
                             <div className="mt-2 text-blue-500">
                                 <a href={profile.link} target="_blank" rel="noopener noreferrer">
@@ -138,12 +135,12 @@ export const UserProfile = () => {
                             </div>
                         )}
 
-                        <div>
-                            <span className="mx-2">Followers
-                                <span className="mx-1">{profile.followers.length}</span>
+                        <div className="">
+                            <span className="space-x-2">{profile.followers.length}
+                                <span className="mx-2 text-stone-400">Followers</span>
                             </span>
-                            <span className="mx-2">Following
-                                <span className="mx-1">{profile.following.length}</span>
+                            <span className="space-x-2 ">{profile.following.length}
+                                <span className="mx-2 text-stone-400">Following</span>
 
                             </span>
                         </div>
@@ -152,9 +149,9 @@ export const UserProfile = () => {
 
 
                 {/* Tabs */}
-                <div className='flex w-full border-b border-gray-700 mt-4'>
+                <div className='flex w-full border-b border-stone-800 mt-4'>
                     <div
-                        className='flex justify-center flex-1 p-3 hover:bg-secondary transition duration-300 relative cursor-pointer'
+                        className='flex justify-center flex-1 p-3 hover:bg-stone-900 transition duration-300 relative cursor-pointer'
                         onClick={() => setTweetType("tweets")}
                     >
                         Tweet
@@ -163,7 +160,7 @@ export const UserProfile = () => {
                         )}
                     </div>
                     <div
-                        className='flex justify-center flex-1 p-3 text-slate-500 hover:bg-secondary transition duration-300 relative cursor-pointer'
+                        className='flex justify-center flex-1 p-3 hover:bg-stone-900 transition duration-300 relative cursor-pointer'
                         onClick={() => setTweetType("likes")}
                     >
                         Likes
@@ -229,8 +226,8 @@ function EditModel({
     setLink,
 }: EditModelProps) {
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white p-6 rounded shadow-lg w-96">
+        <div className="fixed inset-0 bg-white bg-opacity-20 flex justify-center items-center">
+            <div className="bg-black p-6 rounded-xl shadow-lg w-96">
                 <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
                 <form onSubmit={(e) => { e.preventDefault(); onSubmit(); }}>
                     <div className="mb-4">
@@ -240,7 +237,7 @@ function EditModel({
                             value={fullName}
                             onChange={(e) => setFullName(e.target.value)}
                             placeholder="Enter your full name"
-                            className="w-full px-3 py-2 border rounded"
+                            className="w-full px-3 py-2 border border-stone-900 rounded bg-black text-white"
                         />
                     </div>
                     <div className="mb-4">
@@ -250,7 +247,7 @@ function EditModel({
                             value={userName}
                             onChange={(e) => setUserName(e.target.value)}
                             placeholder="Enter your user name"
-                            className="w-full px-3 py-2 border rounded"
+                            className="w-full px-3 py-2 border border-stone-900 rounded bg-black text-white"
                         />
                     </div>
                     <div className="mb-4">
@@ -260,7 +257,7 @@ function EditModel({
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="Enter your email"
-                            className="w-full px-3 py-2 border rounded"
+                            className="w-full px-3 py-2 border border-stone-900 rounded bg-black text-white"
                         />
                     </div>
                     <div className="mb-4">
@@ -269,7 +266,7 @@ function EditModel({
                             value={bio}
                             onChange={(e) => setBio(e.target.value)}
                             placeholder="Enter your bio"
-                            className="w-full px-3 py-2 border rounded"
+                            className="w-full px-3 py-2 border border-stone-900 rounded bg-black text-white"
                         />
                     </div>
                     <div className="mb-4">
@@ -279,14 +276,14 @@ function EditModel({
                             value={link}
                             onChange={(e) => setLink(e.target.value)}
                             placeholder="Enter your link"
-                            className="w-full px-3 py-2 border rounded"
+                            className="w-full px-3 py-2 border border-stone-900 rounded bg-black text-white"
                         />
                     </div>
                     <div className="flex justify-end mt-4">
                         <button
                             type="button"
                             onClick={onClose}
-                            className="bg-gray-300 text-black px-4 py-2 rounded mr-2"
+                            className="bg-black border-2 border-stone-900 text-white hover:bg-stone-900 px-4 py-2 rounded mr-2"
                         >
                             Close
                         </button>

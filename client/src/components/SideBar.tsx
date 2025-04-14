@@ -19,7 +19,7 @@ export const SideBar = () => {
   };
 
   return (
-    <div className="sticky top-0 w-64 h-screen p-6 border-r bg-white flex flex-col justify-between">
+    <div className="sticky top-0 w-64 h-screen p-6  text-white flex flex-col justify-between">
       <div>
         <h1 className="text-3xl font-bold text-blue-500 mb-8">Tweetify</h1>
         <ul className="flex flex-col gap-3 mt-4">
@@ -54,10 +54,10 @@ export const SideBar = () => {
       </div>
 
       <div className="flex items-center space-x-3">
-        <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
+        <div className="w-10 h-10 bg-gray-300 rounded-full flex justify-center items-center text-black"><User/></div>
         <div className="flex-1">
-          <p className="font-semibold text-sm text-gray-800 truncate">{authUser?.fullname}</p>
-          <p className="text-sm text-gray-500">@{authUser?.username}</p> {/* Fix this */}
+          <p className="font-semibold text-sm  truncate">{authUser?.fullname}</p>
+          <p className="text-sm text-gray-400">@{authUser?.username}</p> {/* Fix this */}
         </div>
         <LogOut
           className="w-5 h-5 text-gray-600 hover:text-red-500 cursor-pointer"

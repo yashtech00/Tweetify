@@ -33,14 +33,14 @@ const getUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.getUserProfile = getUserProfile;
 const EditUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { fullname, username, email, Bio, link } = req.body;
+        const { fullname, username, email, bio, link } = req.body;
         const userId = req.user._id;
         console.log(userId, "user id");
         const user = yield AuthSchema_1.default.findById(userId);
         if (!user) {
             return res.status(401).json({ message: "User not found" });
         }
-        const updatedUser = yield AuthSchema_1.default.findByIdAndUpdate(userId, { fullname, username, email, Bio, link }, { new: true });
+        const updatedUser = yield AuthSchema_1.default.findByIdAndUpdate(userId, { fullname, username, email, bio, link }, { new: true });
         return res.status(200).json({ message: "Updated successfully", data: updatedUser });
     }
     catch (e) {

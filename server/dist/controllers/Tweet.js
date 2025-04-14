@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getLikeTweets = exports.getAnyUserTweets = exports.getFollowingTweets = exports.LikeUnlikeTweet = exports.DeleteTweet = exports.commentTweet = exports.AllTweets = exports.PostTweet = void 0;
 const AuthSchema_1 = __importDefault(require("../model/AuthSchema"));
+const notification_1 = __importDefault(require("../model/notification"));
 const TweetSchema_1 = __importDefault(require("../model/TweetSchema"));
 // interface TweetProp {
 //     content: string;
@@ -143,7 +144,14 @@ const LikeUnlikeTweet = (req, res) => __awaiter(void 0, void 0, void 0, function
         }
         else {
             tweet.likes.push(userId);
+            yield AuthSchema_1.default.updateOne({ _id: userId }, { $push: { likedPosts: tweetId } });
             yield tweet.save();
+            const notification = new notification_1.default({
+                from: userId,
+                to: tweet.user,
+                type: "like"
+            });
+            yield notification.save();
             const updatedLikes = tweet.likes;
             return res.status(200).json(updatedLikes);
         }

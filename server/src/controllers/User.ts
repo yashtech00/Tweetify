@@ -23,7 +23,7 @@ export const getUserProfile = async (req:any,res:any) => {
 
 export const EditUserProfile = async (req: any, res: any) => {
     try {
-        const { fullname, username, email, Bio, link } = req.body;
+        const { fullname, username, email, bio, link } = req.body;
         const userId = req.user._id;
         console.log(userId, "user id");
 
@@ -34,7 +34,7 @@ export const EditUserProfile = async (req: any, res: any) => {
 
         const updatedUser = await AuthModel.findByIdAndUpdate(
             userId,
-            { fullname, username, email, Bio, link },
+            { fullname, username, email, bio, link },
             { new: true }
         );
 
