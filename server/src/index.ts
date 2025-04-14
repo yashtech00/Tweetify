@@ -11,11 +11,8 @@ import notification from "./routes/notification";
 
 const app = express();
 
-const corsConfig = {
-  origin: "https://tweetify-tau.vercel.app", // specific origin, not "*"
-  credentials: true, // allows cookies to be sent
-};
-app.use(cors(corsConfig));
+
+app.use(cors());
 
 //middleware -> it is used to parse incoming json request
 app.use(express.json({ limit: "5mb" }));
