@@ -29,7 +29,7 @@ function App() {
     <BrowserRouter>
       <div className="flex justify-center w-full bg-black min-h-screen">
         <div className="flex w-full max-w-6xl">
-          {authUser && <SideBar />}
+          {authUser && <SideBar/>}
           <div className="flex-1 border-x border-stone-800 bg-black ">
             <Routes>
               <Route path="/" element={authUser ? <Home /> : <Navigate to="/login" />} />
