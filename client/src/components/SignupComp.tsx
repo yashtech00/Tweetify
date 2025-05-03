@@ -33,7 +33,7 @@ export const SignupComp = () => {
         }
     };
     return (
-        <div className="h-screen flex justify-center items-center ">
+        <div className="h-screen flex justify-center items-center bg-black ">
             <div className="border-2 border-stone-800 rounded-xl w-full max-w-md p-8 text-white">
                 <h2 className="text-2xl font-bold text-center mb-6 ">
                     Signup to Tweetify

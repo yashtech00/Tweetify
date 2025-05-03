@@ -13,7 +13,7 @@ export const HomeComp = () => {
             onClick={() => setTweetType("ForYou")}
             className={`flex-1 text-center py-3 cursor-pointer font-semibold ${
               tweetType === "ForYou"
-                ? "border-b-4 border-blue-500 text-blue-600"
+                ? "border-b-4 border-violet-500 text-violet-600"
                 : "text-white"
             }`}
           >
@@ -23,7 +23,7 @@ export const HomeComp = () => {
             onClick={() => setTweetType("Following")}
             className={`flex-1 text-center py-3 cursor-pointer font-semibold ${
               tweetType === "Following"
-                ? "border-b-4 border-blue-500 text-blue-600"
+                ? "border-b-4 border-violet-500 text-violet-600"
                 : "text-white"
             }`}
           >

@@ -7,7 +7,8 @@ const router = express.Router();
 router.get("/like/:id", AuthenticateRoute, getLikeTweets);
 router.get("/following", AuthenticateRoute, getFollowingTweets);
 router.get("/user/:username", AuthenticateRoute, getAnyUserTweets);
-router.get("/Tweets",AuthenticateRoute, AllTweets);
+router.get("/Tweets", AuthenticateRoute, AllTweets);
+
 router.post("/PostTweet",AuthenticateRoute, PostTweet),
 router.put("/comment/:id",AuthenticateRoute, commentTweet),
 

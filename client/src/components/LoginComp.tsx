@@ -34,7 +34,7 @@ export const LoginComp = () => {
         }
     };
     return (
-        <div className="h-screen flex justify-center items-center">
+        <div className="h-screen flex justify-center items-center bg-black ">
             <div className="text-white border-2 rounded-xl border-stone-900 w-full max-w-md p-8">
                 <h2 className="text-2xl font-bold text-center mb-6 ">
                     Login to Tweetify

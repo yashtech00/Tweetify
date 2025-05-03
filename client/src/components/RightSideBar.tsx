@@ -44,7 +44,7 @@ function RightPanel() {
 
     return (
         <div className='hidden lg:block my-4 mx-2 text-white'>
-            <div className='bg-[#16181C] p-4 rounded-md sticky top-2'>
+            <div className='border-2 border-stone-900 p-4 rounded-md sticky top-2'>
                 <p className='font-bold'>Who to follow</p>
                 <div className='flex flex-col gap-4'>
                     {isLoading ? (
@@ -79,7 +79,7 @@ function RightPanel() {
                                 </div>
                                 <div>
                                     <button
-                                        className='btn bg-white text-black hover:bg-white hover:opacity-90 rounded-full btn-sm'
+                                        className='btn bg-violet-500 text-white hover:bg-white hover:opacity-90 rounded-full btn-sm px-3' 
                                         onClick={async (e) => {
                                             e.preventDefault();
                                             await followAndUnfollow(user._id);
