@@ -1,25 +1,15 @@
+import cloudinary from "../lib/Cloudinary";
 import AuthModel from "../model/AuthSchema";
 import NotificationModel from "../model/notification";
 import TweetModel from "../model/TweetSchema";
 
-// interface TweetProp {
-//     content: string;
-//     createdAt: Date;
-//     userId: object; // Assuming user is a string (e.g., user ID)
-//     like: Array<string>; // Assuming like is an array of strings (e.g., user IDs)
-// }
 
-// interface CommentTweetProp {
-//     content: string;
-//     createdAt: Date;
-//     userId: string;
-// }
 
 export const PostTweet = async (req: any, res: any) => {
   try {
     console.log("before post tweet");
 
-    const { content } = req.body;
+    const { content,images } = req.body;
     const userId = req.user._id.toString();
     console.log(content, userId, "hello post tweet");
 
@@ -27,8 +17,28 @@ export const PostTweet = async (req: any, res: any) => {
     if (!user) {
       return res.status(401).json("user not found");
     }
+
+     let ImageUrlToUse = images;
+        if (images) {
+          try {
+            const uploadRes = await cloudinary.uploader.upload(images, {
+              folder: "profile_images",
+            });
+            ImageUrlToUse = uploadRes.secure_url;
+          } catch (uploadError) {
+            console.error(
+              "Cloudinary upload error for profile image:",
+              uploadError
+            );
+            return res
+              .status(500)
+              .json({ message: "Failed to upload profile image" });
+          }
+        }
+
     const tweets = await TweetModel.create({
       content,
+      images: ImageUrlToUse,
       user: userId,
     });
     return res
@@ -243,3 +253,4 @@ export const getLikeTweets = async (req: any, res: any) => {
       
   }
 };
+

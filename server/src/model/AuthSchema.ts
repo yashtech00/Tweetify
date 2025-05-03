@@ -43,6 +43,14 @@ const AuthSchema = new Schema({
         type: String,
         default:""
     },
+    profile_Image: {
+        type: String,
+       
+    },
+    Cover_Image: {
+        type: String,
+       
+    },
     likedTweets: [
         {
             type: mongoose.Schema.Types.ObjectId,

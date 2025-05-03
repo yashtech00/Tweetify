@@ -15,6 +15,10 @@ const TweetSchema = new Schema(
       trim: true,
       required: true,
     },
+    images:{ 
+          type: String,
+      },
+  
     likes: [
       {
         type: mongoose.Schema.Types.ObjectId,

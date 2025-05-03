@@ -9,4 +9,6 @@ const Authenticated_1 = __importDefault(require("../middlewares/Authenticated"))
 const router = express_1.default.Router();
 router.get("/userProfile/:username", Authenticated_1.default, User_1.getUserProfile);
 router.put("/editUserProfile", Authenticated_1.default, User_1.EditUserProfile);
+router.post("/follow/:id", Authenticated_1.default, User_1.FollowUnfollow);
+router.get("/suggested", Authenticated_1.default, User_1.getSuggestedUsers);
 exports.default = router;

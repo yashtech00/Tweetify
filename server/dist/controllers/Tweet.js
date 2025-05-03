@@ -13,32 +13,38 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getLikeTweets = exports.getAnyUserTweets = exports.getFollowingTweets = exports.LikeUnlikeTweet = exports.DeleteTweet = exports.commentTweet = exports.AllTweets = exports.PostTweet = void 0;
+const Cloudinary_1 = __importDefault(require("../lib/Cloudinary"));
 const AuthSchema_1 = __importDefault(require("../model/AuthSchema"));
 const notification_1 = __importDefault(require("../model/notification"));
 const TweetSchema_1 = __importDefault(require("../model/TweetSchema"));
-// interface TweetProp {
-//     content: string;
-//     createdAt: Date;
-//     userId: object; // Assuming user is a string (e.g., user ID)
-//     like: Array<string>; // Assuming like is an array of strings (e.g., user IDs)
-// }
-// interface CommentTweetProp {
-//     content: string;
-//     createdAt: Date;
-//     userId: string;
-// }
 const PostTweet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         console.log("before post tweet");
-        const { content } = req.body;
+        const { content, images } = req.body;
         const userId = req.user._id.toString();
         console.log(content, userId, "hello post tweet");
         const user = yield AuthSchema_1.default.findById(userId);
         if (!user) {
             return res.status(401).json("user not found");
         }
+        let ImageUrlToUse = images;
+        if (images) {
+            try {
+                const uploadRes = yield Cloudinary_1.default.uploader.upload(images, {
+                    folder: "profile_images",
+                });
+                ImageUrlToUse = uploadRes.secure_url;
+            }
+            catch (uploadError) {
+                console.error("Cloudinary upload error for profile image:", uploadError);
+                return res
+                    .status(500)
+                    .json({ message: "Failed to upload profile image" });
+            }
+        }
         const tweets = yield TweetSchema_1.default.create({
             content,
+            images: ImageUrlToUse,
             user: userId,
         });
         return res
