@@ -9,7 +9,7 @@ export const PostTweet = async (req: any, res: any) => {
   try {
     console.log("before post tweet");
 
-    const { content,images } = req.body;
+    const { content,image } = req.body;
     const userId = req.user._id.toString();
     console.log(content, userId, "hello post tweet");
 
@@ -18,10 +18,10 @@ export const PostTweet = async (req: any, res: any) => {
       return res.status(401).json("user not found");
     }
 
-     let ImageUrlToUse = images;
-        if (images) {
+     let ImageUrlToUse = image;
+        if (image) {
           try {
-            const uploadRes = await cloudinary.uploader.upload(images, {
+            const uploadRes = await cloudinary.uploader.upload(image, {
               folder: "profile_images",
             });
             ImageUrlToUse = uploadRes.secure_url;
@@ -38,7 +38,7 @@ export const PostTweet = async (req: any, res: any) => {
 
     const tweets = await TweetModel.create({
       content,
-      images: ImageUrlToUse,
+      image: ImageUrlToUse,
       user: userId,
     });
     return res

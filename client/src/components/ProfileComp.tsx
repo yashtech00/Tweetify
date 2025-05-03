@@ -37,6 +37,8 @@ export const UserProfile = () => {
     const [email, setEmail] = useState("");
     const [bio, setBio] = useState("");
     const [link, setLink] = useState("");
+    const [profile_Image, setProfileImage] = useState("");
+    const [Cover_Image, setCoverImage] = useState("");
 
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -46,7 +48,9 @@ export const UserProfile = () => {
             username: userName,
             email,
             bio,
-            link
+            link,
+            profile_Image,
+            Cover_Image
         };
 
         try {
@@ -63,6 +67,8 @@ export const UserProfile = () => {
             setEmail(updatedData.email);
             setBio(updatedData.bio);
             setLink(updatedData.link);
+            setProfileImage(updatedData.profile_Image);
+            setCoverImage(updatedData.Cover_Image);
 
             // Optionally, update profile to reflect changes immediately
             setProfile((prev) =>
@@ -193,6 +199,10 @@ export const UserProfile = () => {
                     setBio={setBio}
                     link={link}
                     setLink={setLink}
+                    profile_Image={profile_Image}
+                    setProfileImage={setProfileImage}
+                    Cover_Image={Cover_Image}
+                    setCoverImage={setCoverImage}
                 />
             )}
         </div>
@@ -213,6 +223,10 @@ interface EditModelProps {
     setBio: (value: string) => void;
     link: string;
     setLink: (value: string) => void;
+    profile_Image: string;
+    setProfileImage: (value: string) => void;
+    Cover_Image: string;
+    setCoverImage: (value: string) => void;
 }
 
 function EditModel({
@@ -229,6 +243,10 @@ function EditModel({
     setBio,
     link,
     setLink,
+    profile_Image,
+    setProfileImage,
+    Cover_Image,
+    setCoverImage,
 }: EditModelProps) {
     return (
         <div className="fixed inset-0 bg-white bg-opacity-20 flex justify-center items-center">
@@ -281,6 +299,26 @@ function EditModel({
                             value={link}
                             onChange={(e) => setLink(e.target.value)}
                             placeholder="Enter your link"
+                            className="w-full px-3 py-2 border border-stone-900 rounded bg-black text-white"
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-sm font-medium mb-1">Profile Image URL</label>
+                        <input
+                            type="text"
+                            value={profile_Image}
+                            onChange={(e) => setProfileImage(e.target.value)}
+                            placeholder="Enter your profile image URL"
+                            className="w-full px-3 py-2 border border-stone-900 rounded bg-black text-white"
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-sm font-medium mb-1">Cover Image URL</label>
+                        <input
+                            type="text"
+                            value={Cover_Image}
+                            onChange={(e) => setCoverImage(e.target.value)}
+                            placeholder="Enter your cover image URL"
                             className="w-full px-3 py-2 border border-stone-900 rounded bg-black text-white"
                         />
                     </div>

@@ -20,17 +20,17 @@ const TweetSchema_1 = __importDefault(require("../model/TweetSchema"));
 const PostTweet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         console.log("before post tweet");
-        const { content, images } = req.body;
+        const { content, image } = req.body;
         const userId = req.user._id.toString();
         console.log(content, userId, "hello post tweet");
         const user = yield AuthSchema_1.default.findById(userId);
         if (!user) {
             return res.status(401).json("user not found");
         }
-        let ImageUrlToUse = images;
-        if (images) {
+        let ImageUrlToUse = image;
+        if (image) {
             try {
-                const uploadRes = yield Cloudinary_1.default.uploader.upload(images, {
+                const uploadRes = yield Cloudinary_1.default.uploader.upload(image, {
                     folder: "profile_images",
                 });
                 ImageUrlToUse = uploadRes.secure_url;
@@ -44,7 +44,7 @@ const PostTweet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
         const tweets = yield TweetSchema_1.default.create({
             content,
-            images: ImageUrlToUse,
+            image: ImageUrlToUse,
             user: userId,
         });
         return res

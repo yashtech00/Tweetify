@@ -15,7 +15,7 @@ const TweetSchema = new Schema(
       trim: true,
       required: true,
     },
-    images:{ 
+    image:{ 
           type: String,
       },
   
