@@ -4,6 +4,7 @@ import axios from "axios";
 
 import useFollow from "../hooks/useFollow";
 import LoadingSpinner from "./LoadingSpinner";
+import { User } from "lucide-react";
 
 
 
@@ -11,7 +12,8 @@ export interface User {
   _id: string;
   fullname: string;
   username: string;
-  profileImg: string;
+    profile_Image: string;
+    
 }
 
 
@@ -41,7 +43,7 @@ function RightPanel() {
     if (suggestedUser.length === 0 && !isLoading) return <div className="md:w-64 w-0"></div>;
 
     return (
-        <div className='hidden lg:block my-4 mx-2 border-4'>
+        <div className='hidden lg:block my-4 mx-2 text-white'>
             <div className='bg-[#16181C] p-4 rounded-md sticky top-2'>
                 <p className='font-bold'>Who to follow</p>
                 <div className='flex flex-col gap-4'>
@@ -57,7 +59,15 @@ function RightPanel() {
                                 <div className='flex gap-2 items-center'>
                                     <div className='avatar'>
                                         <div className='w-8 rounded-full'>
-                                            <img src={user.profileImg || "/avatar-placeholder.png"} alt={`${user.fullname}'s profile`} />
+                                            {user.profile_Image ? (
+                                                <img
+                                                    src={user.profile_Image}
+                                                    alt={`${user.fullname}'s profile`}
+                                                    className="w-full h-full object-cover rounded-full"
+                                                />
+                                            ) : (
+                                                <User className="w-full h-full text-gray-500 rounded-full bg-white" />
+                                            )}
                                         </div>
                                     </div>
                                     <div className='flex flex-col'>

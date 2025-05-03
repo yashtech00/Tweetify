@@ -1,11 +1,13 @@
 import axios from "axios";
-import { User } from "lucide-react";
+import { Image, User } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
 export const CreateTweet = () => {
   const [tweet, setTweet] = useState("");
   const [image, setImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
   const handleSubmitTweet = async (e: React.FormEvent) => {
@@ -27,10 +29,22 @@ export const CreateTweet = () => {
       console.log(res);
       setTweet(""); // Clear the input after submission
       setImage(null);
+      setImagePreview(null);
       toast.success("Your post was sent");
     } catch (e) {
       console.error(e);
       toast.error("Failed to send your post");
+    }
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setImage(file);
+      setLoading(true);
+      const previewUrl = URL.createObjectURL(file);
+      setImagePreview(previewUrl);
+      setLoading(false);
     }
   };
 
@@ -53,20 +67,27 @@ export const CreateTweet = () => {
             />
           </div>
           <div className="flex items-center justify-between mt-2">
-            <label className="text-sm text-gray-500">
-              Upload Image
+            <label className="cursor-pointer">
+              <Image className="text-gray-500 hover:text-blue-500" />
               <input
                 type="file"
                 accept="image/*"
-                onChange={(e) => {
-                  if (e.target.files && e.target.files[0]) {
-                    setImage(e.target.files[0]);
-                  }
-                }}
-                className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600"
+                title="Upload an image"
+                onChange={handleImageChange}
+                className="hidden"
               />
             </label>
           </div>
+          {loading && <p className="text-gray-500 mt-2">Loading...</p>}
+          {imagePreview && (
+            <div className="mt-4">
+              <img
+                src={imagePreview}
+                alt="Preview"
+                className="max-w-full h-auto rounded-lg"
+              />
+            </div>
+          )}
           <div className="flex justify-end mt-2">
             <button
               type="submit"

@@ -14,6 +14,8 @@ interface ProfileProp {
     email: string;
     bio: string;
     link: string;
+    profile_Image: string;
+    Cover_Image: string;
     following: []
     followers: []
     likedTweets: [],
@@ -117,7 +119,13 @@ export const UserProfile = () => {
             <div className="max-w-4xl mx-auto mt-10">
                 <div className="relative">
                     <div className=" ">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2oAhGJEYzkPuUse-b-qBVKq01KmW1pdCcaw&s" alt="cover photo" width={600} />
+                        <img 
+                            src={profile?.Cover_Image 
+                                ? profile.Cover_Image 
+                                : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2oAhGJEYzkPuUse-b-qBVKq01KmW1pdCcaw&s"} 
+                            alt="cover photo" 
+                            width={600} 
+                        />
                     </div>
                     {/* Profile Picture */}
                   
@@ -136,7 +144,7 @@ export const UserProfile = () => {
                 {profile && (
                     <div className="px-4 space-y-2">
                         <div className="text-2xl font-bold">{profile.fullname}</div>
-                        <div className="">@{profile.username}</div>
+                        <div className="text-stone-500">@{profile.username}</div>
                         <div className="">{profile.bio}</div>
                         {profile.link && (
                             <div className="mt-2 text-blue-500">
@@ -148,10 +156,10 @@ export const UserProfile = () => {
 
                         <div className="">
                             <span className="space-x-2">{profile.followers.length}
-                                <span className="mx-2 text-stone-400">Followers</span>
+                                <span className="mx-2 text-stone-500">Followers</span>
                             </span>
                             <span className="space-x-2 ">{profile.following.length}
-                                <span className="mx-2 text-stone-400">Following</span>
+                                <span className="mx-2 text-stone-500">Following</span>
 
                             </span>
                         </div>

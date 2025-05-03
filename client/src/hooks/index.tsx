@@ -8,7 +8,10 @@ export interface UserProp {
   bio: string,
   link: string,
   email: string
-  _id:string
+  _id: string
+  profile_Image: string
+  Cover_Image: string
+  followers: string[]
 }
 
 interface AuthContextType {
