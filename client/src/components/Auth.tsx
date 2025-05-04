@@ -3,6 +3,7 @@ import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks";
 
 export const Auth = ({ type }: { type: "login" | "signup" }) => {
     const [fullname, setFullname] = useState("");
@@ -13,7 +14,7 @@ export const Auth = ({ type }: { type: "login" | "signup" }) => {
     const [coverImage, setCoverImage] = useState("");
     const navigate = useNavigate();
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-
+    const { setAuthUser } = useAuth();  // <-- add this
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -23,22 +24,33 @@ export const Auth = ({ type }: { type: "login" | "signup" }) => {
                 email,
                 password,
                 fullname,
-
                 Cover_Image: coverImage
-            }, { withCredentials: true })
+            }, { withCredentials: true });
+
             console.log(res);
 
-            setFullname("")
-            setEmail("")
-            setPassword("")
-            setUsername("")
+            setFullname("");
+            setEmail("");
+            setPassword("");
+            setUsername("");
+            setCoverImage("");
 
-            setCoverImage("")
+            // ✅ set auth user in context
+            setAuthUser(res.data.data); // assuming backend returns user in res.data.data
+
             navigate("/");
-            toast.success("Signup successfully, Welcome to Tweetify")
+            toast.success(
+                type === "signup"
+                    ? "Signup successful, Welcome to Tweetify"
+                    : "Login successful, Welcome back!"
+            );
         } catch (e: any) {
             console.error(e.message);
-            toast.error("Error while creating account, or account already exist")
+            toast.error(
+                type === "signup"
+                    ? "Error while creating account, or account already exists"
+                    : "Invalid login credentials"
+            );
         }
     };
     return (
