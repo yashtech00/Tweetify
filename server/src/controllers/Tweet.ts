@@ -232,3 +232,19 @@ export const getLikeTweets = async (req: any, res: any) => {
     return res.status(500).json({ message: "Internal server error " });
   }
 };
+
+export const getTweetById = async (req: any, res: any) => {
+  try {
+    const { id } = req.params;
+    console.log(id, "tweetId");
+    const tweets = await TweetModel.findById(id).populate("user", "username");
+    return res
+      .status(200)
+      .json({ message: "Fetched current tweet", data: tweets });
+  } catch (e) {
+    console.error(e);
+    return res
+      .status(500)
+      .json({ message: "Internal server error while fetching all tweets" });
+  }
+};

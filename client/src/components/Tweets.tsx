@@ -52,7 +52,7 @@ export const Tweets = ({ tweetType, username, userId }: { tweetType: string; use
 
   return (
     <div>
-      {allTweets.length === 0 && tweetType === "tweets" ? (
+      {allTweets.length === 0 && (tweetType === "tweets" || tweetType === "likes") ? (
         <div className="flex flex-col items-center justify-center h-full text-gray-500 mt-6">
           <p className="text-lg font-semibold">No tweets to display</p>
           <p className="text-sm">Start tweeting to see your posts here!</p>

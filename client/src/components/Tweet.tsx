@@ -99,9 +99,7 @@ export const Tweet = ({ tweet, onDelete }: {
             <div className="border-b-2 border-stone-800 p-4">
                 <div className="flex justify-between">
                     <div className="flex ">
-                        <div className="rounded-full w-8 h-8 bg-gray-300 flex justify-center items-center text-black">
-                            {tweet.user.profile_Image ? tweet.user.profile_Image : <User className="text-black" />}
-                        </div>
+                    <User className="w-8 h-8 rounded-full bg-white text-black p-1" />
                         <div className="mx-4">
                             <div className=" ">{tweet.user.username}</div>
 
@@ -114,7 +112,7 @@ export const Tweet = ({ tweet, onDelete }: {
                         </div>
                     </div>
                     {isMyPost &&
-                        <div className=" hover:text-red-400 text-stone-500" onClick={handleDelete}>
+                        <div className=" hover:text-red-400 text-stone-500 cursor-pointer" onClick={handleDelete}>
                             <Trash />
                         </div>
                     }
@@ -122,10 +120,10 @@ export const Tweet = ({ tweet, onDelete }: {
                 </div>
                 <div className="ml-12 ">
                 <div className="py-4 ">{tweet.content}</div>
-                <div className="py-4 ">{tweet.image}</div>
+                
 
                     <div className="flex justify-between py-4 text-stone-500">
-                        <div className={`flex cursor-pointer ${authUser?._id && like.includes(authUser._id) ? 'text-blue-600' : 'hover:text-blue-600'} `} onClick={toggleModel}>
+                        <div className="flex cursor-pointer  hover:text-blue-600" onClick={toggleModel}>
                             <MessageCircle />
                             <span className="ml-2">{comments.length}</span>
                         </div>
@@ -193,24 +191,28 @@ function CommentModel({
                     </div>
                 </div>
                 <div className="max-h-64 overflow-y-auto border-2 border-stone-900 rounded  p-2 mb-4">
-                    {comments.map((comment) => (
-                        <div key={comment._id} className="mb-4">
-                            <div className="flex items-center">
-                                <div className="bg-gray-300 rounded-full flex justify-center items-center w-8 h-8 ">
-                                    {comment.user.profile_Image ? <div className="w-10 h-10 bg-gray-300 rounded-full flex justify-center items-center text-black">
-                                        {comment.user.profile_Image}
-                                    </div> : <User className="text-black" />}
+                    {comments.length > 0 ? (
+                        comments.map((comment) => (
+                            <div key={comment._id} className="mb-4">
+                                <div className="flex items-center">
+                                    <div className="bg-gray-300 rounded-full flex justify-center items-center w-8 h-8 ">
+                                        {comment.user.profile_Image ? <div className="w-10 h-10 bg-gray-300 rounded-full flex justify-center items-center text-black">
+                                            {comment.user.profile_Image}
+                                        </div> : <User className="text-black" />}
+                                    </div>
+                                    <span className="font-bold ml-2">{comment.user.username}</span>
                                 </div>
-                                <span className="font-bold ml-2">{comment.user.username}</span>
+                                <div className="ml-10 border-l-2 border-stone-900">~{comment.content}</div>
                             </div>
-                            <div className="ml-10 border-l-2 border-stone-900">~{comment.content}</div>
-                        </div>
-                    ))}
+                        ))
+                    ) : (
+                        <div className="text-center text-stone-500">No comments yet</div>
+                    )}
                 </div>
-                <div className="flex justify-between space-x-4 ">
+                <div className=" space-x-4 ">
                     <textarea
                         className="w-full border-2 border-stone-900 rounded p-2  mt-4 bg-black"
-                        placeholder="Add a comment..."
+                        placeholder="Post your comment..."
                         value={inputComment}
                         onChange={(e) => setInputComments(e.target.value)}
                     />
@@ -218,9 +220,9 @@ function CommentModel({
 
                         <button
                             onClick={onCommentSubmit}
-                            className="bg-violet-500 text-white font-semibold text-xl p-2 my-0 rounded hover:bg-violet-600 mt-4"
+                            className="bg-violet-500 text-white font-semibold text-xl p-2 my-0 rounded-2xl hover:bg-violet-600 mt-4 px-4 "
                         >
-                            Submit
+                            Reply
                         </button>
                     </div>
                 </div>

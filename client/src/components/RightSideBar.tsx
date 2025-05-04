@@ -55,15 +55,9 @@ function RightPanel() {
                                 <div className='flex gap-2 items-center'>
                                     <div className='avatar'>
                                         <div className='w-8 rounded-full'>
-                                            {user.profile_Image ? (
-                                                <img
-                                                    src={user.profile_Image}
-                                                    alt={`${user.fullname}'s profile`}
-                                                    className="w-full h-full object-cover rounded-full"
-                                                />
-                                            ) : (
-                                                <User className="w-full h-full text-black rounded-full bg-white p-1" />
-                                            )}
+                                           
+                                        <User className="w-9 h-9 rounded-full bg-white text-black p-2" />
+                                            
                                         </div>
                                     </div>
                                     <div className='flex flex-col'>

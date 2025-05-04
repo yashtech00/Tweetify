@@ -1,9 +1,8 @@
-    import { LoginComp } from "../components/LoginComp";
-
-    export default function Login() {
+import { Auth } from "../components/Auth";
+export default function Login() {
         return (
             <div>
-                <LoginComp/>
+                <Auth type="login" />
             </div>
         )
     }

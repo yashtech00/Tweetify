@@ -1,5 +1,5 @@
 import express from "express"
-import { AllTweets, commentTweet, DeleteTweet, getAnyUserTweets, getFollowingTweets, getLikeTweets, LikeUnlikeTweet, PostTweet } from "../controllers/Tweet";
+import { AllTweets, commentTweet, DeleteTweet, getAnyUserTweets, getFollowingTweets, getLikeTweets, getTweetById, LikeUnlikeTweet, PostTweet } from "../controllers/Tweet";
 import AuthenticateRoute from "../middlewares/Authenticated";
 
 const router = express.Router();
@@ -14,7 +14,7 @@ router.put("/comment/:id",AuthenticateRoute, commentTweet),
 
 router.delete("/DeleteTweet/:id", AuthenticateRoute, DeleteTweet);
 router.put("/like/:id", AuthenticateRoute, LikeUnlikeTweet);
-
+router.get("/tweet/:id", AuthenticateRoute, getTweetById);
 
 
 

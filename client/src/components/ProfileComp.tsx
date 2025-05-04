@@ -39,13 +39,12 @@ export const UserProfile = () => {
     const [email, setEmail] = useState("");
     const [bio, setBio] = useState("");
     const [link, setLink] = useState("");
-    const [profile_Image, setProfileImage] = useState("");
     const [Cover_Image, setCoverImage] = useState("");
 
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
     const handleEdit = async () => {
-        console.log(profile_Image, Cover_Image, "image");
+
 
         const formData = {
             fullname,
@@ -53,7 +52,7 @@ export const UserProfile = () => {
             email,
             bio,
             link,
-            profile_Image,
+
             Cover_Image
         };
 
@@ -71,7 +70,7 @@ export const UserProfile = () => {
             setEmail(updatedData.email);
             setBio(updatedData.bio);
             setLink(updatedData.link);
-            setProfileImage(updatedData.profile_Image);
+
             setCoverImage(updatedData.Cover_Image);
 
             // Optionally, update profile to reflect changes immediately
@@ -105,8 +104,16 @@ export const UserProfile = () => {
                     }
                 );
                 console.log(res, "profile");
+                const profile_data = res.data.data;
+                setProfile(profile_data);
+                setFullname(profile_data.fullname);
+                setUsername(profile_data.username);
+                setEmail(profile_data.email);
+                setBio(profile_data.bio);
 
-                setProfile(res.data.data);
+                setLink(profile_data.link);
+
+                setCoverImage(profile_data.Cover_Image);
             } catch (e) {
                 console.error(e);
             }
@@ -133,12 +140,9 @@ export const UserProfile = () => {
 
                     <div className="flex justify-between mx-2 space-y-2">
 
-                        {profile?.profile_Image ?
-                            (<div className="w-20 h-20 rounded-full bg-gray-400 text-black" >
-                                {profile?.profile_Image}
-                            </div>) :
-                            <User className="w-20 h-20 rounded-full bg-gray-400 text-black" />
-                        }
+
+                        <User className="w-20 h-20 rounded-full bg-white text-black p-2" />
+
                         <div>
                             <button className="px-4 py-2 m-2 bg-black text-white border-2 border-stone-800 hover:bg-stone-900 rounded-2xl" onClick={handleToggle}>Edit Profile</button>
                         </div>
@@ -175,24 +179,24 @@ export const UserProfile = () => {
 
 
                 {/* Tabs */}
-                <div className='flex w-full border-b border-stone-800 mt-4'>
+                <div className="flex flex-col sm:flex-row">
                     <div
-                        className='flex justify-center flex-1 p-3 hover:bg-stone-900 transition duration-300 relative cursor-pointer'
                         onClick={() => setTweetType("tweets")}
+                        className={`flex-1 text-center py-3 cursor-pointer font-semibold ${tweetType === "tweets"
+                                ? "border-b-4 border-violet-500 text-violet-600"
+                                : "text-white"
+                            }`}
                     >
-                        Tweet
-                        {tweetType === "tweets" && (
-                            <div className='absolute bottom-0 w-10 h-1 rounded-full bg-primary' />
-                        )}
+                        Tweets
                     </div>
                     <div
-                        className='flex justify-center flex-1 p-3 hover:bg-stone-900 transition duration-300 relative cursor-pointer'
                         onClick={() => setTweetType("likes")}
+                        className={`flex-1 text-center py-3 cursor-pointer font-semibold ${tweetType === "likes"
+                                ? "border-b-4 border-violet-500 text-violet-600"
+                                : "text-white"
+                            }`}
                     >
                         Likes
-                        {tweetType === "likes" && (
-                            <div className='absolute bottom-0 w-10  h-1 rounded-full bg-primary' />
-                        )}
                     </div>
                 </div>
                 <Tweets tweetType={tweetType} username={username} userId={profile?._id} />
@@ -214,8 +218,7 @@ export const UserProfile = () => {
                     setBio={setBio}
                     link={link}
                     setLink={setLink}
-                    profile_Image={profile_Image}
-                    setProfileImage={setProfileImage}
+
                     Cover_Image={Cover_Image}
                     setCoverImage={setCoverImage}
                 />
@@ -238,8 +241,8 @@ interface EditModelProps {
     setBio: (value: string) => void;
     link: string;
     setLink: (value: string) => void;
-    profile_Image: string
-    setProfileImage: (value: string) => void;
+
+
     Cover_Image: string
     setCoverImage: (value: string) => void;
 }
@@ -257,8 +260,7 @@ function EditModel({
     setBio,
     link,
     setLink,
-    profile_Image,
-    setProfileImage,
+
     Cover_Image,
     setCoverImage,
 }: EditModelProps) {
@@ -318,28 +320,19 @@ function EditModel({
                             className="w-full px-3 py-2 border border-stone-900 rounded bg-black text-white"
                         />
                     </div>
-                    <div className="flex space-x-3 mb-4">
-                        <div>
-                            <label className="block text-sm font-medium mb-1">Profile Image URL</label>
-                            <input
-                                type="text"
-                                value={profile_Image}
-                                onChange={(e) => setProfileImage(e.target.value)}
-                                className="w-full bg-black border border-stone-900 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="https://..."
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium mb-1">Cover Image URL</label>
-                            <input
-                                type="text"
-                                value={Cover_Image}
-                                onChange={(e) => setCoverImage(e.target.value)}
-                                className="w-full bg-black border border-stone-900 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="https://..."
-                            />
-                        </div>
+
+
+                    <div>
+                        <label className="block text-sm font-medium mb-1">Cover Image URL</label>
+                        <input
+                            type="text"
+                            value={Cover_Image}
+                            onChange={(e) => setCoverImage(e.target.value)}
+                            className="w-full bg-black border border-stone-900 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="https://..."
+                        />
                     </div>
+
                     <div className="flex justify-end mt-4">
                         <button
                             type="button"

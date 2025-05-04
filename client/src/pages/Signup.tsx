@@ -1,11 +1,9 @@
-    import { SignupComp } from "../components/SignupComp";
+import { Auth} from "../components/Auth";
 
-    export default function Signup() {
-
-
+export default function Signup() {
         return (
-            <>
-                <SignupComp />
-            </>
+            <div>
+                <Auth type="signup" />
+            </div>
         );
     }

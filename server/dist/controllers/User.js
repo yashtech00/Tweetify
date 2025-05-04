@@ -38,21 +38,13 @@ exports.getUserProfile = getUserProfile;
 const EditUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         console.log("hello");
-        const { fullname, username, email, bio, link, profile_Image, Cover_Image } = req.body;
-        console.log(profile_Image, "profile image url");
-        console.log(Cover_Image, "cover image url");
+        const { fullname, username, email, bio, link, Cover_Image } = req.body;
         const userId = req.user._id;
-        console.log(userId, "user id");
         const user = yield AuthSchema_1.default.findById(userId);
         if (!user) {
             return res.status(401).json({ message: "User not found" });
         }
-        let profileImageUrlToUse = profile_Image;
         let coverImageUrlToUse = Cover_Image;
-        if (profile_Image) {
-            const uploadRes = yield Cloudinary_1.default.uploader.upload(profile_Image);
-            profileImageUrlToUse = uploadRes.secure_url;
-        }
         if (Cover_Image) {
             const uploadRes = yield Cloudinary_1.default.uploader.upload(Cover_Image);
             coverImageUrlToUse = uploadRes.secure_url;
@@ -63,7 +55,6 @@ const EditUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function
             email,
             bio,
             link,
-            profile_Image: profileImageUrlToUse,
             Cover_Image: coverImageUrlToUse,
         }, { new: true });
         return res

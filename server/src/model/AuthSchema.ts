@@ -43,11 +43,7 @@ const AuthSchema = new Schema({
         type: String,
         default:""
     },
-    profile_Image: {
-        type: String,
-        default:""
-       
-    },
+  
     Cover_Image: {
         type: String,
         default:""

@@ -73,8 +73,8 @@ export const Notify = () => {
               <Heart className="w-7 h-7 text-red-500" />
             )}
             <Link to={`/profile/${notification.from.username}`} className="flex items-center gap-2">
-              <div className="bg-gray-300 rounded-full flex justify-center items-center w-8 h-8">
-               <User/>
+              <div className="bg-white rounded-full flex justify-center items-center w-8 h-8">
+               <User className="text-black"/>
               </div>
               <div className="flex gap-1">
                 <span className="font-bold">@{notification.from.username}</span>{" "}

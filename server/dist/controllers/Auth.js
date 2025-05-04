@@ -18,18 +18,13 @@ const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const generateToken_1 = require("../lib/generateToken");
 const Cloudinary_1 = __importDefault(require("../lib/Cloudinary"));
 const Signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { username, fullname, email, password, profile_Image, Cover_Image } = req.body;
+    const { username, fullname, email, password, Cover_Image } = req.body;
     try {
         const user = yield AuthSchema_1.default.findOne({ email });
         if (user) {
             return res.status(409).json({ message: "Already have an account, go for login" });
         }
-        let profileImageUrlToUse = profile_Image;
         let coverImageUrlToUse = Cover_Image;
-        if (profile_Image) {
-            const uploadRes = yield Cloudinary_1.default.uploader.upload(profile_Image);
-            profileImageUrlToUse = uploadRes.secure_url;
-        }
         if (Cover_Image) {
             const uploadRes = yield Cloudinary_1.default.uploader.upload(Cover_Image);
             coverImageUrlToUse = uploadRes.secure_url;
@@ -40,7 +35,6 @@ const Signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             username,
             email,
             password: hashedPassword,
-            profile_Image: profileImageUrlToUse,
             Cover_Image: coverImageUrlToUse,
         });
         (0, generateToken_1.generateToken)(newUser._id, res);

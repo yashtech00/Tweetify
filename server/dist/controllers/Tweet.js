@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getLikeTweets = exports.getAnyUserTweets = exports.getFollowingTweets = exports.LikeUnlikeTweet = exports.DeleteTweet = exports.commentTweet = exports.AllTweets = exports.PostTweet = void 0;
+exports.getTweetById = exports.getLikeTweets = exports.getAnyUserTweets = exports.getFollowingTweets = exports.LikeUnlikeTweet = exports.DeleteTweet = exports.commentTweet = exports.AllTweets = exports.PostTweet = void 0;
 const AuthSchema_1 = __importDefault(require("../model/AuthSchema"));
 const notification_1 = __importDefault(require("../model/notification"));
 const TweetSchema_1 = __importDefault(require("../model/TweetSchema"));
@@ -227,3 +227,20 @@ const getLikeTweets = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.getLikeTweets = getLikeTweets;
+const getTweetById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        console.log(id, "tweetId");
+        const tweets = yield TweetSchema_1.default.findById(id).populate("user", "username");
+        return res
+            .status(200)
+            .json({ message: "Fetched current tweet", data: tweets });
+    }
+    catch (e) {
+        console.error(e);
+        return res
+            .status(500)
+            .json({ message: "Internal server error while fetching all tweets" });
+    }
+});
+exports.getTweetById = getTweetById;
