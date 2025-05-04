@@ -45,6 +45,8 @@ export const UserProfile = () => {
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
     const handleEdit = async () => {
+        console.log(profile_Image, Cover_Image, "image");
+
         const formData = {
             fullname,
             username: userName,
@@ -119,19 +121,24 @@ export const UserProfile = () => {
             <div className="max-w-4xl mx-auto mt-10">
                 <div className="relative">
                     <div className=" ">
-                        <img 
-                            src={profile?.Cover_Image 
-                                ? profile.Cover_Image 
-                                : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2oAhGJEYzkPuUse-b-qBVKq01KmW1pdCcaw&s"} 
-                            alt="cover photo" 
-                            width={600} 
+                        <img
+                            src={profile?.Cover_Image
+                                ? profile.Cover_Image
+                                : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2oAhGJEYzkPuUse-b-qBVKq01KmW1pdCcaw&s"}
+                            alt="cover photo"
+                            width={600}
                         />
                     </div>
                     {/* Profile Picture */}
-                  
+
                     <div className="flex justify-between mx-2 space-y-2">
 
-                        <User className="w-20 h-20 rounded-full bg-gray-400 text-black" />
+                        {profile?.profile_Image ?
+                            (<div className="w-20 h-20 rounded-full bg-gray-400 text-black" >
+                                {profile?.profile_Image}
+                            </div>) :
+                            <User className="w-20 h-20 rounded-full bg-gray-400 text-black" />
+                        }
                         <div>
                             <button className="px-4 py-2 m-2 bg-black text-white border-2 border-stone-800 hover:bg-stone-900 rounded-2xl" onClick={handleToggle}>Edit Profile</button>
                         </div>
@@ -231,9 +238,9 @@ interface EditModelProps {
     setBio: (value: string) => void;
     link: string;
     setLink: (value: string) => void;
-    profile_Image: string;
+    profile_Image: string
     setProfileImage: (value: string) => void;
-    Cover_Image: string;
+    Cover_Image: string
     setCoverImage: (value: string) => void;
 }
 
@@ -244,7 +251,6 @@ function EditModel({
     setFullName,
     userName,
     setUserName,
-
     email,
     setEmail,
     bio,
@@ -257,29 +263,31 @@ function EditModel({
     setCoverImage,
 }: EditModelProps) {
     return (
-        <div className="fixed inset-0 bg-white bg-opacity-20 flex justify-center items-center">
-            <div className="bg-black p-6 rounded-xl shadow-lg w-96">
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-20 flex justify-center items-center">
+            <div className="bg-black p-6 rounded-xl shadow-lg w-full max-w-xl">
                 <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
                 <form onSubmit={(e) => { e.preventDefault(); onSubmit(); }}>
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium mb-1">Full Name</label>
-                        <input
-                            type="text"
-                            value={fullName}
-                            onChange={(e) => setFullName(e.target.value)}
-                            placeholder="Enter your full name"
-                            className="w-full px-3 py-2 border border-stone-900 rounded bg-black text-white"
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium mb-1">User Name</label>
-                        <input
-                            type="text"
-                            value={userName}
-                            onChange={(e) => setUserName(e.target.value)}
-                            placeholder="Enter your user name"
-                            className="w-full px-3 py-2 border border-stone-900 rounded bg-black text-white"
-                        />
+                    <div className="flex justify-between space-x-3 mb-4">
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium mb-1">Full Name</label>
+                            <input
+                                type="text"
+                                value={fullName}
+                                onChange={(e) => setFullName(e.target.value)}
+                                placeholder="Enter your full name"
+                                className="w-full px-3 py-2 border border-stone-900 rounded bg-black text-white"
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium mb-1">User Name</label>
+                            <input
+                                type="text"
+                                value={userName}
+                                onChange={(e) => setUserName(e.target.value)}
+                                placeholder="Enter your user name"
+                                className="w-full px-3 py-2 border border-stone-900 rounded bg-black text-white"
+                            />
+                        </div>
                     </div>
                     <div className="mb-4">
                         <label className="block text-sm font-medium mb-1">Email</label>
@@ -310,25 +318,27 @@ function EditModel({
                             className="w-full px-3 py-2 border border-stone-900 rounded bg-black text-white"
                         />
                     </div>
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium mb-1">Profile Image URL</label>
-                        <input
-                            type="text"
-                            value={profile_Image}
-                            onChange={(e) => setProfileImage(e.target.value)}
-                            placeholder="Enter your profile image URL"
-                            className="w-full px-3 py-2 border border-stone-900 rounded bg-black text-white"
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium mb-1">Cover Image URL</label>
-                        <input
-                            type="text"
-                            value={Cover_Image}
-                            onChange={(e) => setCoverImage(e.target.value)}
-                            placeholder="Enter your cover image URL"
-                            className="w-full px-3 py-2 border border-stone-900 rounded bg-black text-white"
-                        />
+                    <div className="flex space-x-3 mb-4">
+                        <div>
+                            <label className="block text-sm font-medium mb-1">Profile Image URL</label>
+                            <input
+                                type="text"
+                                value={profile_Image}
+                                onChange={(e) => setProfileImage(e.target.value)}
+                                className="w-full bg-black border border-stone-900 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="https://..."
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium mb-1">Cover Image URL</label>
+                            <input
+                                type="text"
+                                value={Cover_Image}
+                                onChange={(e) => setCoverImage(e.target.value)}
+                                className="w-full bg-black border border-stone-900 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="https://..."
+                            />
+                        </div>
                     </div>
                     <div className="flex justify-end mt-4">
                         <button

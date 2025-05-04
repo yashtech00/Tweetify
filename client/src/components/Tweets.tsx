@@ -4,11 +4,6 @@ import { useAuth } from "../hooks"
 import { Tweet, tweetProp } from "./Tweet";
 import LoadingSpinner from "./LoadingSpinner";
 
-
-
-
-
-
 export const Tweets = ({ tweetType, username, userId }: { tweetType: string; username?: string; userId?: string }) => {
   const [allTweets, setAllTweets] = useState<tweetProp[]>([])
   const { isLoading } = useAuth()

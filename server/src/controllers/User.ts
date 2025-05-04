@@ -25,8 +25,13 @@ export const getUserProfile = async (req: any, res: any) => {
 
 export const EditUserProfile = async (req: any, res: any) => {
   try {
+    console.log("hello");
+    
     const { fullname, username, email, bio, link, profile_Image, Cover_Image } =
       req.body;
+    console.log(profile_Image, "profile image url");
+    console.log(Cover_Image, "cover image url");
+    
     const userId = req.user._id;
     console.log(userId, "user id");
 
@@ -37,37 +42,16 @@ export const EditUserProfile = async (req: any, res: any) => {
 
     let profileImageUrlToUse = profile_Image;
     let coverImageUrlToUse = Cover_Image;
-
+    
     if (profile_Image) {
-      try {
-        const uploadRes = await cloudinary.uploader.upload(profile_Image, {
-          folder: "profile_images",
-        });
-        profileImageUrlToUse = uploadRes.secure_url;
-      } catch (uploadError) {
-        console.error(
-          "Cloudinary upload error for profile image:",
-          uploadError
-        );
-        return res
-          .status(500)
-          .json({ message: "Failed to upload profile image" });
-      }
+      const uploadRes = await cloudinary.uploader.upload(profile_Image);
+      profileImageUrlToUse = uploadRes.secure_url;
+    }
+    if (Cover_Image) {
+      const uploadRes = await cloudinary.uploader.upload(Cover_Image);
+      coverImageUrlToUse = uploadRes.secure_url;
     }
 
-    if (Cover_Image) {
-      try {
-        const uploadRes = await cloudinary.uploader.upload(Cover_Image, {
-          folder: "cover_images",
-        });
-        coverImageUrlToUse = uploadRes.secure_url;
-      } catch (uploadError) {
-        console.error("Cloudinary upload error for cover image:", uploadError);
-        return res
-          .status(500)
-          .json({ message: "Failed to upload cover image" });
-      }
-    }
 
     const updatedUser = await AuthModel.findByIdAndUpdate(
       userId,

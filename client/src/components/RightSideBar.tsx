@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-
 import useFollow from "../hooks/useFollow";
 import LoadingSpinner from "./LoadingSpinner";
 import { User } from "lucide-react";
-
-
 
 export interface User {
   _id: string;
@@ -16,11 +13,10 @@ export interface User {
     
 }
 
-
 function RightPanel() {
     const [suggestedUser, setSuggestedUser] = useState<User[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-  const { followAndUnfollow, isPending } = useFollow();
+    const { followAndUnfollow, isPending } = useFollow();
   
   const Backend_Url = import.meta.env.VITE_BACKEND_URL;
 
@@ -66,7 +62,7 @@ function RightPanel() {
                                                     className="w-full h-full object-cover rounded-full"
                                                 />
                                             ) : (
-                                                <User className="w-full h-full text-gray-500 rounded-full bg-white" />
+                                                <User className="w-full h-full text-black rounded-full bg-white p-1" />
                                             )}
                                         </div>
                                     </div>

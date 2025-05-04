@@ -57,7 +57,14 @@ export const SideBar = () => {
       </div>
 
       <div className="flex items-center space-x-3">
-        <div className="w-10 h-10 bg-gray-300 rounded-full flex justify-center items-center text-black"><User/></div>
+        {authUser?.profile_Image ? (
+          <div className="w-10 h-10 bg-gray-300 rounded-full flex justify-center items-center text-black">
+            {authUser?.profile_Image}
+        </div>
+        ) : (
+          <div className="w-10 h-10 bg-gray-300 rounded-full flex justify-center items-center text-black"><User/></div>
+        )}
+        
         <div className="flex-1">
           <p className="font-semibold text-sm  truncate">{authUser?.fullname}</p>
           <p className="text-sm text-gray-400">@{authUser?.username}</p> {/* Fix this */}

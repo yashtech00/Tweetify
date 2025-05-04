@@ -3,16 +3,28 @@ import AuthModel from "../model/AuthSchema";
 import bcrypt from "bcryptjs";
 import { LoginProp, SignupProp } from "../type/AuthType";
 import { generateToken } from "../lib/generateToken";
+import cloudinary from "../lib/Cloudinary";
 
 export const Signup = async (req: { body: SignupProp }, res: any) => {
-    const { username, fullname, email, password } = req.body;
+    const { username, fullname, email, password,profile_Image,Cover_Image } = req.body;
 
     try {
         const user = await AuthModel.findOne({ email });
         if (user) {
             return res.status(409).json({ message: "Already have an account, go for login" });
         }
-
+         let profileImageUrlToUse = profile_Image;
+            let coverImageUrlToUse = Cover_Image;
+            
+            if (profile_Image) {
+              const uploadRes = await cloudinary.uploader.upload(profile_Image);
+              profileImageUrlToUse = uploadRes.secure_url;
+            }
+            if (Cover_Image) {
+              const uploadRes = await cloudinary.uploader.upload(Cover_Image);
+              coverImageUrlToUse = uploadRes.secure_url;
+            }
+        
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const newUser = await AuthModel.create({
@@ -20,6 +32,8 @@ export const Signup = async (req: { body: SignupProp }, res: any) => {
             username,
             email,
             password: hashedPassword,
+            profile_Image:profileImageUrlToUse,
+            Cover_Image:coverImageUrlToUse,
         });
         generateToken(newUser._id, res);
 

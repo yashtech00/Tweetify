@@ -37,7 +37,10 @@ const getUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.getUserProfile = getUserProfile;
 const EditUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        console.log("hello");
         const { fullname, username, email, bio, link, profile_Image, Cover_Image } = req.body;
+        console.log(profile_Image, "profile image url");
+        console.log(Cover_Image, "cover image url");
         const userId = req.user._id;
         console.log(userId, "user id");
         const user = yield AuthSchema_1.default.findById(userId);
@@ -47,32 +50,12 @@ const EditUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function
         let profileImageUrlToUse = profile_Image;
         let coverImageUrlToUse = Cover_Image;
         if (profile_Image) {
-            try {
-                const uploadRes = yield Cloudinary_1.default.uploader.upload(profile_Image, {
-                    folder: "profile_images",
-                });
-                profileImageUrlToUse = uploadRes.secure_url;
-            }
-            catch (uploadError) {
-                console.error("Cloudinary upload error for profile image:", uploadError);
-                return res
-                    .status(500)
-                    .json({ message: "Failed to upload profile image" });
-            }
+            const uploadRes = yield Cloudinary_1.default.uploader.upload(profile_Image);
+            profileImageUrlToUse = uploadRes.secure_url;
         }
         if (Cover_Image) {
-            try {
-                const uploadRes = yield Cloudinary_1.default.uploader.upload(Cover_Image, {
-                    folder: "cover_images",
-                });
-                coverImageUrlToUse = uploadRes.secure_url;
-            }
-            catch (uploadError) {
-                console.error("Cloudinary upload error for cover image:", uploadError);
-                return res
-                    .status(500)
-                    .json({ message: "Failed to upload cover image" });
-            }
+            const uploadRes = yield Cloudinary_1.default.uploader.upload(Cover_Image);
+            coverImageUrlToUse = uploadRes.secure_url;
         }
         const updatedUser = yield AuthSchema_1.default.findByIdAndUpdate(userId, {
             fullname,

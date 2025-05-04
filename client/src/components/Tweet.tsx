@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Bookmark, Heart, MessageCircle, Repeat, Trash, User } from "lucide-react";
+import { Bookmark, Heart, MessageCircle, Repeat, Trash, User, X } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "../hooks";
 import toast from "react-hot-toast";
@@ -10,6 +10,7 @@ interface Comment {
     user: {
         fullname: string;
         username: string;
+        profile_Image: string;
     };
 }
 export interface tweetProp {
@@ -19,6 +20,7 @@ export interface tweetProp {
         _id: string;
         username: string;
         fullname: string;
+        profile_Image: string;
     };
     comments: Comment[];
     likes: string[];
@@ -97,7 +99,7 @@ export const Tweet = ({ tweet, onDelete }: {
                 <div className="flex justify-between">
                     <div className="flex ">
                         <div className="rounded-full w-8 h-8 bg-gray-300 flex justify-center items-center text-black">
-                            <User />
+                            {tweet.user.profile_Image ? tweet.user.profile_Image : <User className="text-black" />}
                         </div>
                         <div className="mx-4">
                             <div className=" ">{tweet.user.username}</div>
@@ -121,14 +123,17 @@ export const Tweet = ({ tweet, onDelete }: {
                     <div className="py-4 ">{tweet.content}</div>
 
                     <div className="flex justify-between py-4 text-stone-500">
-                        <div className="flex cursor-pointer hover:text-blue-600 " onClick={toggleModel}>
+                        <div className={`flex cursor-pointer ${authUser?._id && like.includes(authUser._id) ? 'text-blue-600' : 'hover:text-blue-600'} `} onClick={toggleModel}>
                             <MessageCircle />
                             <span className="ml-2">{comments.length}</span>
                         </div>
                         <div className="hover:text-green-500">
                             <Repeat />
                         </div>
-                        <div className="flex cursor-pointer hover:text-pink-600" onClick={handleLike} >
+                        <div
+                            className={`flex cursor-pointer ${authUser?._id && like.includes(authUser._id) ? 'text-pink-600' : 'hover:text-pink-600'}`}
+                            onClick={handleLike}
+                        >
                             <Heart />
                             <span className="ml-2">{like.length}</span>
                         </div>
@@ -168,41 +173,54 @@ function CommentModel({
     setInputComments,
 }: CommentModelProps) {
     return (
-        <div className="fixed inset-0 bg-white bg-opacity-50 flex justify-center items-center">
-            <div className=" bg-black text-white p-6 rounded shadow-lg w-96">
-                <div className="text-lg font-bold mb-4">Comments</div>
-                <div className="max-h-64 overflow-y-auto">
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center">
+            <div className=" bg-black text-white p-6 rounded-xl shadow-lg w-full max-w-xl">
+                <div className="flex justify-between">
+                    <div className="text-lg font-bold mb-4">
+                        Comments
+                    </div>
+                    <div>
+                        <button
+                            onClick={onClose}
+                            className="  px-4 py-2 rounded mr-2"
+                            title="Close"
+                            aria-label="Close"
+                        >
+                            <X />
+                        </button>
+                    </div>
+                </div>
+                <div className="max-h-64 overflow-y-auto border-2 border-stone-900 rounded  p-2 mb-4">
                     {comments.map((comment) => (
                         <div key={comment._id} className="mb-4">
                             <div className="flex items-center">
                                 <div className="bg-gray-300 rounded-full flex justify-center items-center w-8 h-8 ">
-                                    <User className=" " />
+                                    {comment.user.profile_Image ? <div className="w-10 h-10 bg-gray-300 rounded-full flex justify-center items-center text-black">
+                                        {comment.user.profile_Image}
+                                    </div> : <User className="text-black" />}
                                 </div>
                                 <span className="font-bold ml-2">{comment.user.username}</span>
                             </div>
-                            <div className="ml-10">{comment.content}</div>
+                            <div className="ml-10 border-l-2 border-stone-900">~{comment.content}</div>
                         </div>
                     ))}
                 </div>
-                <textarea
-                    className="w-full border rounded p-2 mt-4 bg-black"
-                    placeholder="Add a comment..."
-                    value={inputComment}
-                    onChange={(e) => setInputComments(e.target.value)}
-                />
-                <div className="flex justify-end mt-4">
-                    <button
-                        onClick={onClose}
-                        className="bg-gray-300 text-black px-4 py-2 rounded mr-2"
-                    >
-                        Close
-                    </button>
-                    <button
-                        onClick={onCommentSubmit}
-                        className="bg-blue-500 text-white px-4 py-2 rounded"
-                    >
-                        Submit
-                    </button>
+                <div className="flex justify-between space-x-4 ">
+                    <textarea
+                        className="w-full border-2 border-stone-900 rounded p-2  mt-4 bg-black"
+                        placeholder="Add a comment..."
+                        value={inputComment}
+                        onChange={(e) => setInputComments(e.target.value)}
+                    />
+                    <div className="flex justify-end">
+
+                        <button
+                            onClick={onCommentSubmit}
+                            className="bg-violet-500 text-white font-semibold text-xl p-2 my-0 rounded hover:bg-violet-600 mt-4"
+                        >
+                            Submit
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

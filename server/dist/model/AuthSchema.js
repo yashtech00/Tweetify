@@ -48,9 +48,11 @@ const AuthSchema = new Schema({
     },
     profile_Image: {
         type: String,
+        default: ""
     },
     Cover_Image: {
         type: String,
+        default: ""
     },
     likedTweets: [
         {

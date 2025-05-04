@@ -35,10 +35,13 @@ function App() {
               <Route path="/profile/:username" element={authUser ? <Layout><Profile /></Layout> : <Navigate to="/" />} />
             </Routes>
          
-          <Toaster position="bottom-right" toastOptions={{
-            className: "bg-black",
+          <Toaster position="bottom-center" toastOptions={{
+            className: "bg-violet-500 text-white",
+            duration: 2000,
             style: {
-              backgroundColor: 'black',
+              backgroundColor: '#3b0968',
+              fontSize: '16px',
+              fontWeight: 'bold',
               color: 'white',
               border: '2px solid stone-900'
             }
