@@ -13,38 +13,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getLikeTweets = exports.getAnyUserTweets = exports.getFollowingTweets = exports.LikeUnlikeTweet = exports.DeleteTweet = exports.commentTweet = exports.AllTweets = exports.PostTweet = void 0;
-const Cloudinary_1 = __importDefault(require("../lib/Cloudinary"));
 const AuthSchema_1 = __importDefault(require("../model/AuthSchema"));
 const notification_1 = __importDefault(require("../model/notification"));
 const TweetSchema_1 = __importDefault(require("../model/TweetSchema"));
 const PostTweet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log("before post tweet");
-        const { content, image } = req.body;
-        const userId = req.user._id.toString();
-        console.log(content, userId, "hello post tweet");
+        const { content } = req.body;
+        const userId = req.user._id;
         const user = yield AuthSchema_1.default.findById(userId);
         if (!user) {
             return res.status(401).json("user not found");
         }
-        let ImageUrlToUse = image;
-        if (image) {
-            try {
-                const uploadRes = yield Cloudinary_1.default.uploader.upload(image, {
-                    folder: "profile_images",
-                });
-                ImageUrlToUse = uploadRes.secure_url;
-            }
-            catch (uploadError) {
-                console.error("Cloudinary upload error for profile image:", uploadError);
-                return res
-                    .status(500)
-                    .json({ message: "Failed to upload profile image" });
-            }
-        }
         const tweets = yield TweetSchema_1.default.create({
             content,
-            image: ImageUrlToUse,
             user: userId,
         });
         return res
@@ -98,9 +79,10 @@ const commentTweet = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             select: "-password",
         });
         console.log(updateComment, "tweet updated comment");
-        return res
-            .status(200)
-            .json({ message: "commented successfully", data: updateComment === null || updateComment === void 0 ? void 0 : updateComment.comments });
+        return res.status(200).json({
+            message: "commented successfully",
+            data: updateComment === null || updateComment === void 0 ? void 0 : updateComment.comments,
+        });
     }
     catch (e) {
         console.error(e);
@@ -155,7 +137,7 @@ const LikeUnlikeTweet = (req, res) => __awaiter(void 0, void 0, void 0, function
             const notification = new notification_1.default({
                 from: userId,
                 to: tweet.user,
-                type: "like"
+                type: "like",
             });
             yield notification.save();
             const updatedLikes = tweet.likes;

@@ -1,14 +1,15 @@
 import axios from "axios";
-import { Image, User } from "lucide-react";
-import { useState } from "react";
+import { User } from "lucide-react";
+import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useAuth } from "../hooks";
+import { CiImageOn } from "react-icons/ci";
+import { BsEmojiSmileFill } from "react-icons/bs";
 
 export const CreateTweet = () => {
   const [tweet, setTweet] = useState("");
-  const [image, setImage] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+
+  const [loading] = useState(false);
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
   const { authUser } = useAuth();
@@ -16,23 +17,17 @@ export const CreateTweet = () => {
   const handleSubmitTweet = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevent form from refreshing the page
     try {
-      const formData = new FormData();
-      formData.append("content", tweet);
-      if (image) {
-        formData.append("image", image);
-      }
 
-      const res = await axios.post(`${BACKEND_URL}/tweets/PostTweet`, formData, {
+      const res = await axios.post(`${BACKEND_URL}/tweets/PostTweet`, {
+        content: tweet,
+
+      }, {
         withCredentials: true,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
       });
 
       console.log(res);
       setTweet(""); // Clear the input after submission
-      setImage(null);
-      setImagePreview(null);
+
       toast.success("Your post was sent");
     } catch (e) {
       console.error(e);
@@ -40,16 +35,7 @@ export const CreateTweet = () => {
     }
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setImage(file);
-      setLoading(true);
-      const previewUrl = URL.createObjectURL(file);
-      setImagePreview(previewUrl);
-      setLoading(false);
-    }
-  };
+
 
   return (
     <div className="p-4 border-b border-stone-800 bg-black">
@@ -74,39 +60,19 @@ export const CreateTweet = () => {
               className="w-full text-lg border-none focus:ring-0 outline-none resize-none bg-black text-white mt-2 mb-4"
             />
           </div>
-          <div className="flex justify-between">
-            <div className="flex items-center justify-between mt-2">
-              <label className="cursor-pointer">
-                <Image className="text-gray-500 hover:text-blue-500 " />
-                <input
-                  type="file"
-                  accept="image/*"
-                  title="Upload an image"
-                  onChange={handleImageChange}
-                  className="hidden"
-                />
-              </label>
-            </div>
 
-            <div className="flex justify-end mt-2">
-              <button
-                type="submit"
-                className="bg-violet-500 text-white px-4 py-2 rounded-full font-semibold hover:bg-violet-600 mt-2"
-              >
-                Tweet
-              </button>
-            </div>
+
+
+          <div className="flex justify-end mt-2">
+            <button
+              type="submit"
+              className="bg-violet-500 text-white px-4 py-2 rounded-full font-semibold hover:bg-violet-600 mt-2"
+            >
+              Tweet
+            </button>
+
           </div>
-          {loading && <p className="text-gray-500 mt-2">Loading...</p>}
-          {imagePreview && (
-            <div className="mt-4">
-              <img
-                src={imagePreview}
-                alt="Preview"
-                className="max-w-full h-auto rounded-lg"
-              />
-            </div>
-          )}
+
         </div>
       </form>
     </div>

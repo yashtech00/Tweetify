@@ -52,11 +52,18 @@ export const Tweets = ({ tweetType, username, userId }: { tweetType: string; use
 
   return (
     <div>
-      {allTweets.map((tweet) => (
-        <div key={tweet._id} >
-          <Tweet tweet={tweet} onDelete={handleDeleteTweet}/>
+      {allTweets.length === 0 && tweetType === "tweets" ? (
+        <div className="flex flex-col items-center justify-center h-full text-gray-500 mt-6">
+          <p className="text-lg font-semibold">No tweets to display</p>
+          <p className="text-sm">Start tweeting to see your posts here!</p>
         </div>
-      ))}
+      ) : (
+        allTweets.map((tweet) => (
+          <div key={tweet._id}>
+            <Tweet tweet={tweet} onDelete={handleDeleteTweet} />
+          </div>
+        ))
+      )}
     </div>
   )
 }

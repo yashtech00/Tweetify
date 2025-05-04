@@ -16,6 +16,7 @@ interface Comment {
 export interface tweetProp {
     _id: string;
     content: string;
+    image: string;
     user: {
         _id: string;
         username: string;
@@ -120,7 +121,8 @@ export const Tweet = ({ tweet, onDelete }: {
 
                 </div>
                 <div className="ml-12 ">
-                    <div className="py-4 ">{tweet.content}</div>
+                <div className="py-4 ">{tweet.content}</div>
+                <div className="py-4 ">{tweet.image}</div>
 
                     <div className="flex justify-between py-4 text-stone-500">
                         <div className={`flex cursor-pointer ${authUser?._id && like.includes(authUser._id) ? 'text-blue-600' : 'hover:text-blue-600'} `} onClick={toggleModel}>

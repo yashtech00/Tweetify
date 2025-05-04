@@ -3,42 +3,19 @@ import AuthModel from "../model/AuthSchema";
 import NotificationModel from "../model/notification";
 import TweetModel from "../model/TweetSchema";
 
-
-
 export const PostTweet = async (req: any, res: any) => {
   try {
-    console.log("before post tweet");
-
-    const { content,image } = req.body;
-    const userId = req.user._id.toString();
-    console.log(content, userId, "hello post tweet");
+    const { content } = req.body;
+    const userId = req.user._id;
 
     const user = await AuthModel.findById(userId);
     if (!user) {
       return res.status(401).json("user not found");
     }
 
-     let ImageUrlToUse = image;
-        if (image) {
-          try {
-            const uploadRes = await cloudinary.uploader.upload(image, {
-              folder: "profile_images",
-            });
-            ImageUrlToUse = uploadRes.secure_url;
-          } catch (uploadError) {
-            console.error(
-              "Cloudinary upload error for profile image:",
-              uploadError
-            );
-            return res
-              .status(500)
-              .json({ message: "Failed to upload profile image" });
-          }
-        }
-
     const tweets = await TweetModel.create({
       content,
-      image: ImageUrlToUse,
+
       user: userId,
     });
     return res
@@ -70,9 +47,9 @@ export const commentTweet = async (req: any, res: any) => {
   try {
     const tweetId = req.params.id;
     const { content } = req.body;
-      const userId = req.user._id;
-      console.log(tweetId,"comment tweet Id");
-      
+    const userId = req.user._id;
+    console.log(tweetId, "comment tweet Id");
+
     if (!content) {
       return res.status(401).json({ message: "Tweet content not found" });
     }
@@ -93,11 +70,12 @@ export const commentTweet = async (req: any, res: any) => {
       path: "comments.user",
       select: "-password",
     });
-      console.log(updateComment, "tweet updated comment");
-      
-    return res
-      .status(200)
-        .json({ message: "commented successfully", data: updateComment?.comments });
+    console.log(updateComment, "tweet updated comment");
+
+    return res.status(200).json({
+      message: "commented successfully",
+      data: updateComment?.comments,
+    });
   } catch (e) {
     console.error(e);
     return res
@@ -132,7 +110,7 @@ export const DeleteTweet = async (req: any, res: any) => {
 export const LikeUnlikeTweet = async (req: any, res: any) => {
   try {
     const userId = req.user.id;
-      const { id:tweetId } = req.params;
+    const { id: tweetId } = req.params;
     console.log(tweetId, "tweetId");
 
     const tweet = await TweetModel.findOne({ _id: tweetId });
@@ -152,16 +130,19 @@ export const LikeUnlikeTweet = async (req: any, res: any) => {
       );
       return res.status(200).json(updatedLikes);
     } else {
-        tweet.likes.push(userId);
-        await AuthModel.updateOne({_id: userId}, {$push: {likedPosts: tweetId}})
-        await tweet.save();
+      tweet.likes.push(userId);
+      await AuthModel.updateOne(
+        { _id: userId },
+        { $push: { likedPosts: tweetId } }
+      );
+      await tweet.save();
 
-        const notification = new NotificationModel({
-            from: userId,
-            to: tweet.user,
-            type: "like"
-        })
-        await notification.save();
+      const notification = new NotificationModel({
+        from: userId,
+        to: tweet.user,
+        type: "like",
+      });
+      await notification.save();
 
       const updatedLikes = tweet.likes;
       return res.status(200).json(updatedLikes);
@@ -219,7 +200,7 @@ export const getAnyUserTweets = async (req: any, res: any) => {
         select: "-password",
       });
 
-      res.status(200).json({ data: posts });
+    res.status(200).json({ data: posts });
   } catch (error: any) {
     console.log("Error while getting user posts: ", error.message);
     return res.status(500).json({ message: "Internal Server Error" });
@@ -227,9 +208,8 @@ export const getAnyUserTweets = async (req: any, res: any) => {
 };
 
 export const getLikeTweets = async (req: any, res: any) => {
-    const userId = req.params.id;
-    try {
- 
+  const userId = req.params.id;
+  try {
     const user = await AuthModel.findById(userId);
     if (!user) {
       return res.status(401).json("user not found");
@@ -246,11 +226,9 @@ export const getLikeTweets = async (req: any, res: any) => {
         select: "-password",
       });
 
-      res.status(200).json(LikesTweet);
-  } catch (e:any) {
-      console.error(e.message);
-      return res.status(500).json({message:"Internal server error "})
-      
+    res.status(200).json(LikesTweet);
+  } catch (e: any) {
+    console.error(e.message);
+    return res.status(500).json({ message: "Internal server error " });
   }
 };
-
