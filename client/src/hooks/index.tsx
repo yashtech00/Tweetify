@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         toast.success("Welcome back")
       } catch (err) {
         setAuthUser(null)
-        toast.error("Unauthorized")
+        // toast.error("Unauthorized")
       } finally {
         setIsLoading(false)
       }
