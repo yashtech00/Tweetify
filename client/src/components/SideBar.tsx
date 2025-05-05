@@ -10,16 +10,17 @@ export const SideBar = () => {
   const { authUser, setAuthUser } = useAuth(); // ← access auth from context
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   const handleLogout = async () => {
+    setAuthUser(null);
+    navigate("/login");
     try {
       await axios.post(`${BACKEND_URL}/user/logout`, {}, { withCredentials: true });
-      setAuthUser(null)
-      navigate("/login");
-      toast.success("Logout successfully,Please visit again ")
+      toast.success("Logged out successfully. Please visit again!");
     } catch (e) {
       console.error("Logout failed:", e);
-      toast.error("Error while Logout")
+      toast.error("Error while logging out. Please try again.");
     }
   };
+  
 
   return (
     <div className="sticky top-0 w-64 h-screen p-6  text-white flex flex-col justify-between">
