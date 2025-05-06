@@ -10,17 +10,18 @@ export const SideBar = () => {
   const { authUser, setAuthUser } = useAuth(); // ← access auth from context
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   const handleLogout = async () => {
-    setAuthUser(null);
-    navigate("/login");
+
     try {
       await axios.post(`${BACKEND_URL}/user/logout`, {}, { withCredentials: true });
       toast.success("Logged out successfully. Please visit again!");
+      setAuthUser(null);
+      navigate("/login");
     } catch (e) {
       console.error("Logout failed:", e);
       toast.error("Error while logging out. Please try again.");
     }
   };
-  
+
 
   return (
     <div className="sticky top-0 w-64 h-screen p-6  text-white flex flex-col justify-between">
@@ -58,10 +59,10 @@ export const SideBar = () => {
       </div>
 
       <div className="flex items-center space-x-3">
-        
-      <User className="w-10 h-10 rounded-full bg-white text-black p-2" />
-        
-        
+
+        <User className="w-10 h-10 rounded-full bg-white text-black p-2" />
+
+
         <div className="flex-1">
           <p className="font-semibold text-sm  truncate">{authUser?.fullname}</p>
           <p className="text-sm text-gray-400">@{authUser?.username}</p> {/* Fix this */}

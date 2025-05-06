@@ -34,13 +34,8 @@ export const Auth = ({ type }: { type: "login" | "signup" }) => {
             setPassword("");
             setUsername("");
             setCoverImage("");
-
-           
-            setAuthUser(res.data.data); 
-
-            
-                navigate("/");
-            
+            navigate("/");
+            setAuthUser(res.data.data);
             toast.success(
                 type === "signup"
                     ? "Signup successful, Welcome to Tweetify"
@@ -134,30 +129,30 @@ export const Auth = ({ type }: { type: "login" | "signup" }) => {
 
                     {type === "signup" ? (
                         <div>
-                        <label className="block text-sm font-medium mb-1">Cover Image URL</label>
-                        <input
-                            type="text"
-                            value={coverImage}
-                            onChange={(e) => setCoverImage(e.target.value)}
-                            className="w-full bg-black border border-stone-900 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="https://..."
-                        />
-                    </div>
+                            <label className="block text-sm font-medium mb-1">Cover Image URL</label>
+                            <input
+                                type="text"
+                                value={coverImage}
+                                onChange={(e) => setCoverImage(e.target.value)}
+                                className="w-full bg-black border border-stone-900 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="https://..."
+                            />
+                        </div>
 
-                    ):("")}
-                    
+                    ) : ("")}
+
 
                     <button
                         type="submit"
                         className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
                     >
-                         {type==="signup" ? "create account":"Log in"}
+                        {type === "signup" ? "create account" : "Log in"}
                     </button>
                 </form>
                 <p className="mt-4 text-center text-sm text-gray-600">
-                    {type==="signup" ? "Already have an account?" : "Don't have an account?"}
-                    <Link to={`/${type==="signup" ? "login":"signup"}`} className="text-blue-500 hover:underline">
-                    {type==="signup" ? "login":"signup"}
+                    {type === "signup" ? "Already have an account?" : "Don't have an account?"}
+                    <Link to={`/${type === "signup" ? "login" : "signup"}`} className="text-blue-500 hover:underline">
+                        {type === "signup" ? "login" : "signup"}
                     </Link>
                 </p>
             </div>

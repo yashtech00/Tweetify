@@ -27,7 +27,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [authUser, setAuthUser] = useState<UserProp | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAuthUser = async () => {
@@ -35,10 +34,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         const res = await axios.get(`${BACKEND_URL}/user/me`, { withCredentials: true });
         setAuthUser(res.data.data);
         toast.success("Welcome back");
-        // navigate("/");
       } catch (err) {
         setAuthUser(null);
-        // Optionally show a toast here if needed
       } finally {
         setIsLoading(false);
       }

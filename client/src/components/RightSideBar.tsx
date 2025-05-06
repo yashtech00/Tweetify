@@ -44,7 +44,9 @@ function RightPanel() {
                 <p className='font-bold'>Who to follow</p>
                 <div className='flex flex-col gap-4'>
                     {isLoading ? (
-                        <Loading/>
+                        <div className="flex justify-center items-center h-8 ">
+                        <div className="loader border-t-4 border-blue-500 rounded-full w-8 h-10 animate-spin"></div>
+                    </div>
                     ) : (
                         suggestedUser.map((user) => (
                             <Link
@@ -77,7 +79,9 @@ function RightPanel() {
                                         }}
                                     >
                                         {isPending ? (
-                                            <Loading />
+                                           <div className="flex justify-center items-center h-8 ">
+                                           <div className="loader border-t-4 border-blue-500 rounded-full w-8 h-10 animate-spin"></div>
+                                       </div>
                                         ) : (
                                             "Follow"
                                         )}
