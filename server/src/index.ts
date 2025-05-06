@@ -13,7 +13,7 @@ import notification from "./routes/notification";
 const app = express();
 
 const corsOptions = {
-    origin: ['https://tweetify-tau.vercel.app', 'http://localhost:5173'],
+    origin: ['https://tweetify-1.onrender.com', 'http://localhost:5173'],
     credentials: true,
   };
 app.use(cors(corsOptions));

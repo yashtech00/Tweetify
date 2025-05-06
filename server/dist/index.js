@@ -15,7 +15,7 @@ const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
 const notification_1 = __importDefault(require("./routes/notification"));
 const app = (0, express_1.default)();
 const corsOptions = {
-    origin: ['https://tweetify-tau.vercel.app', 'http://localhost:5173'],
+    origin: ['https://tweetify-1.onrender.com', 'http://localhost:5173'],
     credentials: true,
 };
 app.use((0, cors_1.default)(corsOptions));
