@@ -2,10 +2,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
-
-
-import LoadingSpinner from "./LoadingSpinner";
 import { Heart, User } from "lucide-react";
+import { Loading } from "./Loading";
 
 interface From {
   _id: string;
@@ -55,7 +53,7 @@ export const Notify = () => {
 
       {isLoading && (
         <div className="flex justify-center h-full items-center">
-          <LoadingSpinner size="lg" />
+          <Loading />
         </div>
       )}
 

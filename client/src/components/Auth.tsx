@@ -35,10 +35,12 @@ export const Auth = ({ type }: { type: "login" | "signup" }) => {
             setUsername("");
             setCoverImage("");
 
-            // ✅ set auth user in context
-            setAuthUser(res.data.data); // assuming backend returns user in res.data.data
+           
+            setAuthUser(res.data.data); 
 
-            navigate("/");
+            
+                navigate("/");
+            
             toast.success(
                 type === "signup"
                     ? "Signup successful, Welcome to Tweetify"
@@ -149,7 +151,7 @@ export const Auth = ({ type }: { type: "login" | "signup" }) => {
                         type="submit"
                         className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
                     >
-                         {type==="signup" ? "create account":"Logging in"}
+                         {type==="signup" ? "create account":"Log in"}
                     </button>
                 </form>
                 <p className="mt-4 text-center text-sm text-gray-600">

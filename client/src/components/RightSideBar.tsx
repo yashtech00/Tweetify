@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import useFollow from "../hooks/useFollow";
-import LoadingSpinner from "./LoadingSpinner";
 import { User } from "lucide-react";
+import { Loading } from "./Loading";
 
 export interface User {
   _id: string;
@@ -44,7 +44,7 @@ function RightPanel() {
                 <p className='font-bold'>Who to follow</p>
                 <div className='flex flex-col gap-4'>
                     {isLoading ? (
-                        <>Loading...</>
+                        <Loading/>
                     ) : (
                         suggestedUser.map((user) => (
                             <Link
@@ -76,7 +76,11 @@ function RightPanel() {
                                             fetchSuggestedUsers(); // refetch after follow
                                         }}
                                     >
-                                        {isPending ? <LoadingSpinner size="sm" /> : "Follow"}
+                                        {isPending ? (
+                                            <Loading />
+                                        ) : (
+                                            "Follow"
+                                        )}
                                     </button>
                                 </div>
                             </Link>
