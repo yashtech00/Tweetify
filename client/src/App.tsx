@@ -26,7 +26,7 @@ function App() {
     
     <>
       <Routes>
-        <Route path="/" element={authUser ? <Layout><Home /></Layout> : <Navigate to="/login" />} />
+        <Route path="/" element={<Layout><Home /></Layout> } />
         <Route path="/signup" element={!authUser ? <Signup /> : <Navigate to="/" />} />
         <Route path="/login" element={!authUser ? <Login /> : <Navigate to="/" />} />
         <Route path="/notifications" element={authUser ? <Layout><Notification /></Layout> : <Navigate to="/" />} />
