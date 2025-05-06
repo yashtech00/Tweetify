@@ -15,8 +15,4 @@ export const generateToken = (userId: any, res: Response) => {
         secure: (process.env.NODE_ENV || "development").trim() !== "development",
       });
       
-      
-    console.log("tokens:", token);
-    
-    return token
 }  
