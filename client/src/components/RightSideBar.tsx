@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import useFollow from "../hooks/useFollow";
 import { User } from "lucide-react";
-import { Loading } from "./Loading";
+
 
 export interface User {
   _id: string;
