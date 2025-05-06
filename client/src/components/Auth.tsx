@@ -34,8 +34,9 @@ export const Auth = ({ type }: { type: "login" | "signup" }) => {
             setPassword("");
             setUsername("");
             setCoverImage("");
-            navigate("/");
             setAuthUser(res.data.data);
+            navigate("/");
+           
             toast.success(
                 type === "signup"
                     ? "Signup successful, Welcome to Tweetify"
