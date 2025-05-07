@@ -1,60 +1,31 @@
-import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { UserProp } from "../types/type";
 
-export interface UserProp {
-  username: string;
-  fullname: string;
-  bio: string;
-  link: string;
-  email: string;
-  _id: string;
-  profile_Image: string;
-  Cover_Image: string;
-  followers: string[];
-}
 
-interface AuthContextType {
-  authUser: UserProp | null;
-  setAuthUser: (user: UserProp | null) => void;
-  isLoading: boolean;
-}
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [authUser, setAuthUser] = useState<UserProp | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+export const useAuth = () => {
+ 
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-
-  useEffect(() => {
-    const fetchAuthUser = async () => {
+  const { data: authUser, isLoading } = useQuery<UserProp>({
+    queryKey: ["authUser"],
+    queryFn: async () => {
       try {
-        const res = await axios.get(`${BACKEND_URL}/user/me`, { withCredentials: true });
-        setAuthUser(res.data.data);
-        toast.success("Welcome back");
-      } catch (err) {
-        setAuthUser(null);
-      } finally {
-        setIsLoading(false);
+        const res = await axios.get(`${BACKEND_URL}/user/auth`, { withCredentials: true });
+        return res.data.data;
+      } catch (e:any) {
+        console.error(e.message);
+        return null;
       }
-    };
-
-    fetchAuthUser();
-  }, []);
+    },
+    retry: false
+  })
+  
 
   return (
-    <AuthContext.Provider value={{ authUser, setAuthUser, isLoading }}>
-      {children}
-    </AuthContext.Provider>
+    {authUser,isLoading}
   );
 };
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
-};

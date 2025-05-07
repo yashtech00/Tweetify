@@ -1,56 +1,66 @@
-
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks";
+import { Link } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AuthProp } from "../types/type";
+
 
 export const Auth = ({ type }: { type: "login" | "signup" }) => {
-    const [fullname, setFullname] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [username, setUsername] = useState("");
 
-    const [coverImage, setCoverImage] = useState("");
-    const navigate = useNavigate();
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-    const { setAuthUser } = useAuth();  // <-- add this
+    const [formsData, setFormsData] = useState<AuthProp>({
+        username: "",
+        fullname: "",
+        password: "",
+        email: "",
+        Cover_Image: ""
+    });
 
+    const queryClient = useQueryClient();
+    const { mutate: AuthMutation } = useMutation({
+        mutationKey: ["login"],
+        mutationFn: async ({ username,
+            email,
+            password,
+            fullname,
+            Cover_Image }: AuthProp) => {
+            try {
+                const res = await axios.post(`${BACKEND_URL}/user/${type}`, {
+                    username,
+                    email,
+                    password,
+                    fullname,
+                    Cover_Image
+                }, { withCredentials: true });
+                console.log(res);
+                queryClient.invalidateQueries({ queryKey: ["authUser"] });
+                return res.data.data
+            } catch (e) {
+                console.error(e);
+                if (axios.isAxiosError(e)) {
+                    const errmsg = isAxiosError(e) ? e.response?.data?.message : "server is not responding"
+                    toast.error(errmsg);
+                } else {
+                    toast.error("server is not responding")
+                }
+                return;
+            }
+        }
+    })
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        try {
-            const res = await axios.post(`${BACKEND_URL}/user/${type}`, {
-                username,
-                email,
-                password,
-                fullname,
-                Cover_Image: coverImage
-            }, { withCredentials: true });
-
-            console.log(res);
-
-            setFullname("");
-            setEmail("");
-            setPassword("");
-            setUsername("");
-            setCoverImage("");
-            setAuthUser(res.data.data);
-            navigate("/");
-           
-            toast.success(
-                type === "signup"
-                    ? "Signup successful, Welcome to Tweetify"
-                    : "Login successful, Welcome back!"
-            );
-        } catch (e: any) {
-            console.error(e.message);
-            toast.error(
-                type === "signup"
-                    ? "Error while creating account, or account already exists"
-                    : "Invalid login credentials"
-            );
-        }
+        AuthMutation(formsData)
     };
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormsData(prevState => ({
+            ...prevState,
+            [name]: value
+        }))
+    }
+
     return (
         <div className="h-screen flex justify-center items-center bg-black ">
             <div className="border-2 border-stone-800 rounded-xl w-full max-w-xl p-8 text-white">
@@ -72,7 +82,9 @@ export const Auth = ({ type }: { type: "login" | "signup" }) => {
                                 <input
                                     id="username"
                                     placeholder="Enter your username"
-                                    onChange={(e) => setUsername(e.target.value)}
+                                    onChange={handleInputChange}
+                                    name="username"
+                                    value={formsData.username}
                                     className="mt-1 block w-full px-4 py-2 border border-stone-800 rounded-md bg-black text-white"
                                     type="text"
                                 />
@@ -87,7 +99,9 @@ export const Auth = ({ type }: { type: "login" | "signup" }) => {
                                 <input
                                     id="fullname"
                                     placeholder="Enter your Fullname"
-                                    onChange={(e) => setFullname(e.target.value)}
+                                    onChange={handleInputChange}
+                                    name="fullname"
+                                    value={formsData.fullname}
                                     className="mt-1 block w-full px-4 py-2 border border-stone-800 rounded-md bg-black text-white"
                                     type="text"
                                 />
@@ -105,7 +119,9 @@ export const Auth = ({ type }: { type: "login" | "signup" }) => {
                         <input
                             id="email"
                             placeholder="Enter your email"
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={handleInputChange}
+                            name="email"
+                            value={formsData.email}
                             className="mt-1 block w-full px-4 py-2 border border-stone-800 rounded-md bg-black text-white"
                             type="email"
                             required
@@ -121,7 +137,9 @@ export const Auth = ({ type }: { type: "login" | "signup" }) => {
                         <input
                             id="password"
                             placeholder="Enter your password"
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={handleInputChange}
+                            name="password"
+                            value={formsData.password}
                             className="mt-1 block w-full px-4 py-2 border border-stone-800 rounded-md bg-black text-white"
                             type="password"
                             required
@@ -133,8 +151,9 @@ export const Auth = ({ type }: { type: "login" | "signup" }) => {
                             <label className="block text-sm font-medium mb-1">Cover Image URL</label>
                             <input
                                 type="text"
-                                value={coverImage}
-                                onChange={(e) => setCoverImage(e.target.value)}
+                                onChange={handleInputChange}
+                                name="Cover_Image"
+                                value={formsData.Cover_Image}
                                 className="w-full bg-black border border-stone-900 rounded-lg px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 placeholder="https://..."
                             />
