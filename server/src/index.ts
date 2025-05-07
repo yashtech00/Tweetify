@@ -26,7 +26,7 @@ app.use(cookieParser());
 connectDB();
 const PORT = process.env.PORT || 8001;
 
-app.use("/user", authRoutes);
+app.use("/auth", authRoutes);
 app.use("/tweets", tweetRoutes);
 app.use("/profile", userRoutes);
 app.use("/notify", notification);

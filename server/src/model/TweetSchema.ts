@@ -15,8 +15,12 @@ const TweetSchema = new Schema(
       trim: true,
       required: true,
     },
-    
-
+    Bookmark: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+      },
+    ],
     likes: [
       {
         type: mongoose.Schema.Types.ObjectId,

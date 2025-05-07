@@ -3,18 +3,12 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import useFollow from "../hooks/useFollow";
 import { User } from "lucide-react";
+import { UserProp } from "../types/type";
 
 
-export interface User {
-  _id: string;
-  fullname: string;
-  username: string;
-    profile_Image: string;
-    
-}
 
 function RightPanel() {
-    const [suggestedUser, setSuggestedUser] = useState<User[]>([]);
+    const [suggestedUser, setSuggestedUser] = useState<UserProp[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const { followAndUnfollow, isPending } = useFollow();
   

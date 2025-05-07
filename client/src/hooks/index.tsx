@@ -1,9 +1,6 @@
 import axios from "axios";
-import toast from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
 import { UserProp } from "../types/type";
-
-
 
 
 export const useAuth = () => {
@@ -13,7 +10,7 @@ export const useAuth = () => {
     queryKey: ["authUser"],
     queryFn: async () => {
       try {
-        const res = await axios.get(`${BACKEND_URL}/user/auth`, { withCredentials: true });
+        const res = await axios.get(`${BACKEND_URL}/auth/me`, { withCredentials: true });
         return res.data.data;
       } catch (e:any) {
         console.error(e.message);

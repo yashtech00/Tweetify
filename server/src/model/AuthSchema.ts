@@ -6,11 +6,11 @@ const AuthSchema = new Schema({
     username: {
         type: String,
         unique: true,
-        required:true
+        required: true
     },
     fullname: {
         type: String,
-        required:true
+        required: true
     },
     email: {
         type: String,
@@ -25,30 +25,48 @@ const AuthSchema = new Schema({
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "user",
-            default:[]
+            default: []
         }
     ],
     following: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "user",
-            default:[]
+            default: []
         }
     ],
     bio: {
         type: String,
-        default:""
+        default: ""
     },
     link: {
         type: String,
-        default:""
+        default: ""
     },
-  
     Cover_Image: {
         type: String,
-        default:""
-       
+        default: ""
     },
+    BookmarkTweets: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "tweet",
+            default: []
+        }
+    ],
+    ReTweet: [
+        {
+        tweet:{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "tweet",
+            default: []
+        },
+        retweetedAt: {
+            type: Date,
+            default: Date.now
+        }
+    }
+    ],
     likedTweets: [
         {
             type: mongoose.Schema.Types.ObjectId,

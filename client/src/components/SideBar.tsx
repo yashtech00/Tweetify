@@ -3,23 +3,33 @@ import { Bell, Home, LogOut, User } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks";
 import toast from "react-hot-toast";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 
 export const SideBar = () => {
   const navigate = useNavigate();
-  const { authUser, setAuthUser } = useAuth(); // ← access auth from context
+  const { authUser } = useAuth(); // ← access auth from context
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-  const handleLogout = async () => {
 
-    try {
-      await axios.post(`${BACKEND_URL}/user/logout`, {}, { withCredentials: true });
-      toast.success("Logged out successfully. Please visit again!");
-      setAuthUser(null);
-      navigate("/login");
-    } catch (e) {
-      console.error("Logout failed:", e);
-      toast.error("Error while logging out. Please try again.");
+  const queryClient = useQueryClient();
+  const { mutate: LogoutMutation } = useMutation({
+    mutationKey: ["Logout"],
+    mutationFn: async () => {
+      try {
+        await axios.post(`${BACKEND_URL}/user/logout`, {}, { withCredentials: true });
+      } catch (e) {
+        console.error(e);
+        toast.error("Error while Logging out")
+      }
+    },
+    onSuccess: () => {
+      toast.success("Logout successfully")
+      queryClient.invalidateQueries({queryKey:['authUser']})
     }
+  })
+
+  const handleLogout = async () => {
+    LogoutMutation()
   };
 
 

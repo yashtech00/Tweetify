@@ -9,6 +9,12 @@ router.get("/following", AuthenticateRoute, getFollowingTweets);
 router.get("/user/:username", AuthenticateRoute, getAnyUserTweets);
 router.get("/Tweets", AuthenticateRoute, AllTweets);
 
+router.get("/bookmarkTweet", AuthenticateRoute, getBookmarkTweets);
+router.post("/bookmarkTweet", AuthenticateRoute, postBookmarkTweet)
+
+router.get("/retweet", AuthenticateRoute, getRetweet);
+router.post("/retweet", AuthenticateRoute, postRetweet); 
+
 router.post("/PostTweet",AuthenticateRoute, PostTweet),
 router.put("/comment/:id",AuthenticateRoute, commentTweet),
 

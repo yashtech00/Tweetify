@@ -1,3 +1,4 @@
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { User } from "lucide-react";
 import {  useState } from "react";
@@ -10,6 +11,20 @@ export const CreateTweet = () => {
 
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   const navigate = useNavigate();
+
+  // const { mutate: PostMutation } = useMutation({
+  //   mutationKey:[CreatePost]
+  // })
+
+
+
+
+
+
+
+
+
+
 
   const handleSubmitTweet = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevent form from refreshing the page
