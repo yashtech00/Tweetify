@@ -1,48 +1,36 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Heart, User } from "lucide-react";
 import { Loading } from "./Loading";
+import { useQuery } from "@tanstack/react-query";
+import { Notification } from "../types/type";
 
-interface From {
-  _id: string;
-  username: string;
-  profileImg: string;
-}
 
-interface Notification {
-  _id: string;
-  from: From;
-  type: "follow" | "like";
-}
 
 export const Notify = () => {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-  const fetchNotifications = async () => {
-    setIsLoading(true);
-    try {
-      const res = await axios.get(`${BACKEND_URL}/notify/notification`, {
-        withCredentials: true,
-      });
-        console.log(res.data.data,"notify");
-        
-      setNotifications(res.data.data);
-    } catch (error) {
-      console.error("Error fetching notifications", error);
-      toast.error("Failed to load notifications");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
  
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-  useEffect(() => {
-    fetchNotifications();
-  }, []);
+
+  const { data: notifications,isLoading } = useQuery<Notification[]>({
+    queryKey: ['notification'],
+    queryFn: async () => {
+      try {
+        const res = await axios.get(`${BACKEND_URL}/notify/notification`, {
+          withCredentials: true,
+        });
+        return res.data.data
+      } catch (e) {
+        if (axios.isAxiosError(e)) {
+          throw e
+        } else {
+          throw new Error("server error")
+        }
+        toast.error("Failed to load notifications");
+      }
+    }
+  })
 
   return (
     <div className="flex-[4_4_0] border-l border-r border-gray-700 min-h-screen text-white">
@@ -57,11 +45,11 @@ export const Notify = () => {
         </div>
       )}
 
-      {!isLoading && notifications.length === 0 && (
+      {!isLoading && notifications?.length === 0 && (
         <div className="text-center p-4 font-bold">No notifications 🤔</div>
       )}
 
-      {notifications.map((notification) => (
+      {notifications?.map((notification:any) => (
         <div className="border-b border-gray-700" key={notification._id}>
           <div className="flex gap-2 p-4">
             {notification.type === "follow" && (

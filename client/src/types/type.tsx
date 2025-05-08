@@ -44,3 +44,36 @@ export interface tweetProp {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface From {
+  _id: string;
+  username: string;
+  profileImg: string;
+}
+
+export interface Notification {
+  _id: string;
+  from: From;
+  type: "follow" | "like";
+}
+
+
+
+export interface ProfileProp {
+  _id: string;
+  fullname: string;
+  username: string;
+  email: string;
+  bio: string;
+  link: string;
+  profile_Image: string;
+  Cover_Image: string;
+  following: [];
+  followers: [];
+  likedTweets: [];
+  tweets: {
+      content: string;
+      likes: [];
+      comment: [];
+  };
+}
