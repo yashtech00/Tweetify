@@ -17,15 +17,6 @@ export const CreateTweet = () => {
   // })
 
 
-
-
-
-
-
-
-
-
-
   const handleSubmitTweet = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevent form from refreshing the page
     try {

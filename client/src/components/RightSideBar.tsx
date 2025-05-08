@@ -1,36 +1,32 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import useFollow from "../hooks/useFollow";
+
 import { User } from "lucide-react";
 import { UserProp } from "../types/type";
-
-
+import { useAuth } from "../hooks";
+import { useQuery } from "@tanstack/react-query";
 
 function RightPanel() {
-    const [suggestedUser, setSuggestedUser] = useState<UserProp[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const { followAndUnfollow, isPending } = useFollow();
-  
-  const Backend_Url = import.meta.env.VITE_BACKEND_URL;
+    const { followUnfollowMutation, isPending } = useAuth();
+    const Backend_Url = import.meta.env.VITE_BACKEND_URL;
+    const { data: suggestedUser, isLoading } = useQuery<UserProp[]>({
+        queryKey: ['suggested'],
+        queryFn: async () => {
+            try {
+                const res = await axios.get(`${Backend_Url}/profile/suggested`, { withCredentials: true });
 
-    const fetchSuggestedUsers = async () => {
-        setIsLoading(true);
-        try {
-            const res = await axios.get(`${Backend_Url}/profile/suggested`,{withCredentials:true});
-            setSuggestedUser(res.data);
-        } catch (error) {
-            console.error("Failed to fetch suggested users");
-        } finally {
-            setIsLoading(false);
+                return res.data
+            } catch (e) {
+                if (axios.isAxiosError(e)) {
+                    throw e
+                } else {
+                    throw new Error("server error")
+                }
+            }
         }
-    };
+    })
 
-    useEffect(() => {
-        fetchSuggestedUsers();
-    }, []);
-
-    if (suggestedUser.length === 0 && !isLoading) return <div className="md:w-64 w-0"></div>;
+    if (suggestedUser?.length === 0 && !isLoading) return <div className="md:w-64 w-0"></div>;
 
     return (
         <div className='hidden lg:block my-4 mx-2 text-white'>
@@ -39,10 +35,10 @@ function RightPanel() {
                 <div className='flex flex-col gap-4'>
                     {isLoading ? (
                         <div className="flex justify-center items-center h-8 ">
-                        <div className="loader border-t-4 border-blue-500 rounded-full w-8 h-10 animate-spin"></div>
-                    </div>
+                            <div className="loader border-t-4 border-blue-500 rounded-full w-8 h-10 animate-spin"></div>
+                        </div>
                     ) : (
-                        suggestedUser.map((user) => (
+                        suggestedUser?.map((user) => (
                             <Link
                                 to={`/profile/${user.username}`}
                                 className='flex items-center justify-between gap-4'
@@ -51,9 +47,9 @@ function RightPanel() {
                                 <div className='flex gap-2 items-center'>
                                     <div className='avatar'>
                                         <div className='w-8 rounded-full'>
-                                           
-                                        <User className="w-9 h-9 rounded-full bg-white text-black p-2" />
-                                            
+
+                                            <User className="w-9 h-9 rounded-full bg-white text-black p-2" />
+
                                         </div>
                                     </div>
                                     <div className='flex flex-col'>
@@ -65,17 +61,17 @@ function RightPanel() {
                                 </div>
                                 <div>
                                     <button
-                                        className='btn bg-violet-500 text-white hover:bg-white hover:opacity-90 rounded-full btn-sm px-3' 
+                                        className='btn bg-violet-500 text-white hover:bg-white hover:opacity-90 rounded-full btn-sm px-3'
                                         onClick={async (e) => {
                                             e.preventDefault();
-                                            await followAndUnfollow(user._id);
-                                            fetchSuggestedUsers(); // refetch after follow
+                                            followUnfollowMutation(user._id);
+
                                         }}
                                     >
                                         {isPending ? (
-                                           <div className="flex justify-center items-center h-8 ">
-                                           <div className="loader border-t-4 border-blue-500 rounded-full w-8 h-10 animate-spin"></div>
-                                       </div>
+                                            <div className="flex justify-center items-center h-8 ">
+                                                <div className="loader border-t-4 border-blue-500 rounded-full w-8 h-10 animate-spin"></div>
+                                            </div>
                                         ) : (
                                             "Follow"
                                         )}

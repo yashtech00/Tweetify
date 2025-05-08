@@ -1,95 +1,182 @@
 import axios from "axios";
 import { Bookmark, Heart, MessageCircle, Repeat, Trash, User, X } from "lucide-react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useAuth } from "../hooks";
 import toast from "react-hot-toast";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Comment, tweetProp } from "../types/type";
 
-interface Comment {
-    _id: string;
-    content: string;
-    user: {
-        fullname: string;
-        username: string;
-        profile_Image: string;
-    };
-}
-export interface tweetProp {
-    _id: string;
-    content: string;
-    image: string;
-    user: {
-        _id: string;
-        username: string;
-        fullname: string;
-        profile_Image: string;
-    };
-    comments: Comment[];
-    likes: string[];
-    createdAt: Date;
-    updatedAt: Date;
-}
 
-export const Tweet = ({ tweet, onDelete }: {
-    tweet: tweetProp;
-    onDelete: (tweetId: string) => void;
-}) => {
+
+export const Tweet = ({ tweet }: { tweet: tweetProp }) => {
     const { authUser } = useAuth();
     const isMyPost = authUser?._id === tweet.user._id;
     const [isModelOpen, setIsModelOpen] = useState(false);
-    const [like, setLike] = useState(tweet.likes);
-    const [comments, setComments] = useState<Comment[]>(Array.isArray(tweet.comments) ? tweet.comments : []);
+    const [inputComment, setInputComment] = useState("")
+    const [comments, setComments] = useState("");
 
-    const [inputComment, setInputComments] = useState("");
+
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+    const queryClient = useQueryClient();
+
+    const { mutate: LikeMutation, isPending: isLiking } = useMutation({
+        mutationKey: ['like'],
+        mutationFn: async () => {
+            try {
+                const res = await axios.put(
+                    `${BACKEND_URL}/tweets/like/${tweet._id}`,
+                    {},
+                    {
+                        withCredentials: true,
+                    }
+                );
+                return res.data.data;
+            } catch (e: any) {
+                console.error(e.message);
+            }
+        },
+        onSuccess: (updatedLikes) => {
+
+            queryClient.setQueryData(["tweets"], (oldData: tweetProp[]) => {
+                return oldData.map(p => {
+                    if (p._id === tweet._id) {
+                        console.log(tweet);
+                        return { ...p, likes: updatedLikes }
+                    }
+                    return p;
+                });
+            })
+        },
+        onError: () => {
+            toast.error("Post like failed");
+        }
+    })
+    const { mutate: CommentMutation, isPending: isCommenting } = useMutation({
+        mutationKey: ['comment'],
+        mutationFn: async () => {
+            try {
+                const res = await axios.put(
+                    `${BACKEND_URL}/tweets/comment/${tweet._id}`, { content: inputComment },
+                    {
+                        withCredentials: true,
+                    })
+                return res.data.data;
+            } catch (error: any) {
+                console.log(error);
+
+                if (axios.isAxiosError(error)) {
+                    throw error;
+                } else {
+                    throw new Error('Server error');
+                }
+            }
+        },
+        onSuccess: (updated: tweetProp) => {
+            // toast.success("commented successfully");
+            setComments("");
+            queryClient.setQueryData(["tweets"], (oldData: tweetProp[]) => {
+
+                return oldData.map(p => {
+                    if (p._id === tweet._id) {
+
+                        return { ...p, comments: updated };
+
+                    }
+                    return p;
+                });
+            });
+        },
+        onError: () => {
+            toast.error("commenting failed");
+        }
+    })
+    const { mutate: DeleteMutation } = useMutation({
+        mutationKey: ['deleteTweet'],
+        mutationFn: async () => {
+            try {
+                const res = await axios.delete(`${BACKEND_URL}/tweets/DeleteTweet/${tweet._id}`, {
+                    withCredentials: true
+                });
+                return res.data.data;
+            } catch (error: any) {
+                if (axios.isAxiosError(error)) {
+                    throw error;
+                } else {
+                    throw new Error('Server error');
+                }
+            }
+        },
+        onSuccess: () => {
+            toast.success("Added to Bookmarks")
+            queryClient.invalidateQueries({ queryKey: ['tweets'] })
+        },
+        onError: () => {
+            toast.error("Error while Deleting")
+        }
+    })
+
+    const { mutate: BookmarkMutation, isPending: isBookmarked } = useMutation({
+        mutationKey: ['bookmark'],
+        mutationFn: async () => {
+            try {
+                const res = await axios.put(`${BACKEND_URL}/tweets/bookmark`, {}, { withCredentials: true })
+
+                return res.data.data;
+
+            } catch (e: any) {
+                console.error(e.message);
+                toast.error("Error while bookmark")
+            }
+
+        },
+        onSuccess: () => {
+            toast.success("Added to Bookmarks")
+            queryClient.invalidateQueries({ queryKey: ['tweets'] })
+        }
+    })
+    const { mutate: RetweetMutation } = useMutation({
+        mutationKey: ['Retweet'],
+        mutationFn: async () => {
+            try {
+                const res = await axios.put(`${BACKEND_URL}/tweets/Retweet/${tweet._id}`, {}, { withCredentials: true })
+
+                return res.data.data;
+
+            } catch (e: any) {
+                console.error(e.message);
+                toast.error("Error while Retweet")
+            }
+
+        },
+        onSuccess: () => {
+            toast.success("Added to Retweets")
+            queryClient.invalidateQueries({ queryKey: ['tweets'] })
+        }
+    })
     const handleComments = async (e: React.FormEvent) => {
         e.preventDefault();
-        try {
-            const res = await axios.put(
-                `${BACKEND_URL}/tweets/comment/${tweet._id}`, { content: inputComment },
-                {
-                    withCredentials: true,
-                }
-            );
-            console.log(res, "comment handle");
-            setComments([...res.data.data].reverse());
-            setInputComments("");
-        } catch (e) {
-            console.error(e);
-        }
+        if (isCommenting) return;
+        CommentMutation();
     };
 
     const handleLike = async () => {
-        try {
-            const res = await axios.put(
-                `${BACKEND_URL}/tweets/like/${tweet._id}`,
-                {},
-                {
-                    withCredentials: true,
-                }
-            );
-            console.log(res, "tweet like");
-            setLike(res.data)
-        } catch (e: any) {
-            console.error(e.message);
-
-        }
+        if (isLiking) return;
+        LikeMutation()
     }
-
     const handleDelete = async () => {
-        try {
-            await axios.delete(`${BACKEND_URL}/tweets/DeleteTweet/${tweet._id}`, {
-                withCredentials: true
-            });
 
-            onDelete(tweet._id);
-            toast.success("Post deleted")
-        } catch (e) {
-            console.error(e);
-            toast.error("Error deleting Post")
-        }
+        DeleteMutation();
     };
 
-
+    const handleBookmark = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        if (isBookmarked) return;
+        BookmarkMutation();
+    }
+    const handleRetweet = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        RetweetMutation();
+    }
     const toggleModel = () => {
         setIsModelOpen(!isModelOpen);
     };
@@ -99,7 +186,7 @@ export const Tweet = ({ tweet, onDelete }: {
             <div className="border-b-2 border-stone-800 p-4">
                 <div className="flex justify-between">
                     <div className="flex ">
-                    <User className="w-8 h-8 rounded-full bg-white text-black p-1" />
+                        <User className="w-8 h-8 rounded-full bg-white text-black p-1" />
                         <div className="mx-4">
                             <div className=" ">{tweet.user.username}</div>
 
@@ -119,25 +206,31 @@ export const Tweet = ({ tweet, onDelete }: {
 
                 </div>
                 <div className="ml-12 ">
-                <div className="py-4 ">{tweet.content}</div>
-                
+                    <div className="py-4 ">{tweet.content}</div>
+
 
                     <div className="flex justify-between py-4 text-stone-500">
                         <div className="flex cursor-pointer  hover:text-blue-600" onClick={toggleModel}>
                             <MessageCircle />
-                            <span className="ml-2">{comments.length}</span>
+                            <span className="ml-2">{tweet.comments.length}</span>
                         </div>
-                        <div className="hover:text-green-500">
+                        <div
+                            className={`flex cursor-pointer ${authUser?._id && tweet.Retweet.includes(authUser._id) ? 'text-green-600' : 'hover:text-green-600'}`}
+                            onClick={handleLike}
+                        >
                             <Repeat />
                         </div>
                         <div
-                            className={`flex cursor-pointer ${authUser?._id && like.includes(authUser._id) ? 'text-pink-600' : 'hover:text-pink-600'}`}
+                            className={`flex cursor-pointer ${authUser?._id && tweet.likes.includes(authUser._id) ? 'text-pink-600' : 'hover:text-pink-600'}`}
                             onClick={handleLike}
                         >
                             <Heart />
-                            <span className="ml-2">{like.length}</span>
+                            <span className="ml-2">{tweet.likes.length}</span>
                         </div>
-                        <div className="hover:text-blue-500">
+                        <div
+                            className={`flex cursor-pointer ${authUser?._id && tweet.Bookmark.includes(authUser._id) ? 'text-blue-600' : 'hover:text-blue-600'}`}
+                            onClick={handleBookmark}
+                        >
                             <Bookmark />
                         </div>
                     </div>
@@ -147,10 +240,10 @@ export const Tweet = ({ tweet, onDelete }: {
             {isModelOpen && (
                 <CommentModel
                     onClose={toggleModel}
-                    comments={comments}
+                    comments={tweet.comments}
                     onCommentSubmit={handleComments}
                     inputComment={inputComment}
-                    setInputComments={setInputComments}
+                    setInputComment={setInputComment}
                 />
             )}
         </div>
@@ -162,7 +255,7 @@ interface CommentModelProps {
     comments: Comment[];
     onCommentSubmit: (e: React.FormEvent) => void;
     inputComment: string;
-    setInputComments: (value: string) => void;
+    setInputComment: (value: string) => void;
 }
 
 function CommentModel({
@@ -170,7 +263,7 @@ function CommentModel({
     comments,
     onCommentSubmit,
     inputComment,
-    setInputComments,
+    setInputComment,
 }: CommentModelProps) {
     return (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center">
@@ -214,7 +307,7 @@ function CommentModel({
                         className="w-full border-2 border-stone-900 rounded p-2  mt-4 bg-black"
                         placeholder="Post your comment..."
                         value={inputComment}
-                        onChange={(e) => setInputComments(e.target.value)}
+                        onChange={(e) => setInputComment(e.target.value)}
                     />
                     <div className="flex justify-end">
 

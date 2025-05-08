@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Bell, Home, LogOut, User } from "lucide-react";
+import { Bell, Bookmark, Home, LogOut, User } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks";
 import toast from "react-hot-toast";
@@ -54,6 +54,15 @@ export const SideBar = () => {
             >
               <Bell className="w-6 h-6" />
               <span className="text-lg hidden md:block">Notifications</span>
+            </Link>
+          </li>
+          <li className="flex justify-center md:justify-start">
+            <Link
+              to={`/bookmark`}
+              className="flex gap-3 items-center hover:bg-stone-900 transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer"
+            >
+              <Bookmark className="w-6 h-6" />
+              <span className="text-lg hidden md:block">Bookmark</span>
             </Link>
           </li>
           <li className="flex justify-center md:justify-start">

@@ -1,19 +1,46 @@
 export interface UserProp {
-    username: string;
-    fullname: string;
-    bio: string;
-    link: string;
-    email: string;
-    _id: string;
-    Cover_Image: string;
-    followers: string[];
-  }
+  username: string;
+  fullname: string;
+  bio: string;
+  link: string;
+  email: string;
+  _id: string;
+  Cover_Image: string;
+  followers: string[];
+}
 
-  
+
 export interface AuthProp {
+  username: string;
+  fullname: string;
+  password: string;
+  email: string;
+  Cover_Image: string;
+}
+
+export interface Comment {
+  _id: string;
+  content: string;
+  user: {
+    fullname: string;
+    username: string;
+    profile_Image: string;
+  };
+}
+export interface tweetProp {
+  _id: string;
+  content: string;
+  image: string;
+  user: {
+    _id: string;
     username: string;
     fullname: string;
-    password: string;
-    email: string;
-    Cover_Image: string;
-  }
+    profile_Image: string;
+  };
+  comments: Comment[];
+  likes: string[];
+  Bookmark: string[],
+  Retweet: string[]
+  createdAt: Date;
+  updatedAt: Date;
+}

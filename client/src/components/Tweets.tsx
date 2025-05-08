@@ -1,13 +1,10 @@
 import axios from "axios"
-import { useEffect, useState } from "react"
-import { useAuth } from "../hooks"
-import { Tweet, tweetProp } from "./Tweet";
+import { Tweet } from "./Tweet";
 import { Loading } from "./Loading";
+import { useQuery } from "@tanstack/react-query";
+import { tweetProp } from "../types/type";
 
 export const Tweets = ({ tweetType, username, userId }: { tweetType: string; username?: string; userId?: string }) => {
-  const [allTweets, setAllTweets] = useState<tweetProp[]>([])
-  const { isLoading } = useAuth()
-
 
   const tweetEndPoint = () => {
     switch (tweetType) {
@@ -19,53 +16,46 @@ export const Tweets = ({ tweetType, username, userId }: { tweetType: string; use
     }
   }
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-  const [loading, setLoading] = useState<boolean>(false);
-  useEffect(() => {
-    const fetchTweets = async () => {
-      setLoading(true);
+
+  const { data: allTweets, isLoading } = useQuery<tweetProp[]>({
+    queryKey: ['tweets'],
+    queryFn: async () => {
       try {
         const endpoint = tweetEndPoint();
         const res = await axios.get(`${BACKEND_URL}${endpoint}`, {
           withCredentials: true,
         });
-
-        console.log(res, "tweets");
-
-        setAllTweets([...res.data.data].reverse());
+        return res.data.data
       } catch (e) {
-        console.error(e);
+        if (axios.isAxiosError(e)) {
+          throw e
+        } else {
+          throw new Error("server error")
+        }
       }
-      finally {
-        setLoading(false);
-      }
-    };
+    }
+  });
 
-    fetchTweets();
-  }, [tweetType, username, userId]);
 
-  const handleDeleteTweet = (tweetId: string) => {
-    setAllTweets((prev) => prev.filter((tweet) => tweet._id !== tweetId));
-  };
 
-  
 
   return (
     <div>
-      {loading ? (
+      {isLoading ? (
         <div className="flex justify-center h-full items-center">
           <Loading />
         </div>
       ) : (
         <>
-          {allTweets.length === 0 && (tweetType === "tweets" || tweetType === "likes") ? (
+          {allTweets?.length === 0 && (tweetType === "tweets" || tweetType === "likes") ? (
             <div className="flex flex-col items-center justify-center h-full text-gray-500 mt-6">
               <p className="text-lg font-semibold">No tweets to display</p>
               <p className="text-sm">Start tweeting to see your posts here!</p>
             </div>
           ) : (
-            allTweets.map((tweet) => (
+            allTweets?.map((tweet) => (
               <div key={tweet._id}>
-                <Tweet tweet={tweet} onDelete={handleDeleteTweet} />
+                <Tweet tweet={tweet} />
               </div>
             ))
           )}

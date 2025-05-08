@@ -12,7 +12,7 @@ router.get("/Tweets", AuthenticateRoute, AllTweets);
 router.get("/bookmarkTweet", AuthenticateRoute, getBookmarkTweets);
 router.put("/bookmarkTweet/:id", AuthenticateRoute, postBookmarkTweets)
 
-router.put("/retweet:/id", AuthenticateRoute, postRetweet); 
+router.put("/retweet/:id", AuthenticateRoute, postRetweet); 
 
 router.post("/PostTweet",AuthenticateRoute, PostTweet),
 router.put("/comment/:id",AuthenticateRoute, commentTweet),
