@@ -1,5 +1,5 @@
 import express from "express"
-import { AllTweets, commentTweet, DeleteTweet, getAnyUserTweets, getFollowingTweets, getLikeTweets, getTweetById, LikeUnlikeTweet, PostTweet } from "../controllers/Tweet";
+import { AllTweets, commentTweet, DeleteTweet, getAnyUserTweets, getBookmarkTweets, getFollowingTweets, getLikeTweets, getTweetById, LikeUnlikeTweet, postBookmarkTweets, postRetweet, PostTweet } from "../controllers/Tweet";
 import AuthenticateRoute from "../middlewares/Authenticated";
 
 const router = express.Router();
@@ -10,10 +10,9 @@ router.get("/user/:username", AuthenticateRoute, getAnyUserTweets);
 router.get("/Tweets", AuthenticateRoute, AllTweets);
 
 router.get("/bookmarkTweet", AuthenticateRoute, getBookmarkTweets);
-router.post("/bookmarkTweet", AuthenticateRoute, postBookmarkTweet)
+router.put("/bookmarkTweet/:id", AuthenticateRoute, postBookmarkTweets)
 
-router.get("/retweet", AuthenticateRoute, getRetweet);
-router.post("/retweet", AuthenticateRoute, postRetweet); 
+router.put("/retweet:/id", AuthenticateRoute, postRetweet); 
 
 router.post("/PostTweet",AuthenticateRoute, PostTweet),
 router.put("/comment/:id",AuthenticateRoute, commentTweet),

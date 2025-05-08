@@ -248,3 +248,113 @@ export const getTweetById = async (req: any, res: any) => {
       .json({ message: "Internal server error while fetching all tweets" });
   }
 };
+
+export const postBookmarkTweets = async(req: any, res: any) => {
+  try {
+    const { id } = req.params.id;
+    const UserId = req.user.id
+    // const user 
+    const tweet = await TweetModel.findById({ _id: id })
+    if (!tweet) {
+      return res.status(404).json({ message: "Tweet not found" });
+    }
+
+    const isBookmarked = tweet.Bookmark.includes(UserId)
+    if (isBookmarked) {
+      await TweetModel.updateOne(
+        { _id: id },
+        { $pull: { Bookmark: UserId } }
+      )
+
+      const updatedBookmark = await tweet.Bookmark.filter(
+        (id) => id.toString() != UserId.toString()
+      )
+
+      return res.status(200).json({ message: "Bookmarked successfully" },{data:updatedBookmark});
+
+    } else {
+      tweet.Bookmark.push(UserId);
+      await AuthModel.updateOne(
+        { _id: UserId },
+        { $push: { BookmarkTweets: id } }
+      )
+
+      await tweet.save()
+
+      const notification = new NotificationModel(
+        {
+          from: UserId,
+          to: tweet.user,
+          type: "bookmark"
+        })
+      
+      
+      const updatedBookmark = tweet.Bookmark;
+      return res.status(200).json({message:"bookmarked successfully"},{data:updatedBookmark})
+    }
+  } catch (e:any) {
+    console.error(e.message);
+    return res.status(500).json({message:"Internal server error"})
+  }
+}
+
+export const getBookmarkTweets = async (req: any, res: any) => {
+  try {
+    const userId = req.params.id
+    const user = await AuthModel.findById(userId)
+    if (!userId) {
+      return res.status(404).json({message:"User not found"})
+    }
+    const bookmarks = user?.BookmarkTweets
+    const bookmark = await TweetModel.find({ user: { $in: bookmarks } })
+      .populate({
+        path: "user",
+        select: "-password"
+      })
+    
+    return res.status(200).json({message:"fetch bookmark successfully"},{data:bookmark})
+
+
+  } catch (e:any) {
+    console.error(e.message);
+    return res.status(500).json("Internal server error");
+    
+  }
+}
+
+export const postRetweet = async (req: any, res: any) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+
+    const tweet = await TweetModel.findById({_id:id})
+    if (!id) {
+      return res.status(404).json({message:"Tweet not found"})
+    }
+
+    const user = await AuthModel.findById(userId)
+    if (!userId) {
+      return res.status(404).json({message:"user not found"})
+    }
+
+    const retweet = await TweetModel.create({
+      content: tweet,
+      user: userId,
+    });
+
+    user?.tweets.unshift(retweet._id)
+    user?.ReTweet.unshift({
+      tweet: id,
+      retweetAt: new Date()
+    })
+
+    await user?.save();
+
+    return res.status(200).json({message:"Retweet posted successfully",data:retweet})
+
+
+  } catch (e:any) {
+      console.error(e.message);
+    return res.status(500).json("Internal server error");
+    }
+} 
