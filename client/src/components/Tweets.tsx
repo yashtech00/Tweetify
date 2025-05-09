@@ -1,8 +1,9 @@
 import axios from "axios"
 import { Tweet } from "./Tweet";
 import { Loading } from "./Loading";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { tweetProp } from "../types/type";
+import { useEffect } from "react";
 
 export const Tweets = ({ tweetType, username, userId }: { tweetType: string; username?: string; userId?: string }) => {
 
@@ -16,8 +17,7 @@ export const Tweets = ({ tweetType, username, userId }: { tweetType: string; use
     }
   }
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-
-  const { data: allTweets, isLoading } = useQuery<tweetProp[]>({
+  const { data: allTweets, isLoading, refetch } = useQuery<tweetProp[]>({
     queryKey: ['tweets'],
     queryFn: async () => {
       try {
@@ -25,6 +25,7 @@ export const Tweets = ({ tweetType, username, userId }: { tweetType: string; use
         const res = await axios.get(`${BACKEND_URL}${endpoint}`, {
           withCredentials: true,
         });
+        console.log(res.data.data,"tweets");
         return res.data.data
       } catch (e) {
         if (axios.isAxiosError(e)) {
@@ -32,12 +33,16 @@ export const Tweets = ({ tweetType, username, userId }: { tweetType: string; use
         } else {
           throw new Error("server error")
         }
+        return []
       }
+
     }
+
   });
 
-
-
+  useEffect(() => {
+    refetch()
+  },[tweetType,username, refetch])
 
   return (
     <div>
@@ -53,7 +58,9 @@ export const Tweets = ({ tweetType, username, userId }: { tweetType: string; use
               <p className="text-sm">Start tweeting to see your posts here!</p>
             </div>
           ) : (
-            allTweets?.map((tweet) => (
+                allTweets ?.slice()
+                .sort((a:any,b:any)=>new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime() )
+                .map((tweet:any) => (
               <div key={tweet._id}>
                 <Tweet tweet={tweet} />
               </div>

@@ -7,7 +7,7 @@ import { useAuth } from "../hooks";
 import { useQuery } from "@tanstack/react-query";
 
 function RightPanel() {
-    const { followUnfollowMutation, isPending } = useAuth();
+    const { followUnfollowMutation} = useAuth();
     const Backend_Url = import.meta.env.VITE_BACKEND_URL;
     const { data: suggestedUser, isLoading } = useQuery<UserProp[]>({
         queryKey: ['suggested'],
@@ -32,18 +32,14 @@ function RightPanel() {
         <div className='hidden lg:block my-4 mx-2 text-white'>
             <div className='border-2 border-stone-900 p-4 rounded-md sticky top-2'>
                 <p className='font-bold'>Who to follow</p>
-                <div className='flex flex-col gap-4'>
+                <div className='flex flex-col gap-4 m-2'>
                     {isLoading ? (
                         <div className="flex justify-center items-center h-8 ">
                             <div className="loader border-t-4 border-blue-500 rounded-full w-8 h-10 animate-spin"></div>
                         </div>
                     ) : (
                         suggestedUser?.map((user) => (
-                            <Link
-                                to={`/profile/${user.username}`}
-                                className='flex items-center justify-between gap-4'
-                                key={user._id}
-                            >
+                            <div key={user._id} className="flex justify-between items-center">
                                 <div className='flex gap-2 items-center'>
                                     <div className='avatar'>
                                         <div className='w-8 rounded-full'>
@@ -61,23 +57,19 @@ function RightPanel() {
                                 </div>
                                 <div>
                                     <button
-                                        className='btn bg-violet-500 text-white hover:bg-white hover:opacity-90 rounded-full btn-sm px-3'
+                                        className='btn bg-violet-500 text-white hover:opacity-90 rounded-full btn-sm px-3'
                                         onClick={async (e) => {
                                             e.preventDefault();
                                             followUnfollowMutation(user._id);
 
                                         }}
                                     >
-                                        {isPending ? (
-                                            <div className="flex justify-center items-center h-8 ">
-                                                <div className="loader border-t-4 border-blue-500 rounded-full w-8 h-10 animate-spin"></div>
-                                            </div>
-                                        ) : (
-                                            "Follow"
-                                        )}
+                                       
+                                            Follow
+                                        
                                     </button>
                                 </div>
-                            </Link>
+                            </div>
                         ))
                     )}
                 </div>

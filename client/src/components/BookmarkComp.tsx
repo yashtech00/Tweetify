@@ -7,14 +7,15 @@ import { tweetProp } from "../types/type";
 export const BookmarkComp = () => {
 
     // const [bookmark, setBookmark] = useState([]);
-    const Backend_Url = import.meta.env.BACKEND_URL;
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
     const { data: bookmark } = useQuery<tweetProp[]>({
         queryKey: ['bookmark'],
         queryFn: async () => {
             try {
-                const res = await axios.get(`${Backend_Url}/tweets/bookmark`, { withCredentials: true });
-
+                const res = await axios.get(`${BACKEND_URL}/tweets/bookmarkTweet`, { withCredentials: true });
+                console.log(res,"bookmark");
+                
                 return res.data.data
 
             } catch (e: any) {
@@ -27,11 +28,20 @@ export const BookmarkComp = () => {
 
     return (
         <div>
-            <div>
-                <p>Bookmark</p>
+            <div className="p-4 ">
+                <p className="text-2xl font-bold">Bookmark</p>
             </div>
             <div>
-                {bookmark?.map((bm: tweetProp) => (
+                {bookmark?.length == 0 ? (
+                    <div className="flex justify-center text-stone-600 mt-10">
+                        no bookmark tweets right now 🤔
+                    </div>
+                ) : (
+                        <>
+                        
+                        
+                {(bookmark || []).map((bm: tweetProp) => (
+
                     <div key={bm._id}>
                         <div className="border-b-2 border-stone-800 p-4">
                             <div className="flex justify-between">
@@ -54,6 +64,8 @@ export const BookmarkComp = () => {
                         </div>
                     </div>
                 ))}
+                            </>
+                )}
             </div>
         </div>
     )

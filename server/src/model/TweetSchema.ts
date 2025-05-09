@@ -11,8 +11,6 @@ const TweetSchema = new Schema(
     },
     content: {
       type: String,
-      maxlength: 280,
-      trim: true,
       required: true,
     },
     Bookmark: [

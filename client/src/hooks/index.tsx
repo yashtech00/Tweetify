@@ -8,7 +8,6 @@ import toast from "react-hot-toast";
 export const useAuth = () => {
  
 
-  const [suggestedUsers, setSuggestedUsers] = useState([]);
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   const { data: authUser, isLoading } = useQuery<UserProp>({
     queryKey: ["authUser"],

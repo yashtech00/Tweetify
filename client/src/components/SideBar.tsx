@@ -1,22 +1,23 @@
 import axios from "axios";
 import { Bell, Bookmark, Home, LogOut, User } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../hooks";
 import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 
 export const SideBar = () => {
-  const navigate = useNavigate();
   const { authUser } = useAuth(); // ← access auth from context
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
   const queryClient = useQueryClient();
+  
   const { mutate: LogoutMutation } = useMutation({
     mutationKey: ["Logout"],
     mutationFn: async () => {
       try {
-        await axios.post(`${BACKEND_URL}/user/logout`, {}, { withCredentials: true });
+        await axios.post(`${BACKEND_URL}/auth/logout`, {}, { withCredentials: true });
+
       } catch (e) {
         console.error(e);
         toast.error("Error while Logging out")

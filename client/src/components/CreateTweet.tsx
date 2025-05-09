@@ -3,7 +3,10 @@ import axios from "axios";
 import { User } from "lucide-react";
 import {  useState } from "react";
 import toast from "react-hot-toast";
-
+interface MutateType {
+	tweet: string;
+    
+}
 
 
 export const CreateTweet = () => {
@@ -14,11 +17,10 @@ export const CreateTweet = () => {
   const queryClient = useQueryClient();
   const { mutate: PostMutation } = useMutation({
     mutationKey: ['CreatePost'],
-    mutationFn: async () => {
+    mutationFn: async ({tweet}:MutateType) => {
       try {
         const res = await axios.post(`${BACKEND_URL}/tweets/PostTweet`, {
           content: tweet,
-  
         }, {
           withCredentials: true,
         });
@@ -33,7 +35,9 @@ export const CreateTweet = () => {
     },
     onSuccess: () => {
       toast.success("Your post was sent")
-      queryClient.invalidateQueries({queryKey:['tweets']})
+      
+      queryClient.invalidateQueries({ queryKey: ['tweets'] })
+      setTweet("")
     },
     onError: () => {
       toast.error("Fail to sent your Post")
@@ -41,7 +45,7 @@ export const CreateTweet = () => {
   })
   const handleSubmitTweet = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevent form from refreshing the page
-    PostMutation();
+    PostMutation({tweet});
   };
 
   return (

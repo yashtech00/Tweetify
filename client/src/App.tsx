@@ -8,7 +8,7 @@ import Notification from './pages/Notification'
 import { Toaster } from 'react-hot-toast'
 
 import Layout from './layout/Layout'
-import { CurrentTweet } from './components/CurrentTweet'
+
 import Bookmark from './pages/Bookmark'
 
 
@@ -33,7 +33,7 @@ function App() {
         <Route path="/notifications" element={authUser ? <Layout><Notification /></Layout> : <Navigate to="/" />} />
         <Route path="/profile/:username" element={authUser ? <Layout><Profile /></Layout> : <Navigate to="/" />} />
         <Route path="/bookmark" element={authUser ? <Layout><Bookmark /></Layout> : <Navigate to="/" />} />
-        <Route path="/tweet/:id" element={authUser ? <Layout><CurrentTweet /></Layout> : <Navigate to="/" />} />
+       
       </Routes>
 
       <Toaster position="bottom-center" toastOptions={{

@@ -22,35 +22,16 @@ export const Tweet = ({ tweet }: { tweet: tweetProp }) => {
     const { mutate: LikeMutation, isPending: isLiking } = useMutation({
         mutationKey: ['like'],
         mutationFn: async () => {
-            try {
-                const res = await axios.put(
-                    `${BACKEND_URL}/tweets/like/${tweet._id}`,
-                    {},
-                    {
-                        withCredentials: true,
-                    }
-                );
-                return res.data.data;
-            } catch (e: any) {
-                console.error(e.message);
-            }
+            await axios.put(`${BACKEND_URL}/tweets/like/${tweet._id}`, {}, { withCredentials: true });
         },
-        onSuccess: (updatedLikes) => {
-
-            queryClient.setQueryData(["tweets"], (oldData: tweetProp[]) => {
-                return oldData.map(p => {
-                    if (p._id === tweet._id) {
-                        console.log(tweet);
-                        return { ...p, likes: updatedLikes }
-                    }
-                    return p;
-                });
-            })
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['tweets'] });
         },
         onError: () => {
             toast.error("Post like failed");
         }
-    })
+    });
+    
     const { mutate: CommentMutation, isPending: isCommenting } = useMutation({
         mutationKey: ['comment'],
         mutationFn: async () => {
@@ -107,7 +88,7 @@ export const Tweet = ({ tweet }: { tweet: tweetProp }) => {
             }
         },
         onSuccess: () => {
-            toast.success("Added to Bookmarks")
+            toast.success("Tweet deleted successfully")
             queryClient.invalidateQueries({ queryKey: ['tweets'] })
         },
         onError: () => {
@@ -119,8 +100,11 @@ export const Tweet = ({ tweet }: { tweet: tweetProp }) => {
         mutationKey: ['bookmark'],
         mutationFn: async () => {
             try {
-                const res = await axios.put(`${BACKEND_URL}/tweets/bookmark`, {}, { withCredentials: true })
-
+                console.log("before bookmark");
+                
+                const res = await axios.put(`${BACKEND_URL}/tweets/bookmarkTweet/${tweet._id}`, {}, { withCredentials: true })
+                console.log(res,"bookmark");
+                
                 return res.data.data;
 
             } catch (e: any) {
@@ -134,25 +118,7 @@ export const Tweet = ({ tweet }: { tweet: tweetProp }) => {
             queryClient.invalidateQueries({ queryKey: ['tweets'] })
         }
     })
-    const { mutate: RetweetMutation } = useMutation({
-        mutationKey: ['Retweet'],
-        mutationFn: async () => {
-            try {
-                const res = await axios.put(`${BACKEND_URL}/tweets/Retweet/${tweet._id}`, {}, { withCredentials: true })
-
-                return res.data.data;
-
-            } catch (e: any) {
-                console.error(e.message);
-                toast.error("Error while Retweet")
-            }
-
-        },
-        onSuccess: () => {
-            toast.success("Added to Retweets")
-            queryClient.invalidateQueries({ queryKey: ['tweets'] })
-        }
-    })
+    
     const handleComments = async (e: React.FormEvent) => {
         e.preventDefault();
         if (isCommenting) return;
@@ -173,10 +139,7 @@ export const Tweet = ({ tweet }: { tweet: tweetProp }) => {
         if (isBookmarked) return;
         BookmarkMutation();
     }
-    const handleRetweet = (e: React.MouseEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        RetweetMutation();
-    }
+    
     const toggleModel = () => {
         setIsModelOpen(!isModelOpen);
     };
@@ -212,26 +175,27 @@ export const Tweet = ({ tweet }: { tweet: tweetProp }) => {
                     <div className="flex justify-between py-4 text-stone-500">
                         <div className="flex cursor-pointer  hover:text-blue-600" onClick={toggleModel}>
                             <MessageCircle />
-                            <span className="ml-2">{tweet.comments.length}</span>
+                            <span className="ml-2">{tweet.comments?.length}</span>
                         </div>
                         <div
-                            className={`flex cursor-pointer ${authUser?._id && tweet.Retweet.includes(authUser._id) ? 'text-green-600' : 'hover:text-green-600'}`}
-                            onClick={handleLike}
+                            className="flex cursor-pointer  hover:text-green-600"
+                        
                         >
                             <Repeat />
                         </div>
                         <div
-                            className={`flex cursor-pointer ${authUser?._id && tweet.likes.includes(authUser._id) ? 'text-pink-600' : 'hover:text-pink-600'}`}
+                            className={`flex cursor-pointer ${authUser?._id && tweet.likes?.includes(authUser._id) ? 'text-pink-600' : 'hover:text-pink-600'}`}
                             onClick={handleLike}
                         >
                             <Heart />
-                            <span className="ml-2">{tweet.likes.length}</span>
+                            <span className="ml-2">{tweet.likes?.length}</span>
                         </div>
                         <div
-                            className={`flex cursor-pointer ${authUser?._id && tweet.Bookmark.includes(authUser._id) ? 'text-blue-600' : 'hover:text-blue-600'}`}
+                            className={`flex cursor-pointer ${authUser?._id && tweet.Bookmark?.includes(authUser._id) ? 'text-blue-600' : 'hover:text-blue-600'}`}
                             onClick={handleBookmark}
                         >
                             <Bookmark />
+                            <span className="ml-2">{tweet.Bookmark.length}</span>
                         </div>
                     </div>
                 </div>
