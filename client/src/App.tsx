@@ -6,9 +6,7 @@ import { useAuth } from './hooks'
 import Profile from './pages/Profile'
 import Notification from './pages/Notification'
 import { Toaster } from 'react-hot-toast'
-
 import Layout from './layout/Layout'
-
 import Bookmark from './pages/Bookmark'
 
 

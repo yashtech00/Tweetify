@@ -50,8 +50,7 @@ export const Auth = ({ type }: { type: "login" | "signup" }) => {
         )
 
         console.log(res)
-        queryClient.invalidateQueries({ queryKey: ["authUser"] })
-        toast.success(`${type === "signup" ? "Account created" : "Logged in"} successfully!`)
+       
         return res.data.user
       } catch (e) {
         console.error(e)
@@ -64,6 +63,13 @@ export const Auth = ({ type }: { type: "login" | "signup" }) => {
         return
       }
     },
+    onSuccess: () => {
+      toast.success(`${type === "signup" ? "Account created" : "Logged in"} successfully!`)
+      queryClient.invalidateQueries({ queryKey: ["authUser"] })
+    },
+    onError: () => {
+      toast.error("Error while login/signup")
+    }
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
