@@ -40,5 +40,8 @@ Tweetify is a full-stack Twitter clone built using the **MERN stack** with **Typ
 
 ## Demo video
 
-https://github.com/user-attachments/assets/dc94732b-6369-4cea-be50-1e09bede1852
+
+https://github.com/user-attachments/assets/a5ea7751-8ca3-4c33-a6d4-35b0a2942378
+
+
 
