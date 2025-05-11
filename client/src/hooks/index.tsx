@@ -14,7 +14,7 @@ export const useAuth = () => {
     queryFn: async () => {
       try {
         const res = await axios.get(`${BACKEND_URL}/auth/me`, { withCredentials: true });
-        return res.data.data;
+        return res.data.user;
       } catch (e:any) {
         console.error(e.message);
         return null;
