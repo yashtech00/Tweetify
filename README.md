@@ -1,6 +1,6 @@
 # 🐦 Tweetify - A Twitter Clone
 
-Tweetify is a full-stack Twitter clone built using the **MERN stack** with **TypeScript** and **Tailwind CSS**. It replicates core features of Twitter including tweeting, liking, commenting, user profiles, and notifications (via polling). Users can sign up, log in, and interact in real-time with a smooth and modern UI.
+Tweetify is a full-stack Twitter clone built using the **MERN stack** with **TypeScript** and **Tailwind CSS**. It replicates core features of Twitter including tweeting, liking, commenting, user profiles, and notifications (via polling). Users can sign up, log in and modern UI.
 
 ## 🔧 Tech Stack
 
